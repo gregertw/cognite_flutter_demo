@@ -1,12 +1,12 @@
+import 'package:first_app/models/heartbeatstate.dart';
+import 'package:cognite_dart_sdk/cognite_dart_sdk.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:first_app/models/appstate.dart';
-import 'package:first_app/models/locstate.dart';
 import 'package:first_app/ui/pages/login/index.dart';
 import 'package:first_app/generated/l10n.dart';
-import 'package:first_app/ui/pages/location/index.dart';
-import 'package:first_app/ui/pages/map/index.dart';
+import 'package:first_app/ui/pages/timeseries_chart/index.dart';
 import 'drawer.dart';
 
 class HomePage extends StatelessWidget {
@@ -24,6 +24,13 @@ class HomePage extends StatelessWidget {
     // startup.
     Intl.defaultLocale = appState.locale;
 
+    var apiClient = appState.mocks.getMock('heartbeat') ??
+        CDFApiClient(
+            project: appState.cdfProject,
+            apikey: appState.cdfApiKey,
+            baseUrl: appState.cdfURL,
+            debug: false);
+
     return Scaffold(
         key: Key("HomePage_Scaffold"),
         appBar: AppBar(
@@ -32,13 +39,12 @@ class HomePage extends StatelessWidget {
         backgroundColor: Theme.of(context).backgroundColor,
         body: new ChangeNotifierProvider(
           create: (_) =>
-              new LocStateModel(appState.mocks.getMock('geolocator')),
+              new HeartBeatModel(apiClient, appState.cdfTimeSeriesId),
           child: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                LocationStreamWidget(),
-                OverlayMapPage(),
+                TimeSeriesChart(),
               ],
             ),
           ),

@@ -9,7 +9,7 @@ import 'package:first_app/mock/mockmap.dart';
 import 'package:first_app/generated/l10n.dart';
 
 class AppStateModel with ChangeNotifier {
-  bool _authenticated = false;
+  bool _authenticated = true;
   String _userToken;
   String _idToken;
   String _refreshToken;
@@ -18,6 +18,11 @@ class AppStateModel with ChangeNotifier {
   String _name;
   String _locale;
   String _fcmToken;
+  String _cdfProject;
+  String _cdfTimeSeriesId;
+  String _cdfApiKey;
+  String _cdfURL;
+
   final SharedPreferences prefs;
   final FirebaseAnalytics analytics;
   final FirebaseMessaging messaging;
@@ -27,15 +32,19 @@ class AppStateModel with ChangeNotifier {
   MockMap _mocks = MockMap();
 
   bool get authenticated => _authenticated;
-  String get userToken => _userToken;
-  String get idToken => _idToken;
-  String get refreshToken => _refreshToken;
+  String get userToken => _userToken ?? '';
+  String get idToken => _idToken ?? '';
+  String get refreshToken => _refreshToken ?? '';
   DateTime get expires => _expires;
   String get email => _email;
   String get name => _name;
+  String get cdfProject => _cdfProject;
+  String get cdfApiKey => _cdfApiKey;
+  String get cdfURL => _cdfURL;
+  String get cdfTimeSeriesId => _cdfTimeSeriesId;
   MockMap get mocks => _mocks;
-  String get locale => _locale;
-  String get fcmToken => _fcmToken;
+  String get locale => _locale ?? '';
+  String get fcmToken => _fcmToken ?? '';
 
   AppStateModel(this.prefs, [this.analytics, this.messaging]) {
     refresh();
@@ -150,7 +159,6 @@ class AppStateModel with ChangeNotifier {
           _expires = null;
         }
         notifyListeners();
-        return;
       }
     }
     _userToken = prefs.getString('userToken');
