@@ -8,8 +8,6 @@ import 'package:first_app/generated/l10n.dart';
 import 'package:first_app/ui/theme/style.dart';
 import 'package:first_app/ui/pages/home/index.dart';
 import 'package:first_app/ui/pages/home/drawer.dart';
-import 'package:first_app/ui/pages/location/index.dart';
-import 'package:first_app/ui/pages/map/index.dart';
 import 'package:first_app/ui/pages/login/index.dart';
 
 // Helper function to encapsulate code needed to instantiate the HomePage() widget
@@ -63,8 +61,7 @@ void main() async {
     expect(find.byType(AppBar), findsOneWidget);
     // We should find the map toggle button
     expect(find.byType(FloatingActionButton), findsOneWidget);
-    expect(find.byType(LocationStreamWidget), findsOneWidget);
-    expect(find.byType(OverlayMapPage), findsOneWidget);
+    // TODO Add tests for chart
   });
 
   testWidgets('open drawer', (WidgetTester tester) async {

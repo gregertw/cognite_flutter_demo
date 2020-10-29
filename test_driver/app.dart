@@ -10,7 +10,6 @@ import 'package:first_app/ui/pages/home/index.dart';
 import 'package:first_app/ui/pages/login/index.dart';
 import 'package:first_app/ui/theme/style.dart';
 import 'package:first_app/mock/mock_appauth.dart';
-import 'package:first_app/mock/mock_geolocator.dart';
 
 void main() async {
   AppStateModel appState;
@@ -22,11 +21,6 @@ void main() async {
       case "mockLogin":
         {
           appState.mocks.enableMock('authClient', MockFlutterAppAuth());
-        }
-        break;
-      case "mockGeo":
-        {
-          appState.mocks.enableMock('geolocator', MockGeolocator());
         }
         break;
       case "clearMocks":
