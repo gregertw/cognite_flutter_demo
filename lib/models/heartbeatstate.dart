@@ -7,6 +7,11 @@ class HeartBeatModel with ChangeNotifier {
   DatapointsModel _dataPoints = DatapointsModel();
   DatapointsFilterModel _filter = DatapointsFilterModel();
   int _activeLayer = 0;
+  int _rangeStart = 0;
+  int _rangeEnd = 0;
+
+  get rangeStart => _rangeStart;
+  get rangeEnd => _rangeEnd;
 
   HeartBeatModel(this.apiClient, this.tsId) {
     _filter.externalId = tsId;
@@ -19,8 +24,8 @@ class HeartBeatModel with ChangeNotifier {
     _filter.externalId = tsId;
   }
 
-  int get rangeStart => _filter.start;
-  int get rangeEnd => _filter.end;
+  int get filterStart => _filter.start;
+  int get filterEnd => _filter.end;
   int get resolution => _filter.resolution;
   int get activeLayer => _activeLayer;
 
@@ -55,6 +60,13 @@ class HeartBeatModel with ChangeNotifier {
       _filter.resolution = ((_filter.end - _filter.start) / 480000).round();
     } else {
       _filter.resolution = resolution;
+    }
+    // Set the initial range before layering
+    if (_rangeStart == 0) {
+      _rangeStart = _filter.start;
+    }
+    if (_rangeEnd == 0) {
+      _rangeEnd = _filter.end;
     }
   }
 

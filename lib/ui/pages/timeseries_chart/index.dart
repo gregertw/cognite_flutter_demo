@@ -26,7 +26,7 @@ class TimeSeriesChart extends StatelessWidget {
                 rangeStart + (range * args.currentZoomPosition).round();
             var newEnd = newStart + (range * args.currentZoomFactor).round();
             var newResolution =
-                ((newEnd - newStart) * args.currentZoomFactor / 460000).round();
+                ((newEnd - newStart) * args.currentZoomFactor / 230000).round();
             print("Range: $range, start: $newStart, end: $newEnd");
             hbm.setFilter(
                 start: newStart, end: newEnd, resolution: newResolution);
