@@ -5,7 +5,6 @@ import 'package:provider/provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -31,12 +30,10 @@ void main() async {
 
   FirebaseAnalytics analytics = FirebaseAnalytics();
 
-  FirebaseMessaging firebaseMessaging = FirebaseMessaging();
-
   // Get an instance so that globals are initialised
   var prefs = await SharedPreferences.getInstance();
   // Let's initialise the app state with the stored preferences
-  var appState = new AppStateModel(prefs, analytics, firebaseMessaging);
+  var appState = new AppStateModel(prefs, analytics);
 
   // Appauth does not support web yet, use the mock
   if (kIsWeb) {
