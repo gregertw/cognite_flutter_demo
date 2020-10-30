@@ -23,11 +23,11 @@ class HomePageDrawer extends StatelessWidget {
 
   void _userInfo(BuildContext context) {
     var appState = Provider.of<AppStateModel>(context, listen: false);
-    var auth0 = AuthClient(
+    var auth = AuthClient(
         authClient: Provider.of<AppStateModel>(context, listen: false)
             .mocks
             .getMock('authClient'));
-    auth0.getUserInfo(appState.userToken).then((res) {
+    auth.getUserInfo(appState.userToken).then((res) {
       if (res != null) {
         // The demo.identityserver.io/api/test API doesn't return anything
         // interesting, so we fake the setting of user info
@@ -134,20 +134,6 @@ Widget buildDrawerHeader(BuildContext context) {
                 subtitle: Text(appState.email == null
                     ? S.of(context).drawerEmptyEmail
                     : appState.email),
-              ),
-              ListTile(
-                title: Text(S.of(context).drawerButtomSheetFCMToken),
-                subtitle: Text(S.of(context).clickToView),
-                onTap: () {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) => CustomDialog(
-                      title: S.of(context).drawerButtomSheetFCMToken,
-                      description: appState.fcmToken,
-                      buttonText: S.of(context).okButton,
-                    ),
-                  );
-                },
               ),
               ListTile(
                 title: Text(S.of(context).drawerButtomSheetUserToken),

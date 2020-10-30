@@ -29,6 +29,5 @@
     "drawerLocalisationResultMsg": "Endret til ",
     "drawerButtomSheetUserToken": "Bruker token",
     "drawerButtomSheetIdToken": "Id token",
-    "drawerButtomSheetExpires": "Utløper",
-    "drawerButtomSheetFCMToken": "Firebase meldingstoken"
+    "drawerButtomSheetExpires": "Utløper"
   }

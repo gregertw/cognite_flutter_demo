@@ -24,7 +24,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "appTitle" : MessageLookupByLibrary.simpleMessage("ActingWeb First App"),
     "clickToView" : MessageLookupByLibrary.simpleMessage("Click to view..."),
     "drawerButtomSheetExpires" : MessageLookupByLibrary.simpleMessage("Expires"),
-    "drawerButtomSheetFCMToken" : MessageLookupByLibrary.simpleMessage("Firebase messaging token"),
     "drawerButtomSheetIdToken" : MessageLookupByLibrary.simpleMessage("Id token"),
     "drawerButtomSheetUserToken" : MessageLookupByLibrary.simpleMessage("User token"),
     "drawerEmail" : MessageLookupByLibrary.simpleMessage("testuser@demoserver.io"),
