@@ -39,14 +39,17 @@ class HomePage extends StatelessWidget {
             debug: false);
 
     return Scaffold(
-        key: Key("HomePage_Scaffold"),
-        appBar: AppBar(
-          title: Text(S.of(context).appTitle),
-        ),
-        backgroundColor: Theme.of(context).backgroundColor,
-        body: new ChangeNotifierProvider(
-          create: (_) => new HeartBeatModel(
-              apiClient, appState.cdfTimeSeriesId, appState.cdfNrOfDays),
+      key: Key("HomePage_Scaffold"),
+      appBar: AppBar(
+        title: Text(S.of(context).appTitle),
+      ),
+      backgroundColor: Theme.of(context).backgroundColor,
+      floatingActionButton: ZoomButtons(),
+      body: new ChangeNotifierProvider(
+        create: (_) => new HeartBeatModel(
+            apiClient, appState.cdfTimeSeriesId, appState.cdfNrOfDays),
+        child: Padding(
+          padding: EdgeInsets.fromLTRB(5, 0, 5, 50),
           child: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -56,6 +59,8 @@ class HomePage extends StatelessWidget {
             ),
           ),
         ),
-        drawer: HomePageDrawer());
+      ),
+      drawer: HomePageDrawer(),
+    );
   }
 }
