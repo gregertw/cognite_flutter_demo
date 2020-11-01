@@ -53,6 +53,14 @@ class HomePageDrawer extends StatelessWidget {
         children: <Widget>[
           buildDrawerHeader(context),
           ListTile(
+            key: Key("DrawerMenuTile_Config"),
+            title: Text(S.of(context).drawerConfig),
+            onTap: () {
+              Navigator.of(context).pop();
+              Navigator.of(context).popAndPushNamed('/ConfigPage');
+            },
+          ),
+          ListTile(
             key: Key("DrawerMenuTile_RefreshTokens"),
             title: Text(S.of(context).drawerRefreshTokens),
             onTap: () {

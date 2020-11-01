@@ -23,9 +23,11 @@ class MessageLookup extends MessageLookupByLibrary {
   static _notInlinedMessages(_) => <String, Function> {
     "appTitle" : MessageLookupByLibrary.simpleMessage("ActingWeb First App"),
     "clickToView" : MessageLookupByLibrary.simpleMessage("Click to view..."),
+    "configConfigureCDF" : MessageLookupByLibrary.simpleMessage("Configure Cognite CDF Project"),
     "drawerButtomSheetExpires" : MessageLookupByLibrary.simpleMessage("Expires"),
     "drawerButtomSheetIdToken" : MessageLookupByLibrary.simpleMessage("Id token"),
     "drawerButtomSheetUserToken" : MessageLookupByLibrary.simpleMessage("User token"),
+    "drawerConfig" : MessageLookupByLibrary.simpleMessage("Settings"),
     "drawerEmail" : MessageLookupByLibrary.simpleMessage("testuser@demoserver.io"),
     "drawerEmptyEmail" : MessageLookupByLibrary.simpleMessage(""),
     "drawerEmptyName" : MessageLookupByLibrary.simpleMessage("N/A"),

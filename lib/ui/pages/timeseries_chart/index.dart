@@ -11,8 +11,7 @@ class TimeSeriesChart extends StatelessWidget {
     return SfCartesianChart(
       // Initialize category axis
       primaryXAxis: DateTimeAxis(dateFormat: DateFormat('MMM dd HH:mm')),
-      primaryYAxis:
-          NumericAxis(anchorRangeToVisiblePoints: true, visibleMinimum: 30),
+      primaryYAxis: NumericAxis(anchorRangeToVisiblePoints: true),
       onZoomEnd: (ZoomPanArgs args) {
         if (args.axis is DateTimeAxis) {
           var hbm = Provider.of<HeartBeatModel>(context, listen: false);

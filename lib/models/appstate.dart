@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:first_app/providers/auth.dart';
 import 'package:first_app/mock/mockmap.dart';
 import 'package:first_app/generated/l10n.dart';
+import 'package:cognite_dart_sdk/cognite_dart_sdk.dart';
 
 class AppStateModel with ChangeNotifier {
   bool _authenticated = true;
@@ -17,15 +17,15 @@ class AppStateModel with ChangeNotifier {
   String _email;
   String _name;
   String _locale;
-  String _fcmToken;
   String _cdfProject;
   String _cdfTimeSeriesId;
   String _cdfApiKey;
   String _cdfURL;
+  int _cdfNrOfDays = 10;
+  StatusModel _cdfStatus;
 
   final SharedPreferences prefs;
   final FirebaseAnalytics analytics;
-  final FirebaseMessaging messaging;
   // We use a mockmap to enable and disable mock functions/classes.
   // The mock should be injected as a dependency where external dependencies need
   // to be mocked as part of testing.
@@ -39,15 +39,48 @@ class AppStateModel with ChangeNotifier {
   String get email => _email;
   String get name => _name;
   String get cdfProject => _cdfProject;
+  set cdfProject(s) {
+    _cdfProject = s;
+    prefs.setString('cdfProject', s);
+  }
+
   String get cdfApiKey => _cdfApiKey;
+  set cdfApiKey(s) {
+    _cdfApiKey = s;
+    prefs.setString('cdfApiKey', s);
+  }
+
   String get cdfURL => _cdfURL;
+  set cdfURL(s) {
+    _cdfURL = s;
+    prefs.setString('cdfURL', s);
+  }
+
   String get cdfTimeSeriesId => _cdfTimeSeriesId;
+  set cdfTimeSeriesId(s) {
+    _cdfTimeSeriesId = s;
+    prefs.setString('cdfTimeSeriesId', s);
+  }
+
+  bool get cdfLoggedIn {
+    if (_cdfStatus == null) {
+      return false;
+    }
+    return _cdfStatus.loggedIn;
+  }
+
+  int get cdfNrOfDays => _cdfNrOfDays;
+  set cdfNrOfDays(i) {
+    _cdfNrOfDays = i;
+    prefs.setInt('cdfNrOfDays', i);
+  }
+
   MockMap get mocks => _mocks;
   String get locale => _locale ?? '';
-  String get fcmToken => _fcmToken ?? '';
 
-  AppStateModel(this.prefs, [this.analytics, this.messaging]) {
+  AppStateModel(this.prefs, [this.analytics]) {
     refresh();
+    verifyCDF();
     // this will load locale from prefs
     // Note that you need to use
     // Intl.defaultLocale = appState.locale;
@@ -55,47 +88,6 @@ class AppStateModel with ChangeNotifier {
     // as the widget tree will not automatically refresh until build time
     // See lib/ui/pages/home/index.dart for an example.
     setLocale(null);
-    // Initialise Firebase messaging
-    _initMessaging();
-  }
-
-  void _initMessaging() {
-    if (messaging == null) {
-      return;
-    }
-    // On Web platform the iOS specific code is not ignored transparently
-    // as for Android
-    if (kIsWeb) {
-      // Firebase messaging does not support Flutter natively yet, so under
-      // web, the token is retrieved in a script in web/index.html
-      _fcmToken = 'only_available_in_js';
-      return;
-    }
-    messaging.requestNotificationPermissions(const IosNotificationSettings());
-    messaging.onIosSettingsRegistered
-        .listen((IosNotificationSettings settings) {
-      print("Settings registered: $settings");
-    });
-    messaging.configure(
-      onMessage: (Map<String, dynamic> message) async {
-        print("onMessage: $message");
-      },
-      onBackgroundMessage: null,
-      onLaunch: (Map<String, dynamic> message) async {
-        print("onLaunch: $message");
-      },
-      onResume: (Map<String, dynamic> message) async {
-        print("onResume: $message");
-      },
-    );
-    messaging.getToken().then((String token) {
-      assert(token != null);
-      print("Firebase messaging token: $token");
-      _fcmToken = token;
-    });
-    messaging.onTokenRefresh.listen((newToken) {
-      _fcmToken = newToken;
-    });
   }
 
   void setLocale(String loc) {
@@ -138,6 +130,24 @@ class AppStateModel with ChangeNotifier {
           parameters: params,
         );
     print('Sent analytics events: $name');
+  }
+
+  void verifyCDF() async {
+    _cdfApiKey = prefs.getString('cdfApiKey') ?? '';
+    _cdfProject = prefs.getString('cdfProject') ?? 'publicdata';
+    _cdfURL = prefs.getString('cdfURL') ?? 'https://api.cognitedata.com';
+    _cdfTimeSeriesId = prefs.getString('cdfTimeSeriesId') ?? '';
+    CDFApiClient client = _mocks.getMock('heartbeat') ??
+        CDFApiClient(
+            project: _cdfProject,
+            apikey: _cdfApiKey,
+            baseUrl: _cdfURL,
+            debug: false);
+    _cdfStatus = await client.getStatus();
+    if (_cdfStatus != null) {
+      _email = _cdfStatus.user;
+    }
+    notifyListeners();
   }
 
   void refresh() async {

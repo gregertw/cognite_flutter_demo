@@ -12,6 +12,7 @@ import 'package:first_app/generated/l10n.dart';
 import 'package:first_app/models/appstate.dart';
 import 'package:first_app/ui/pages/home/index.dart';
 import 'package:first_app/ui/pages/login/index.dart';
+import 'package:first_app/ui/pages/config/index.dart';
 import 'package:first_app/ui/theme/style.dart';
 // Import mock packages for the web version
 import 'package:first_app/mock/mock_appauth.dart';
@@ -70,6 +71,11 @@ void main() async {
             new ChangeNotifierProvider.value(
               value: appState,
               child: new LoginPage(),
+            ),
+        "/ConfigPage": (BuildContext context) =>
+            new ChangeNotifierProvider.value(
+              value: appState,
+              child: new ConfigPage(),
             ),
       },
     ));

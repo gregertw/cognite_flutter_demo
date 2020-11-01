@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:first_app/models/appstate.dart';
 import 'package:first_app/ui/pages/login/index.dart';
+import 'package:first_app/ui/pages/config/index.dart';
 import 'package:first_app/generated/l10n.dart';
 import 'package:first_app/ui/pages/timeseries_chart/index.dart';
 import 'drawer.dart';
@@ -16,6 +17,12 @@ class HomePage extends StatelessWidget {
     if (!appState.authenticated) {
       return Scaffold(
         body: LoginPage(),
+      );
+    }
+
+    if (!appState.cdfLoggedIn) {
+      return Scaffold(
+        body: ConfigPage(),
       );
     }
 
@@ -38,8 +45,8 @@ class HomePage extends StatelessWidget {
         ),
         backgroundColor: Theme.of(context).backgroundColor,
         body: new ChangeNotifierProvider(
-          create: (_) =>
-              new HeartBeatModel(apiClient, appState.cdfTimeSeriesId),
+          create: (_) => new HeartBeatModel(
+              apiClient, appState.cdfTimeSeriesId, appState.cdfNrOfDays),
           child: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,

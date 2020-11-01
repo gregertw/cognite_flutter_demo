@@ -205,6 +205,16 @@ class S {
     );
   }
 
+  /// `Settings`
+  String get drawerConfig {
+    return Intl.message(
+      'Settings',
+      name: 'drawerConfig',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Refresh tokens`
   String get drawerRefreshTokens {
     return Intl.message(
@@ -340,6 +350,16 @@ class S {
     return Intl.message(
       'Expires',
       name: 'drawerButtomSheetExpires',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Configure Cognite CDF Project`
+  String get configConfigureCDF {
+    return Intl.message(
+      'Configure Cognite CDF Project',
+      name: 'configConfigureCDF',
       desc: '',
       args: [],
     );

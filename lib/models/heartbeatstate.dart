@@ -4,6 +4,7 @@ import 'package:cognite_dart_sdk/cognite_dart_sdk.dart';
 class HeartBeatModel with ChangeNotifier {
   CDFApiClient apiClient;
   String tsId;
+  int startDays;
   DatapointsModel _dataPoints = DatapointsModel();
   DatapointsFilterModel _filter = DatapointsFilterModel();
   int _activeLayer = 0;
@@ -13,9 +14,9 @@ class HeartBeatModel with ChangeNotifier {
   get rangeStart => _rangeStart;
   get rangeEnd => _rangeEnd;
 
-  HeartBeatModel(this.apiClient, this.tsId) {
+  HeartBeatModel(this.apiClient, this.tsId, this.startDays) {
     _filter.externalId = tsId;
-    setFilter();
+    setFilter(nrOfDays: startDays);
     loadTimeSeries();
   }
 
@@ -29,12 +30,12 @@ class HeartBeatModel with ChangeNotifier {
   int get resolution => _filter.resolution;
   int get activeLayer => _activeLayer;
 
-  // Defaults include min, max, average, and count for the last 10 days
-  // with 1 hour granularity and a limit of 240 resulting datapoints
+  // Defaults include min, max, average, and count for the last nrOfDays days
   void setFilter(
       {int start,
       int end,
       int resolution,
+      int nrOfDays,
       List<String> aggregates,
       bool includeOutsidePoints: false}) {
     if (end == null) {
@@ -43,13 +44,16 @@ class HeartBeatModel with ChangeNotifier {
       _filter.end = end;
     }
     if (start == null) {
-      // 10 days
-      _filter.start = _filter.end - (1000 * 60 * 60 * 24 * 10);
+      if (nrOfDays == null || nrOfDays < 1) {
+        nrOfDays = 10;
+      }
+      // nrOfDays days
+      _filter.start = _filter.end - (1000 * 60 * 60 * 24 * nrOfDays);
     } else {
       _filter.start = start;
     }
     if (_filter.start >= _filter.end) {
-      _filter.end = _filter.start + 1;
+      _filter.end = _filter.start + 1000;
     }
     if (aggregates == null) {
       _filter.aggregates = ['min', 'max', 'average', 'count'];
