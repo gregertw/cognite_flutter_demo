@@ -364,6 +364,106 @@ class S {
       args: [],
     );
   }
+
+  /// `Enter project`
+  String get configProject {
+    return Intl.message(
+      'Enter project',
+      name: 'configProject',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Project cannot be empty`
+  String get configProjectEmpty {
+    return Intl.message(
+      'Project cannot be empty',
+      name: 'configProjectEmpty',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter base URL`
+  String get configBaseURL {
+    return Intl.message(
+      'Enter base URL',
+      name: 'configBaseURL',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `URL cannot be empty`
+  String get configBaseURLEmpty {
+    return Intl.message(
+      'URL cannot be empty',
+      name: 'configBaseURLEmpty',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter API key`
+  String get configAPIkey {
+    return Intl.message(
+      'Enter API key',
+      name: 'configAPIkey',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `API key cannot be empty`
+  String get configAPIkeyEmpty {
+    return Intl.message(
+      'API key cannot be empty',
+      name: 'configAPIkeyEmpty',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter external timeseries id`
+  String get configTimeseriesId {
+    return Intl.message(
+      'Enter external timeseries id',
+      name: 'configTimeseriesId',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Timeseries id cannot be empty`
+  String get configTimeseriesIdEmpty {
+    return Intl.message(
+      'Timeseries id cannot be empty',
+      name: 'configTimeseriesIdEmpty',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter number of days in initial range`
+  String get configNrOfDays {
+    return Intl.message(
+      'Enter number of days in initial range',
+      name: 'configNrOfDays',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Not able to access CDF project`
+  String get configProjectFailed {
+    return Intl.message(
+      'Not able to access CDF project',
+      name: 'configProjectFailed',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

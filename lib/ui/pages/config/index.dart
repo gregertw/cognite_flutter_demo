@@ -41,7 +41,7 @@ class ConfigPage extends StatelessWidget {
                       cursorColor: Theme.of(context).accentColor,
                       initialValue: appState.cdfProject,
                       decoration: new InputDecoration(
-                        labelText: "Enter project",
+                        labelText: S.of(context).configProject,
                         border: new OutlineInputBorder(
                           borderRadius: new BorderRadius.circular(25.0),
                           borderSide: new BorderSide(
@@ -53,7 +53,7 @@ class ConfigPage extends StatelessWidget {
                       },
                       validator: (val) {
                         if (val.length == 0) {
-                          return "Project cannot be empty";
+                          return S.of(context).configProjectEmpty;
                         } else {
                           return null;
                         }
@@ -70,7 +70,7 @@ class ConfigPage extends StatelessWidget {
                       cursorColor: Theme.of(context).accentColor,
                       initialValue: appState.cdfURL,
                       decoration: new InputDecoration(
-                        labelText: "Enter base URL",
+                        labelText: S.of(context).configBaseURL,
                         border: new OutlineInputBorder(
                           borderRadius: new BorderRadius.circular(25.0),
                           borderSide: new BorderSide(
@@ -82,7 +82,7 @@ class ConfigPage extends StatelessWidget {
                       },
                       validator: (val) {
                         if (val.length == 0) {
-                          return "URL cannot be empty";
+                          return S.of(context).configBaseURLEmpty;
                         } else {
                           return null;
                         }
@@ -99,7 +99,7 @@ class ConfigPage extends StatelessWidget {
                       cursorColor: Theme.of(context).accentColor,
                       initialValue: appState.cdfApiKey,
                       decoration: new InputDecoration(
-                        labelText: "Enter API key",
+                        labelText: S.of(context).configAPIkey,
                         border: new OutlineInputBorder(
                           borderRadius: new BorderRadius.circular(25.0),
                           borderSide: new BorderSide(
@@ -111,7 +111,7 @@ class ConfigPage extends StatelessWidget {
                       },
                       validator: (val) {
                         if (val.length == 0) {
-                          return "API key cannot be empty";
+                          return S.of(context).configAPIkeyEmpty;
                         } else {
                           return null;
                         }
@@ -128,7 +128,7 @@ class ConfigPage extends StatelessWidget {
                       cursorColor: Theme.of(context).accentColor,
                       initialValue: appState.cdfTimeSeriesId,
                       decoration: new InputDecoration(
-                        labelText: "Enter external timeseries id",
+                        labelText: S.of(context).configTimeseriesId,
                         border: new OutlineInputBorder(
                           borderRadius: new BorderRadius.circular(25.0),
                           borderSide: new BorderSide(
@@ -141,7 +141,7 @@ class ConfigPage extends StatelessWidget {
                       },
                       validator: (val) {
                         if (val.length == 0) {
-                          return "Timeseries id cannot be empty";
+                          return S.of(context).configTimeseriesIdEmpty;
                         } else {
                           return null;
                         }
@@ -157,7 +157,7 @@ class ConfigPage extends StatelessWidget {
                       cursorColor: Theme.of(context).accentColor,
                       initialValue: appState.cdfNrOfDays.toString(),
                       decoration: new InputDecoration(
-                        labelText: "Enter number of days in initial range",
+                        labelText: S.of(context).configNrOfDays,
                         border: new OutlineInputBorder(
                           borderRadius: new BorderRadius.circular(25.0),
                           borderSide: new BorderSide(
@@ -186,10 +186,11 @@ class ConfigPage extends StatelessWidget {
                           Navigator.of(context).popAndPushNamed('/HomePage');
                         } else {
                           Scaffold.of(context).showSnackBar(SnackBar(
-                              content: Text('Not able to access CDF project')));
+                              content:
+                                  Text(S.of(context).configProjectFailed)));
                         }
                       },
-                      child: Text('Ok'),
+                      child: Text(S.of(context).okButton),
                     ),
                   ),
                 ]),

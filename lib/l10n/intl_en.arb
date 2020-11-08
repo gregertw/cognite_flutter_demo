@@ -17,7 +17,6 @@
   "drawerEmptyName": "N/A",
   "drawerEmptyEmail": "",
   "drawerConfig": "Settings",
-
   "drawerRefreshTokens": "Refresh tokens",
   "drawerRefreshTokensResultTitle": "Tokens refreshed",
   "drawerRefreshTokensResultMsg": "See user details for the new tokens.",
@@ -32,5 +31,15 @@
   "drawerButtomSheetUserToken": "User token",
   "drawerButtomSheetIdToken": "Id token",
   "drawerButtomSheetExpires": "Expires",
-  "configConfigureCDF": "Configure Cognite CDF Project"
+  "configConfigureCDF": "Configure Cognite CDF Project",
+  "configProject": "Enter project",
+  "configProjectEmpty": "Project cannot be empty",
+  "configBaseURL": "Enter base URL",
+  "configBaseURLEmpty": "URL cannot be empty",
+  "configAPIkey": "Enter API key",
+  "configAPIkeyEmpty": "API key cannot be empty",
+  "configTimeseriesId": "Enter external timeseries id",
+  "configTimeseriesIdEmpty":"Timeseries id cannot be empty",
+  "configNrOfDays": "Enter number of days in initial range",
+  "configProjectFailed": "Not able to access CDF project"
 }

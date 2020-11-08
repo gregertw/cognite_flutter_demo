@@ -10,11 +10,14 @@ class HeartBeatModel with ChangeNotifier {
   int _activeLayer = 0;
   int _rangeStart = 0;
   int _rangeEnd = 0;
+  bool _loading;
 
   get rangeStart => _rangeStart;
   get rangeEnd => _rangeEnd;
+  get loading => _loading;
 
   HeartBeatModel(this.apiClient, this.tsId, this.startDays) {
+    _loading = false;
     _filter.externalId = tsId;
     setFilter(nrOfDays: startDays);
     loadTimeSeries();
@@ -56,7 +59,18 @@ class HeartBeatModel with ChangeNotifier {
       _filter.end = _filter.start + 1000;
     }
     if (aggregates == null) {
-      _filter.aggregates = ['min', 'max', 'average', 'count'];
+      _filter.aggregates = [
+        "average",
+        "max",
+        "min",
+        "count",
+        "sum",
+        "interpolation",
+        "stepInterpolation",
+        "totalVariation",
+        "continuousVariance",
+        "discreteVariance"
+      ];
     } else {
       _filter.aggregates = aggregates;
     }
@@ -81,23 +95,32 @@ class HeartBeatModel with ChangeNotifier {
     return [];
   }
 
-  void zoomOut() {
+  bool zoomOut() {
     if (_activeLayer > 1) {
       _dataPoints.popLayer();
       _activeLayer -= 1;
       notifyListeners();
+      return true;
     }
+    return false;
   }
 
   void loadTimeSeries() {
     print(_filter.toString());
+    if (_loading) {
+      print("Already loading new timeseries, skipping...");
+      return;
+    }
+    _loading = true;
     this.apiClient.getDatapoints(_filter).then((res) {
       if (res != null && res.datapoints.isNotEmpty) {
         print("New datapoints: ${res.datapointsLength}");
         this._dataPoints.addDatapoints(res);
         _activeLayer += 1;
+        _loading = false;
         notifyListeners();
       }
     });
+    notifyListeners();
   }
 }

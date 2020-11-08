@@ -31,5 +31,15 @@
   "drawerButtomSheetUserToken": "Bruker token",
   "drawerButtomSheetIdToken": "Id token",
   "drawerButtomSheetExpires": "Utløper",
-  "configConfigureCDF": "Konfigurér Cognite CDF prosjekt"
+  "configConfigureCDF": "Konfigurér Cognite CDF prosjekt",
+  "configProject": "Sett prosjektnavn",
+  "configProjectEmpty": "Prosjektnavn kan ikke være tom",
+  "configBaseURL": "Sett base-URL",
+  "configBaseURLEmpty": "Base-URL kan ikke være tom",
+  "configAPIkey": "Sett API nøkkel",
+  "configAPIkeyEmpty": "API nøkkel kan ikke være tom",
+  "configTimeseriesId": "Sett ekstern tidsseries-id",
+  "configTimeseriesIdEmpty":"Tidsserie-id kan ikke være tom",
+  "configNrOfDays": "Sett antall dager i første diagram",
+  "configProjectFailed": "Tilgang til CDF prosjektet feilet"
 }
