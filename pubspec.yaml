@@ -31,7 +31,10 @@ dependencies:
   flushbar: ^1.10.4
   syncfusion_flutter_charts:
     path: ../flutter-widgets/packages/syncfusion_flutter_charts
-
+  syncfusion_flutter_core:
+    path: ../flutter-widgets/packages/syncfusion_flutter_core
+  syncfusion_flutter_sliders:
+    path: ../flutter-widgets/packages/syncfusion_flutter_sliders
 dev_dependencies:
   flutter_test:
     sdk: flutter

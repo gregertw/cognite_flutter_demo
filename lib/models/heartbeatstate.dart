@@ -95,6 +95,13 @@ class HeartBeatModel with ChangeNotifier {
     return [];
   }
 
+  List<DatapointModel> get timeSeriesFullRangeDataPoints {
+    if (_dataPoints != null) {
+      return _dataPoints.layer(layer: 1);
+    }
+    return [];
+  }
+
   bool zoomOut() {
     if (_activeLayer > 1) {
       _dataPoints.popLayer();
