@@ -10,13 +10,14 @@ import 'package:first_app/ui/pages/home/index.dart';
 import 'package:first_app/ui/pages/login/index.dart';
 import 'package:first_app/ui/theme/style.dart';
 import 'package:first_app/mock/mock_appauth.dart';
+import 'package:first_app/globals.dart';
 
 void main() async {
   AppStateModel appState;
 
   // ignore: missing_return
   Future<String> dataHandler(String msg) async {
-    print("Got driver message: $msg");
+    log.d("Got driver message: $msg");
     switch (msg) {
       case "mockLogin":
         {

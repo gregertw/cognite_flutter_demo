@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:flutter_appauth/flutter_appauth.dart';
 import 'package:http/http.dart' as http;
+import 'package:first_app/globals.dart';
 
 class AuthClient {
   final String clientId, redirectUrl, authzEndpoint, tokenEndpoint;
@@ -57,7 +58,7 @@ class AuthClient {
 
       return json.decode(_userInfo);
     } catch (e) {
-      print('Error: $e');
+      log.e('Error: $e');
       return null;
     }
   }
@@ -80,7 +81,7 @@ class AuthClient {
         'additional_params': _result.tokenAdditionalParameters,
       });
     } catch (e) {
-      print('Error: $e');
+      log.e('Error: $e');
       return null;
     }
   }
@@ -118,7 +119,7 @@ class AuthClient {
         });
       }
     } catch (e) {
-      print('Error: $e');
+      log.e('Error: $e');
     }
     return Map.from({});
   }

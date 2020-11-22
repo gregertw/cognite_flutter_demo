@@ -16,6 +16,7 @@ import 'package:first_app/ui/pages/config/index.dart';
 import 'package:first_app/ui/theme/style.dart';
 // Import mock packages for the web version
 import 'package:first_app/mock/mock_appauth.dart';
+import 'package:first_app/globals.dart';
 
 void main() async {
   // A breaking change in the platform messaging, as of Flutter 1.12.13+hotfix.5,
@@ -38,6 +39,7 @@ void main() async {
 
   // Appauth does not support web yet, use the mock
   if (kIsWeb) {
+    log.i('Running in web mode...');
     appState.mocks.enableMock('authClient', MockFlutterAppAuth());
   }
 

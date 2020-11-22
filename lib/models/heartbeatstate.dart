@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:cognite_dart_sdk/cognite_dart_sdk.dart';
+import 'package:cognite_cdf_sdk/cognite_cdf_sdk.dart';
+import 'package:first_app/globals.dart';
 
 class HeartBeatModel with ChangeNotifier {
   CDFApiClient apiClient;
@@ -113,21 +114,20 @@ class HeartBeatModel with ChangeNotifier {
   }
 
   void loadTimeSeries() {
-    print(_filter.toString());
+    log.d(_filter.toString());
     if (_loading) {
-      print("Already loading new timeseries, skipping...");
+      log.d("Already loading new timeseries, skipping...");
       return;
     }
     _loading = true;
-    this.apiClient.getDatapoints(_filter).then((res) {
+    TimeSeriesAPI(apiClient).getDatapoints(_filter).then((res) {
       if (res != null && res.datapoints.isNotEmpty) {
-        print("New datapoints: ${res.datapointsLength}");
+        log.d("New datapoints: ${res.datapointsLength}");
         this._dataPoints.addDatapoints(res);
         _activeLayer += 1;
         _loading = false;
         notifyListeners();
       }
     });
-    notifyListeners();
   }
 }

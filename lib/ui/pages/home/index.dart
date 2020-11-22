@@ -1,4 +1,4 @@
-import 'package:cognite_dart_sdk/cognite_dart_sdk.dart';
+import 'package:cognite_cdf_sdk/cognite_cdf_sdk.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -32,8 +32,7 @@ class HomePage extends StatelessWidget {
         CDFApiClient(
             project: appState.cdfProject,
             apikey: appState.cdfApiKey,
-            baseUrl: appState.cdfURL,
-            debug: false);
+            baseUrl: appState.cdfURL);
 
     return TimeSeriesHome(apiClient: apiClient, appState: appState);
   }

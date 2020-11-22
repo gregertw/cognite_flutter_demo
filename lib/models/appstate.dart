@@ -6,7 +6,9 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:first_app/providers/auth.dart';
 import 'package:first_app/mock/mockmap.dart';
 import 'package:first_app/generated/l10n.dart';
-import 'package:cognite_dart_sdk/cognite_dart_sdk.dart';
+import 'package:cognite_cdf_sdk/cognite_cdf_sdk.dart';
+
+import 'package:first_app/globals.dart';
 
 class AppStateModel with ChangeNotifier {
   bool _authenticated = true;
@@ -129,7 +131,7 @@ class AppStateModel with ChangeNotifier {
           name: name,
           parameters: params,
         );
-    print('Sent analytics events: $name');
+    log.d('Sent analytics events: $name');
   }
 
   void verifyCDF() async {
@@ -139,10 +141,7 @@ class AppStateModel with ChangeNotifier {
     _cdfTimeSeriesId = prefs.getString('cdfTimeSeriesId') ?? '';
     CDFApiClient client = _mocks.getMock('heartbeat') ??
         CDFApiClient(
-            project: _cdfProject,
-            apikey: _cdfApiKey,
-            baseUrl: _cdfURL,
-            debug: false);
+            project: _cdfProject, apikey: _cdfApiKey, baseUrl: _cdfURL);
     _cdfStatus = await client.getStatus();
     if (_cdfStatus != null) {
       _email = _cdfStatus.user;

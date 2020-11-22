@@ -2,106 +2,43 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:syncfusion_flutter_sliders/sliders.dart';
-import 'package:syncfusion_flutter_core/core.dart';
 import 'package:first_app/models/heartbeatstate.dart';
 import 'package:first_app/models/appstate.dart';
-import 'package:cognite_dart_sdk/cognite_dart_sdk.dart';
+import 'package:first_app/models/chartstate.dart';
+import 'package:cognite_cdf_sdk/cognite_cdf_sdk.dart';
 import 'package:first_app/generated/l10n.dart';
 import 'package:intl/intl.dart';
 import 'package:first_app/ui/pages/home/drawer.dart';
 
-class ChartFeatureModel with ChangeNotifier {
-  // Chart functions
-  bool showMarker;
-  bool showToolTip;
-  String _dateAxisFormat;
-  int startRange = 0;
-  int endRange = 0;
-  int resolution;
-  get startRangeDate => DateTime.fromMillisecondsSinceEpoch(startRange);
-  get endRangeDate => DateTime.fromMillisecondsSinceEpoch(endRange);
-  get dateAxisFormat => _dateAxisFormat;
+class TimeSeriesHome extends StatelessWidget {
+  const TimeSeriesHome({
+    Key key,
+    @required this.apiClient,
+    @required this.appState,
+  }) : super(key: key);
 
-  RangeController _rangeController;
-
-  RangeController get rangeController => _rangeController;
-
-  ChartFeatureModel() {
-    showMarker = false;
-    showToolTip = true;
-    _dateAxisFormat = 'MMM dd HH:mm';
-  }
-
-// Will update the rangecontroller to the current start and stop
-  void applyRangeController() {
-    _rangeController.start = startRangeDate;
-    _rangeController.end = endRangeDate;
-    notifyListeners();
-  }
-
-  // Set to empty string to reset to dynamic setting
-  void setDateAxisFormat({String format}) {
-    if (format != null) {
-      _dateAxisFormat = format;
-      return;
-    }
-    if (_dateAxisFormat != 'HH:mm:ss' && _dateAxisFormat != 'MMM dd HH:mm') {
-      // Don't set dynamically as it has been explicitly set
-      return;
-    }
-    if ((endRange - startRange) <= (1000 * 60 * 60 * 24)) {
-      _dateAxisFormat = 'HH:mm:ss';
-    } else {
-      _dateAxisFormat = 'MMM dd HH:mm';
-    }
-  }
-
-  void initRange(int start, int end) {
-    if (startRange == 0 || endRange == 0) {
-      setNewRange(start: start, end: end);
-    }
-  }
-
-  void setNewRange({int start, int end, double zoom: 0.0}) {
-    if (zoom != 0.0) {
-      var range = (endRange - startRange) / 2;
-      startRange = startRange + (range * zoom).round();
-      endRange = endRange - (range * zoom).round();
-    } else {
-      startRange = start;
-      endRange = end;
-    }
-    if (rangeController == null) {
-      _rangeController =
-          RangeController(start: startRangeDate, end: endRangeDate);
-    }
-    resolution = ((endRange - startRange) / 230000).round();
-    setDateAxisFormat();
-  }
-
-  // Helper to set a range with DateTime values instead of millisecondsSinceEpoch
-  void setNewDateRange(DateTime start, DateTime end) {
-    DateTime startDate = start;
-    DateTime endDate = end;
-    setNewRange(
-        start: startDate.millisecondsSinceEpoch,
-        end: endDate.millisecondsSinceEpoch);
-  }
+  final Object apiClient;
+  final AppStateModel appState;
 
   @override
-  void dispose() {
-    rangeController.dispose();
-    super.dispose();
-  }
-
-  toggleMarker() {
-    showMarker = !showMarker;
-    notifyListeners();
-  }
-
-  toggleToolTip() {
-    showToolTip = !showToolTip;
-    notifyListeners();
+  Widget build(BuildContext context) {
+    return new MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+            create: (_) => HeartBeatModel(
+                apiClient, appState.cdfTimeSeriesId, appState.cdfNrOfDays)),
+        ChangeNotifierProvider(create: (_) => ChartFeatureModel())
+      ],
+      child: Scaffold(
+        key: Key("HomePage_Scaffold"),
+        appBar: AppBar(
+          title: Text(S.of(context).appTitle),
+        ),
+        backgroundColor: Theme.of(context).backgroundColor,
+        body: TimeSeriesChart(),
+        drawer: HomePageDrawer(),
+      ),
+    );
   }
 }
 
@@ -236,38 +173,6 @@ class CheckBoxButtons extends StatelessWidget {
             ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class TimeSeriesHome extends StatelessWidget {
-  const TimeSeriesHome({
-    Key key,
-    @required this.apiClient,
-    @required this.appState,
-  }) : super(key: key);
-
-  final Object apiClient;
-  final AppStateModel appState;
-
-  @override
-  Widget build(BuildContext context) {
-    return new MultiProvider(
-      providers: [
-        ChangeNotifierProvider(
-            create: (_) => HeartBeatModel(
-                apiClient, appState.cdfTimeSeriesId, appState.cdfNrOfDays)),
-        ChangeNotifierProvider(create: (_) => ChartFeatureModel())
-      ],
-      child: Scaffold(
-        key: Key("HomePage_Scaffold"),
-        appBar: AppBar(
-          title: Text(S.of(context).appTitle),
-        ),
-        backgroundColor: Theme.of(context).backgroundColor,
-        body: TimeSeriesChart(),
-        drawer: HomePageDrawer(),
       ),
     );
   }
