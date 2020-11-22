@@ -1,13 +1,6 @@
 name: first_app
 description: An application that manages and receives alerts from ActingWeb actors
-
-# The following defines the version and build number for your application.
-# A version number is three numbers separated by dots, like 1.2.43
-# followed by an optional build number separated by a +.
-# Both the version and the builder number may be overridden in flutter
-# build by specifying --build-name and --build-number, respectively.
-# Read more about versioning at semver.org.
-version: 1.3.3+7
+version: 0.1.2+dev1
 
 environment:
   sdk: ">2.1.0 <3.0.0"
@@ -21,14 +14,13 @@ dependencies:
   cupertino_icons: ^1.0.0
   meta: ^1.1.8
   provider: ^4.3.2+2
+  logger: ^0.9.4
   shared_preferences: ^0.5.12
-  google_maps_flutter: ^0.5.33 # Locking down to be <1.0.0 with Flutter 1.22 requirement
-  geolocator: ^5.3.1  # Latest with breaking changes: ^6.0.0+4
-  # geocoding: ^1.0.4+1 # Needs to be used for geolocator > 6.0.0
   firebase_analytics: ^6.0.1
   firebase_crashlytics: ^0.2.1
-  firebase_messaging: ^7.0.2
   flushbar: ^1.10.4
+  cognite_cdf_sdk:
+    path: ../cognite_cdf_sdk/
   syncfusion_flutter_charts:
     path: ../flutter-widgets/packages/syncfusion_flutter_charts
   syncfusion_flutter_core:
@@ -45,8 +37,6 @@ dev_dependencies:
   intl_translation: ^0.17.10+1
   convert: any
   mockito: ^4.1.1 #Lock down as 4.1.2 seems to rely on a null-safe lib
-  cognite_dart_sdk:
-    path: ../cognite-dart-sdk/
     
 
 flutter_icons:
