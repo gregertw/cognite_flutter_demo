@@ -7,7 +7,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:cognite_cdf_demo/generated/l10n.dart';
 import 'package:cognite_cdf_demo/models/appstate.dart';
 import 'package:cognite_cdf_demo/ui/pages/home/index.dart';
-import 'package:cognite_cdf_demo/ui/pages/login/index.dart';
 import 'package:cognite_cdf_demo/ui/theme/style.dart';
 import 'package:cognite_cdf_demo/mock/mock_appauth.dart';
 import 'package:cognite_cdf_demo/globals.dart';
@@ -52,30 +51,25 @@ void main() async {
 
   runApp(
     new MaterialApp(
-      onGenerateTitle: (context) => S.of(context).appTitle,
-      localizationsDelegates: [
-        S.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      supportedLocales: S.delegate.supportedLocales,
-      home: new ChangeNotifierProvider.value(
-        value: appState,
-        child: new HomePage(),
-      ),
-      theme: appTheme,
-      routes: <String, WidgetBuilder>{
-        "/HomePage": (BuildContext context) => new ChangeNotifierProvider.value(
-              value: appState,
-              child: new HomePage(),
-            ),
-        "/LoginPage": (BuildContext context) =>
-            new ChangeNotifierProvider.value(
-              value: appState,
-              child: new LoginPage(),
-            ),
-      },
-    ),
+        onGenerateTitle: (context) => S.of(context).appTitle,
+        localizationsDelegates: [
+          S.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: S.delegate.supportedLocales,
+        home: new ChangeNotifierProvider.value(
+          value: appState,
+          child: new HomePage(),
+        ),
+        theme: appTheme,
+        routes: <String, WidgetBuilder>{
+          "/HomePage": (BuildContext context) =>
+              new ChangeNotifierProvider.value(
+                value: appState,
+                child: new HomePage(),
+              ),
+        }),
   );
 }

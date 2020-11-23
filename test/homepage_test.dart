@@ -8,7 +8,6 @@ import 'package:cognite_cdf_demo/generated/l10n.dart';
 import 'package:cognite_cdf_demo/ui/theme/style.dart';
 import 'package:cognite_cdf_demo/ui/pages/home/index.dart';
 import 'package:cognite_cdf_demo/ui/pages/home/drawer.dart';
-import 'package:cognite_cdf_demo/ui/pages/login/index.dart';
 
 // Helper function to encapsulate code needed to instantiate the HomePage() widget
 dynamic initWidget(WidgetTester tester, AppStateModel state) {
@@ -31,27 +30,15 @@ dynamic initWidget(WidgetTester tester, AppStateModel state) {
 }
 
 void main() async {
-  AppStateModel loginState, logoutState;
+  AppStateModel loginState;
   // We need mock initial values for SharedPreferences
   SharedPreferences.setMockInitialValues({});
   var prefs = await SharedPreferences.getInstance();
   // We have one logged in state and one logged out, to be used with various tests
   loginState = AppStateModel(prefs);
-  logoutState = AppStateModel(prefs);
-
-  // Ensure we have a logged in state before testing HomePage as LoginPage() is rendered if
-  // we are not authenticated
-  // The state logic is based on receiving the access token, but does not validate the format
-  loginState.logIn({'access_token': '123'});
 
   test('logged in state', () {
     expect(loginState.authenticated, true);
-  });
-
-  testWidgets('logged-out homepage widget', (WidgetTester tester) async {
-    await initWidget(tester, logoutState);
-    await tester.pump();
-    expect(find.byType(LoginPage), findsOneWidget);
   });
 
   testWidgets('logged-in homepage widget', (WidgetTester tester) async {

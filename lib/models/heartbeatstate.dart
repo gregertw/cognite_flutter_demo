@@ -120,14 +120,18 @@ class HeartBeatModel with ChangeNotifier {
       return;
     }
     _loading = true;
-    TimeSeriesAPI(apiClient).getDatapoints(_filter).then((res) {
-      if (res != null && res.datapoints.isNotEmpty) {
-        log.d("New datapoints: ${res.datapointsLength}");
-        this._dataPoints.addDatapoints(res);
-        _activeLayer += 1;
-        _loading = false;
-        notifyListeners();
-      }
-    });
+    try {
+      TimeSeriesAPI(apiClient).getDatapoints(_filter).then((res) {
+        if (res != null && res.datapoints.isNotEmpty) {
+          log.d("New datapoints: ${res.datapointsLength}");
+          this._dataPoints.addDatapoints(res);
+          _activeLayer += 1;
+          _loading = false;
+          notifyListeners();
+        }
+      });
+    } catch (e) {
+      _loading = false;
+    }
   }
 }

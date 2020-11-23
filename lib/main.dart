@@ -11,7 +11,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:cognite_cdf_demo/generated/l10n.dart';
 import 'package:cognite_cdf_demo/models/appstate.dart';
 import 'package:cognite_cdf_demo/ui/pages/home/index.dart';
-import 'package:cognite_cdf_demo/ui/pages/login/index.dart';
 import 'package:cognite_cdf_demo/ui/pages/config/index.dart';
 import 'package:cognite_cdf_demo/ui/theme/style.dart';
 // Import mock packages for the web version
@@ -68,11 +67,6 @@ void main() async {
         "/HomePage": (BuildContext context) => new ChangeNotifierProvider.value(
               value: appState,
               child: new HomePage(),
-            ),
-        "/LoginPage": (BuildContext context) =>
-            new ChangeNotifierProvider.value(
-              value: appState,
-              child: new LoginPage(),
             ),
         "/ConfigPage": (BuildContext context) =>
             new ChangeNotifierProvider.value(

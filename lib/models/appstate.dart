@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:cognite_cdf_demo/providers/auth.dart';
 import 'package:cognite_cdf_demo/mock/mockmap.dart';
 import 'package:cognite_cdf_demo/generated/l10n.dart';
 import 'package:cognite_cdf_sdk/cognite_cdf_sdk.dart';
@@ -23,6 +22,8 @@ class AppStateModel with ChangeNotifier {
   String _cdfTimeSeriesId;
   String _cdfApiKey;
   String _cdfURL;
+  int _cdfProjectId;
+  int _cdfApiKeyId;
   int _cdfNrOfDays = 10;
   StatusModel _cdfStatus;
 
@@ -41,6 +42,8 @@ class AppStateModel with ChangeNotifier {
   String get email => _email;
   String get name => _name;
   String get cdfProject => _cdfProject;
+  int get cdfProjectId => _cdfProjectId;
+  int get cdfApiKeyId => _cdfApiKeyId;
   set cdfProject(s) {
     _cdfProject = s;
     prefs.setString('cdfProject', s);
@@ -81,7 +84,6 @@ class AppStateModel with ChangeNotifier {
   String get locale => _locale ?? '';
 
   AppStateModel(this.prefs, [this.analytics]) {
-    refresh();
     verifyCDF();
     // this will load locale from prefs
     // Note that you need to use
@@ -142,42 +144,18 @@ class AppStateModel with ChangeNotifier {
     CDFApiClient client = _mocks.getMock('heartbeat') ??
         CDFApiClient(
             project: _cdfProject, apikey: _cdfApiKey, baseUrl: _cdfURL);
-    _cdfStatus = await client.getStatus();
+    try {
+      _cdfStatus = await client.getStatus();
+    } catch (e) {
+      _cdfStatus = null;
+    }
     if (_cdfStatus != null) {
-      _email = _cdfStatus.user;
+      setUserInfo(Map.from({'email': _cdfStatus.user, 'name': 'N/A'}));
+      _cdfApiKeyId = _cdfStatus.apiKeyId;
+      _cdfProjectId = _cdfStatus.projectId;
     }
     sendAnalyticsEvent(
         'login', {'project': _cdfProject, 'timeseries': _cdfTimeSeriesId});
-    notifyListeners();
-  }
-
-  void refresh() async {
-    // Check if the stored token has expired
-    var expiresStr = prefs.getString('expires');
-    if (expiresStr != null) {
-      _expires = DateTime.parse(expiresStr);
-      var remaining = _expires.difference(DateTime.now());
-      if (remaining.inSeconds < 3600) {
-        var auth = await AuthClient(authClient: _mocks.getMock('authClient'))
-            .refreshToken(prefs.getString('refreshToken'));
-        if (auth != null && auth.containsKey('access_token')) {
-          logIn(auth);
-        } else {
-          prefs.remove('userToken');
-          prefs.remove('expires');
-          _authenticated = false;
-          _userToken = null;
-          _expires = null;
-        }
-        notifyListeners();
-      }
-    }
-    _userToken = prefs.getString('userToken');
-    if (_userToken != null) {
-      _authenticated = true;
-    }
-    _idToken = prefs.getString('idToken');
-    _refreshToken = prefs.getString('refreshToken');
     notifyListeners();
   }
 
@@ -196,31 +174,6 @@ class AppStateModel with ChangeNotifier {
     notifyListeners();
   }
 
-  void logIn(data) {
-    if (data == null) {
-      return;
-    }
-    if (data.containsKey('access_token')) {
-      prefs.setString('userToken', data['access_token']);
-      _userToken = data['access_token'];
-      _authenticated = true;
-    }
-    if (data.containsKey('refresh_token')) {
-      prefs.setString('refreshToken', data['refresh_token']);
-      _refreshToken = data['refresh_token'];
-    }
-    if (data.containsKey('id_token')) {
-      prefs.setString('idToken', data['id_token']);
-      _idToken = data['id_token'];
-    }
-    if (data.containsKey('expires')) {
-      _expires = data['expires'];
-      prefs.setString('expires', _expires.toIso8601String());
-    }
-    sendAnalyticsEvent('login', null);
-    notifyListeners();
-  }
-
   void logOut() {
     /* Here you can also close the sessions with the AuthClient
        (if supported). closeSessions() is not implemented here as it
@@ -232,6 +185,12 @@ class AppStateModel with ChangeNotifier {
     _idToken = null;
     _refreshToken = null;
     _expires = null;
+    _cdfStatus = null;
+    _cdfApiKey = null;
+    _cdfApiKeyId = null;
+    _cdfProject = null;
+    _cdfProjectId = null;
+    _cdfTimeSeriesId = null;
     prefs.clear();
     notifyListeners();
   }

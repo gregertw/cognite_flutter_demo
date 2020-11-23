@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:cognite_cdf_demo/models/appstate.dart';
-import 'package:cognite_cdf_demo/ui/pages/login/index.dart';
 import 'package:cognite_cdf_demo/ui/pages/config/index.dart';
 import 'package:cognite_cdf_demo/ui/pages/timeseries_chart/index.dart';
 
@@ -11,11 +10,6 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var appState = Provider.of<AppStateModel>(context);
-    if (!appState.authenticated) {
-      return Scaffold(
-        body: LoginPage(),
-      );
-    }
 
     if (!appState.cdfLoggedIn) {
       return Scaffold(

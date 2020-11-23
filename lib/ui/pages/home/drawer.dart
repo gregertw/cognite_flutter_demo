@@ -3,8 +3,6 @@ import 'package:provider/provider.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:cognite_cdf_demo/models/appstate.dart';
 import 'package:cognite_cdf_demo/generated/l10n.dart';
-import 'package:cognite_cdf_demo/providers/auth.dart';
-import 'package:cognite_cdf_demo/ui/widgets/custom_dialog.dart';
 
 class HomePageDrawer extends StatelessWidget {
   void _showFlushbar(BuildContext context, String title, String msg) {
@@ -21,30 +19,6 @@ class HomePageDrawer extends StatelessWidget {
     )..show(context);
   }
 
-  void _userInfo(BuildContext context) {
-    var appState = Provider.of<AppStateModel>(context, listen: false);
-    var auth = AuthClient(
-        authClient: Provider.of<AppStateModel>(context, listen: false)
-            .mocks
-            .getMock('authClient'));
-    auth.getUserInfo(appState.userToken).then((res) {
-      if (res != null) {
-        // The demo.identityserver.io/api/test API doesn't return anything
-        // interesting, so we fake the setting of user info
-        Provider.of<AppStateModel>(context, listen: false).setUserInfo(
-            Map.from({
-          'email': S.of(context).drawerEmail,
-          'name': S.of(context).drawerUser
-        }));
-        _showFlushbar(context, S.of(context).drawerGetUserInfoResultTitle,
-            S.of(context).drawerGetUserInfoResultMsg);
-      } else {
-        _showFlushbar(context, S.of(context).drawerGetUserInfoFailedTitle,
-            S.of(context).drawerGetUserInfoFailedMsg);
-      }
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     var appState = Provider.of<AppStateModel>(context);
@@ -58,26 +32,6 @@ class HomePageDrawer extends StatelessWidget {
             onTap: () {
               Navigator.of(context).pop();
               Navigator.of(context).popAndPushNamed('/ConfigPage');
-            },
-          ),
-          ListTile(
-            key: Key("DrawerMenuTile_RefreshTokens"),
-            title: Text(S.of(context).drawerRefreshTokens),
-            onTap: () {
-              appState.refresh();
-              _showFlushbar(
-                  context,
-                  S.of(context).drawerRefreshTokensResultTitle,
-                  S.of(context).drawerRefreshTokensResultMsg);
-            },
-          ),
-          ListTile(
-            key: Key("DrawerMenuTile_GetUserInfo"),
-            title: Text(S.of(context).drawerGetUserInfo),
-            onTap: () {
-              _userInfo(context);
-              _showFlushbar(context, S.of(context).drawerGetUserInfoResultTitle,
-                  S.of(context).drawerGetUserInfoResultMsg);
             },
           ),
           ListTile(
@@ -103,7 +57,6 @@ class HomePageDrawer extends StatelessWidget {
             ),
             trailing: Text(S.of(context).logoutButton),
             onTap: () {
-              Navigator.of(context).pop();
               appState.logOut();
             },
           ),
@@ -117,12 +70,12 @@ Widget buildDrawerHeader(BuildContext context) {
   var appState = Provider.of<AppStateModel>(context);
   return UserAccountsDrawerHeader(
     key: Key("DrawerMenu_Header"),
-    accountName: Text(appState.name == null
+    accountName: Text(appState.cdfProject == null
         ? S.of(context).drawerHeaderInitialName
-        : appState.name),
-    accountEmail: Text(appState.email == null
-        ? S.of(context).drawerHeaderInitialEmail
-        : appState.email),
+        : appState.cdfProject),
+    accountEmail: Text(appState.cdfLoggedIn == true
+        ? '(${S.of(context).drawerHeaderLoggedIn})'
+        : '(${S.of(context).drawerHeaderLoggedOut})'),
     onDetailsPressed: () => showModalBottomSheet(
       context: context,
       builder: (BuildContext context) {
@@ -136,46 +89,22 @@ Widget buildDrawerHeader(BuildContext context) {
           child: ListView(
             children: <Widget>[
               ListTile(
-                title: Text(appState.name == null
-                    ? S.of(context).drawerEmptyName
-                    : appState.name),
-                subtitle: Text(appState.email == null
-                    ? S.of(context).drawerEmptyEmail
-                    : appState.email),
+                title: Text(S.of(context).drawerProjectName),
+                subtitle: Text(appState.cdfProject == null
+                    ? S.of(context).drawerEmptyProject
+                    : appState.cdfProject),
               ),
               ListTile(
-                title: Text(S.of(context).drawerButtomSheetUserToken),
-                subtitle: Text(S.of(context).clickToView),
-                onTap: () {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) => CustomDialog(
-                      title: S.of(context).drawerButtomSheetUserToken,
-                      description: appState.userToken,
-                      buttonText: S.of(context).okButton,
-                    ),
-                  );
-                },
-              ),
-              ListTile(
-                title: Text(S.of(context).drawerButtomSheetIdToken),
-                subtitle: Text(S.of(context).clickToView),
-                onTap: () {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) => CustomDialog(
-                      title: S.of(context).drawerButtomSheetIdToken,
-                      description: appState.idToken,
-                      buttonText: S.of(context).okButton,
-                    ),
-                  );
-                },
-              ),
-              ListTile(
-                title: Text(S.of(context).drawerButtomSheetExpires),
-                subtitle: Text(appState.expires == null
+                title: Text(S.of(context).drawerButtomSheetProjectId),
+                subtitle: Text(appState.cdfProjectId == null
                     ? ''
-                    : appState.expires.toIso8601String()),
+                    : appState.cdfProjectId.toString()),
+              ),
+              ListTile(
+                title: Text(S.of(context).drawerButtomSheetApiKeyId),
+                subtitle: Text(appState.cdfApiKeyId == null
+                    ? ''
+                    : appState.cdfApiKeyId.toString()),
               ),
             ],
           ),

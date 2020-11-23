@@ -35,11 +35,6 @@ void main() async {
   var prefs = await SharedPreferences.getInstance();
   loginState = AppStateModel(prefs);
 
-  // Ensure we have a logged in state before testing HomePage as LoginPage() is rendered if
-  // we are not authenticated
-  // The state logic is based on receiving the access token, but does not validate the format
-  loginState.logIn({'access_token': '123'});
-
   testWidgets('is drawer ready', (WidgetTester tester) async {
     await initWidget(tester, loginState);
     await tester.pump();

@@ -155,16 +155,6 @@ class S {
     );
   }
 
-  /// `Test User`
-  String get drawerUser {
-    return Intl.message(
-      'Test User',
-      name: 'drawerUser',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Click to view details...`
   String get drawerHeaderInitialName {
     return Intl.message(
@@ -175,31 +165,41 @@ class S {
     );
   }
 
-  /// `...`
-  String get drawerHeaderInitialEmail {
+  /// `Project name`
+  String get drawerProjectName {
     return Intl.message(
-      '...',
-      name: 'drawerHeaderInitialEmail',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `N/A`
-  String get drawerEmptyName {
-    return Intl.message(
-      'N/A',
-      name: 'drawerEmptyName',
+      'Project name',
+      name: 'drawerProjectName',
       desc: '',
       args: [],
     );
   }
 
   /// ``
-  String get drawerEmptyEmail {
+  String get drawerEmptyProject {
     return Intl.message(
       '',
-      name: 'drawerEmptyEmail',
+      name: 'drawerEmptyProject',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Logged In`
+  String get drawerHeaderLoggedIn {
+    return Intl.message(
+      'Logged In',
+      name: 'drawerHeaderLoggedIn',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Logged Out`
+  String get drawerHeaderLoggedOut {
+    return Intl.message(
+      'Logged Out',
+      name: 'drawerHeaderLoggedOut',
       desc: '',
       args: [],
     );
@@ -325,21 +325,21 @@ class S {
     );
   }
 
-  /// `User token`
-  String get drawerButtomSheetUserToken {
+  /// `Project id`
+  String get drawerButtomSheetProjectId {
     return Intl.message(
-      'User token',
-      name: 'drawerButtomSheetUserToken',
+      'Project id',
+      name: 'drawerButtomSheetProjectId',
       desc: '',
       args: [],
     );
   }
 
-  /// `Id token`
-  String get drawerButtomSheetIdToken {
+  /// `Key id`
+  String get drawerButtomSheetApiKeyId {
     return Intl.message(
-      'Id token',
-      name: 'drawerButtomSheetIdToken',
+      'Key id',
+      name: 'drawerButtomSheetApiKeyId',
       desc: '',
       args: [],
     );
