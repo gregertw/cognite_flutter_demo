@@ -1,5 +1,6 @@
-name: first_app
-description: An application that manages and receives alerts from ActingWeb actors
+name: cognite_cdf_demo
+description: A demo application for Cognite CDF
+homepage: https://docs.cognite.com/dev/
 version: 0.1.2+dev1
 
 environment:

@@ -1,4 +1,4 @@
-package io.actingweb.actingweb_firstapp
+package io.greger.cognite_cdf_demo
 
 import io.flutter.embedding.android.FlutterActivity
 

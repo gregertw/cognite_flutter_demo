@@ -21,7 +21,7 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
-    "appTitle" : MessageLookupByLibrary.simpleMessage("ActingWeb Første App"),
+    "appTitle" : MessageLookupByLibrary.simpleMessage("Cognite CDF Demo"),
     "clickToView" : MessageLookupByLibrary.simpleMessage("Trykk for å se..."),
     "configAPIkey" : MessageLookupByLibrary.simpleMessage("Sett API nøkkel"),
     "configAPIkeyEmpty" : MessageLookupByLibrary.simpleMessage("API nøkkel kan ikke være tom"),

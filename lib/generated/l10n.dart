@@ -35,10 +35,10 @@ class S {
     return Localizations.of<S>(context, S);
   }
 
-  /// `ActingWeb First App`
+  /// `Cognite CDF Demo`
   String get appTitle {
     return Intl.message(
-      'ActingWeb First App',
+      'Cognite CDF Demo',
       name: 'appTitle',
       desc: '',
       args: [],

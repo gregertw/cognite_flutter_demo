@@ -3,21 +3,21 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>748007732162-20hnc1u6qmn35avunaidj44p43o6g4s7.apps.googleusercontent.com</string>
+	<string>1058078351513-2mottpglivq207qsu2ump11n1j2upjbf.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.748007732162-20hnc1u6qmn35avunaidj44p43o6g4s7</string>
+	<string>com.googleusercontent.apps.1058078351513-2mottpglivq207qsu2ump11n1j2upjbf</string>
 	<key>API_KEY</key>
-	<string>AIzaSyCFGeVdzEh6ZPKClV_0in0xHHX-0NtqGQ8</string>
+	<string>AIzaSyDcSUu0AVkanFE_luNCoNdOFZlP-x79FiI</string>
 	<key>GCM_SENDER_ID</key>
-	<string>748007732162</string>
+	<string>1058078351513</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>io.actingweb.firstapp</string>
+	<string>cognite-cdf-demo</string>
 	<key>PROJECT_ID</key>
-	<string>actingweb-firstapp</string>
+	<string>cognite-cdf-demo</string>
 	<key>STORAGE_BUCKET</key>
-	<string>actingweb-firstapp.appspot.com</string>
+	<string>cognite-cdf-demo.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -29,8 +29,8 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:748007732162:ios:b662cf09a8209a8b785c5b</string>
+	<string>1:1058078351513:ios:2e144ca8305ff296035808</string>
 	<key>DATABASE_URL</key>
-	<string>https://actingweb-firstapp.firebaseio.com</string>
+	<string>https://cognite-cdf-demo.firebaseio.com</string>
 </dict>
 </plist>

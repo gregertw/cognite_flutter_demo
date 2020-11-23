@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flushbar/flushbar.dart';
-import 'package:first_app/models/appstate.dart';
-import 'package:first_app/generated/l10n.dart';
-import 'package:first_app/providers/auth.dart';
-import 'package:first_app/ui/widgets/custom_dialog.dart';
+import 'package:cognite_cdf_demo/models/appstate.dart';
+import 'package:cognite_cdf_demo/generated/l10n.dart';
+import 'package:cognite_cdf_demo/providers/auth.dart';
+import 'package:cognite_cdf_demo/ui/widgets/custom_dialog.dart';
 
 class HomePageDrawer extends StatelessWidget {
   void _showFlushbar(BuildContext context, String title, String msg) {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cognite_cdf_sdk/cognite_cdf_sdk.dart';
-import 'package:first_app/globals.dart';
+import 'package:cognite_cdf_demo/globals.dart';
 
 class HeartBeatModel with ChangeNotifier {
   CDFApiClient apiClient;

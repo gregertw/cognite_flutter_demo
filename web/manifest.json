@@ -1,6 +1,6 @@
 {
-    "name": "actingweb_firstapp",
-    "short_name": "actingweb_firstapp",
+    "name": "cognite_cdf_demo",
+    "short_name": "cognite_cdf_demo",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:syncfusion_flutter_sliders/sliders.dart';
-import 'package:first_app/models/heartbeatstate.dart';
-import 'package:first_app/models/appstate.dart';
-import 'package:first_app/models/chartstate.dart';
+import 'package:cognite_cdf_demo/models/heartbeatstate.dart';
+import 'package:cognite_cdf_demo/models/appstate.dart';
+import 'package:cognite_cdf_demo/models/chartstate.dart';
 import 'package:cognite_cdf_sdk/cognite_cdf_sdk.dart';
-import 'package:first_app/generated/l10n.dart';
+import 'package:cognite_cdf_demo/generated/l10n.dart';
 import 'package:intl/intl.dart';
-import 'package:first_app/ui/pages/home/drawer.dart';
+import 'package:cognite_cdf_demo/ui/pages/home/drawer.dart';
 
 class TimeSeriesHome extends StatelessWidget {
   const TimeSeriesHome({

@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:flutter_appauth/flutter_appauth.dart';
 import 'package:http/http.dart' as http;
-import 'package:first_app/globals.dart';
+import 'package:cognite_cdf_demo/globals.dart';
 
 class AuthClient {
   final String clientId, redirectUrl, authzEndpoint, tokenEndpoint;
@@ -13,7 +13,8 @@ class AuthClient {
   // Default configs for using the demo.identityserver.io ConnectId service
   // Either use the discoveryUrl or the authzEndpoint and tokenEndpoint (to skip discovery)
   static const String _clientId = 'interactive.public.short';
-  static const String _redirectUrl = 'io.actingweb.firstapp:/oauthredirect';
+  static const String _redirectUrl =
+      'io.greger.cognite_cdf_demo:/oauthredirect';
   static const String _discoveryUrl =
       'https://demo.identityserver.io/.well-known/openid-configuration';
   static const List<String> _scopes = <String>[

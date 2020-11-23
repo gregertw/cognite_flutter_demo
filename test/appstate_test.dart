@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:first_app/models/appstate.dart';
+import 'package:cognite_cdf_demo/models/appstate.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 // This test can be extended as we get more appstate

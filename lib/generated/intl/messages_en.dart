@@ -21,7 +21,7 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
-    "appTitle" : MessageLookupByLibrary.simpleMessage("ActingWeb First App"),
+    "appTitle" : MessageLookupByLibrary.simpleMessage("Cognite CDF Demo"),
     "clickToView" : MessageLookupByLibrary.simpleMessage("Click to view..."),
     "configAPIkey" : MessageLookupByLibrary.simpleMessage("Enter API key"),
     "configAPIkeyEmpty" : MessageLookupByLibrary.simpleMessage("API key cannot be empty"),

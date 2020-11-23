@@ -1,9 +1,9 @@
-import 'package:first_app/ui/widgets/custom_dialog.dart';
+import 'package:cognite_cdf_demo/ui/widgets/custom_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:first_app/generated/l10n.dart';
-import 'package:first_app/ui/theme/style.dart';
+import 'package:cognite_cdf_demo/generated/l10n.dart';
+import 'package:cognite_cdf_demo/ui/theme/style.dart';
 
 // Helper function to encapsulate code needed to instantiate the widget
 dynamic initWidget(WidgetTester tester) {

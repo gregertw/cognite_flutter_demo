@@ -1,5 +1,5 @@
 {
-  "appTitle": "ActingWeb First App",
+  "appTitle": "Cognite CDF Demo",
   "loginWelcomeText": "Welcome to ActingWeb",
   "loginLoadEvents": "Loading events...",
   "loginButton": "Log in",
@@ -39,7 +39,7 @@
   "configAPIkey": "Enter API key",
   "configAPIkeyEmpty": "API key cannot be empty",
   "configTimeseriesId": "Enter external timeseries id",
-  "configTimeseriesIdEmpty":"Timeseries id cannot be empty",
+  "configTimeseriesIdEmpty": "Timeseries id cannot be empty",
   "configNrOfDays": "Enter number of days in initial range",
   "configProjectFailed": "Not able to access CDF project"
 }

@@ -8,15 +8,15 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:first_app/generated/l10n.dart';
-import 'package:first_app/models/appstate.dart';
-import 'package:first_app/ui/pages/home/index.dart';
-import 'package:first_app/ui/pages/login/index.dart';
-import 'package:first_app/ui/pages/config/index.dart';
-import 'package:first_app/ui/theme/style.dart';
+import 'package:cognite_cdf_demo/generated/l10n.dart';
+import 'package:cognite_cdf_demo/models/appstate.dart';
+import 'package:cognite_cdf_demo/ui/pages/home/index.dart';
+import 'package:cognite_cdf_demo/ui/pages/login/index.dart';
+import 'package:cognite_cdf_demo/ui/pages/config/index.dart';
+import 'package:cognite_cdf_demo/ui/theme/style.dart';
 // Import mock packages for the web version
-import 'package:first_app/mock/mock_appauth.dart';
-import 'package:first_app/globals.dart';
+import 'package:cognite_cdf_demo/mock/mock_appauth.dart';
+import 'package:cognite_cdf_demo/globals.dart';
 
 void main() async {
   // A breaking change in the platform messaging, as of Flutter 1.12.13+hotfix.5,

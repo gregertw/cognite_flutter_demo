@@ -1,42 +1,35 @@
 {
   "project_info": {
-    "project_number": "748007732162",
-    "firebase_url": "https://actingweb-firstapp.firebaseio.com",
-    "project_id": "actingweb-firstapp",
-    "storage_bucket": "actingweb-firstapp.appspot.com"
+    "project_number": "1058078351513",
+    "firebase_url": "https://cognite-cdf-demo.firebaseio.com",
+    "project_id": "cognite-cdf-demo",
+    "storage_bucket": "cognite-cdf-demo.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:748007732162:android:4684d6853ad93a3e",
+        "mobilesdk_app_id": "1:1058078351513:android:ba42ec537dcc241c035808",
         "android_client_info": {
-          "package_name": "io.actingweb.firstapp"
+          "package_name": "io.greger.cognite_cdf_demo"
         }
       },
       "oauth_client": [
         {
-          "client_id": "748007732162-qltuqb4v2eqfgvafp290mqtpntk9joea.apps.googleusercontent.com",
+          "client_id": "1058078351513-7gk8gln5u6h2odsjgr8qhnnkokjub0gf.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyD7fSvAPIz-31x_pMPJ3hR3xMcP8WjJxJ0"
+          "current_key": "AIzaSyDFGA5xRa-aa4WMbIUebHvXiZOpg67GhWw"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "748007732162-qltuqb4v2eqfgvafp290mqtpntk9joea.apps.googleusercontent.com",
+              "client_id": "1058078351513-7gk8gln5u6h2odsjgr8qhnnkokjub0gf.apps.googleusercontent.com",
               "client_type": 3
-            },
-            {
-              "client_id": "748007732162-20hnc1u6qmn35avunaidj44p43o6g4s7.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "io.actingweb.firstapp"
-              }
             }
           ]
         }

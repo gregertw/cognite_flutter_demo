@@ -3,10 +3,10 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:first_app/ui/pages/login/index.dart';
-import 'package:first_app/models/appstate.dart';
-import 'package:first_app/generated/l10n.dart';
-import 'package:first_app/ui/theme/style.dart';
+import 'package:cognite_cdf_demo/ui/pages/login/index.dart';
+import 'package:cognite_cdf_demo/models/appstate.dart';
+import 'package:cognite_cdf_demo/generated/l10n.dart';
+import 'package:cognite_cdf_demo/ui/theme/style.dart';
 
 // Helper function to encapsulate code needed to instantiate the HomePage() widget
 dynamic initWidget(WidgetTester tester, AppStateModel state) {

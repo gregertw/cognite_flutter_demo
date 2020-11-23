@@ -1,7 +1,7 @@
 import 'package:test/test.dart';
 import 'dart:io';
 import 'dart:convert';
-// import 'package:first_app/models/appstate.dart';
+// import 'package:cognite_cdf_demo/models/appstate.dart';
 // import 'package:shared_preferences/shared_preferences.dart';
 
 // localhost certificate
@@ -76,5 +76,4 @@ void main() {
   });
 
   // ...
-
 }

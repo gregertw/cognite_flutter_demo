@@ -1,5 +1,5 @@
 {
-  "appTitle": "ActingWeb Første App",
+  "appTitle": "Cognite CDF Demo",
   "loginWelcomeText": "Velkommen til ActingWeb",
   "loginLoadEvents": "Henter meldinger...",
   "loginButton": "Logg inn",
@@ -39,7 +39,7 @@
   "configAPIkey": "Sett API nøkkel",
   "configAPIkeyEmpty": "API nøkkel kan ikke være tom",
   "configTimeseriesId": "Sett ekstern tidsseries-id",
-  "configTimeseriesIdEmpty":"Tidsserie-id kan ikke være tom",
+  "configTimeseriesIdEmpty": "Tidsserie-id kan ikke være tom",
   "configNrOfDays": "Sett antall dager i første diagram",
   "configProjectFailed": "Tilgang til CDF prosjektet feilet"
 }

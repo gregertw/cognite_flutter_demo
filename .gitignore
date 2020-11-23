@@ -487,7 +487,6 @@ hs_err_pid*
 .idea/encodings.xml
 .idea/misc.xml
 .idea/jarRepositories.xml
-.idea/artifacts/actingweb_firstapp.xml
 ios/Flutter/flutter_export_environment.sh
 ios/Flutter/Flutter.podspec
 .flutter-plugins-dependencies

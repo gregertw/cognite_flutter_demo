@@ -1,8 +1,8 @@
 import 'package:test/test.dart';
-import 'package:first_app/models/appstate.dart';
+import 'package:cognite_cdf_demo/models/appstate.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:first_app/providers/auth.dart';
-import 'package:first_app/mock/mock_appauth.dart';
+import 'package:cognite_cdf_demo/providers/auth.dart';
+import 'package:cognite_cdf_demo/mock/mock_appauth.dart';
 
 void main() async {
   // We need mock initial values for SharedPreferences

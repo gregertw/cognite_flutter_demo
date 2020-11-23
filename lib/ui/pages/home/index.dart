@@ -2,10 +2,10 @@ import 'package:cognite_cdf_sdk/cognite_cdf_sdk.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:first_app/models/appstate.dart';
-import 'package:first_app/ui/pages/login/index.dart';
-import 'package:first_app/ui/pages/config/index.dart';
-import 'package:first_app/ui/pages/timeseries_chart/index.dart';
+import 'package:cognite_cdf_demo/models/appstate.dart';
+import 'package:cognite_cdf_demo/ui/pages/login/index.dart';
+import 'package:cognite_cdf_demo/ui/pages/config/index.dart';
+import 'package:cognite_cdf_demo/ui/pages/timeseries_chart/index.dart';
 
 class HomePage extends StatelessWidget {
   @override

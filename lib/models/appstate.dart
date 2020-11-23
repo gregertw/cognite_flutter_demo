@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:first_app/providers/auth.dart';
-import 'package:first_app/mock/mockmap.dart';
-import 'package:first_app/generated/l10n.dart';
+import 'package:cognite_cdf_demo/providers/auth.dart';
+import 'package:cognite_cdf_demo/mock/mockmap.dart';
+import 'package:cognite_cdf_demo/generated/l10n.dart';
 import 'package:cognite_cdf_sdk/cognite_cdf_sdk.dart';
 
-import 'package:first_app/globals.dart';
+import 'package:cognite_cdf_demo/globals.dart';
 
 class AppStateModel with ChangeNotifier {
   bool _authenticated = true;
@@ -146,6 +146,8 @@ class AppStateModel with ChangeNotifier {
     if (_cdfStatus != null) {
       _email = _cdfStatus.user;
     }
+    sendAnalyticsEvent(
+        'login', {'project': _cdfProject, 'timeseries': _cdfTimeSeriesId});
     notifyListeners();
   }
 

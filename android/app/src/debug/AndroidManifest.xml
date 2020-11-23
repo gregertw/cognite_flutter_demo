@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="io.actingweb.firstapp">
+    package="io.greger.cognite_cdf_demo">
     <!-- Allow debug connections ++ -->
     <application android:usesCleartextTraffic="true">
 

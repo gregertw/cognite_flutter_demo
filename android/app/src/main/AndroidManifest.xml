@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="io.actingweb.firstapp">
+    package="io.greger.cognite_cdf_demo">
 
     <!-- The INTERNET permission is required for development. Specifically,
          flutter needs it to communicate with the running application
@@ -13,9 +13,9 @@
          additional functionality it is fine to subclass or reimplement
          FlutterApplication and put your custom class here. -->
     <!-- firebase_messaging: To receive background messages, a custom application init must be added.
-         It is found in Application.kt in android/app/src/main/java/io/actingweb/firstapp -->
+         It is found in Application.kt in android/app/src/main/java/io/greger/cognite_cdf_demo -->
     <application
-        android:label="first_app"
+        android:label="cognite_cdf_demo"
         android:icon="@mipmap/launcher_icon">
         <meta-data
             android:name="flutterEmbedding"
