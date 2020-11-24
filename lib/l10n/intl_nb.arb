@@ -41,5 +41,12 @@
   "configTimeseriesId": "Sett ekstern tidsseries-id",
   "configTimeseriesIdEmpty": "Tidsserie-id kan ikke være tom",
   "configNrOfDays": "Sett antall dager i første diagram",
-  "configProjectFailed": "Tilgang til CDF prosjektet feilet"
+  "configProjectFailed": "Tilgang til CDF prosjektet feilet",
+  "chartZoomIn": "Zoom inn",
+  "chartZoomOut": "Zoom ut",
+  "chartReset": "Tilbakestill",
+  "chartTooltip": "Markørinfo",
+  "chartMarkers": "Punkter",
+  "chartMaximum": "Maximum(av/på)",
+  "chartMinimum": "Minimum(av/på)"
 }

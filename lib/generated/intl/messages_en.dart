@@ -22,6 +22,13 @@ class MessageLookup extends MessageLookupByLibrary {
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
     "appTitle" : MessageLookupByLibrary.simpleMessage("Cognite CDF Demo"),
+    "chartMarkers" : MessageLookupByLibrary.simpleMessage("Markers"),
+    "chartMaximum" : MessageLookupByLibrary.simpleMessage("Maximum(on/off)"),
+    "chartMinimum" : MessageLookupByLibrary.simpleMessage("Minimum(on/off)"),
+    "chartReset" : MessageLookupByLibrary.simpleMessage("Reset"),
+    "chartTooltip" : MessageLookupByLibrary.simpleMessage("Tooltip"),
+    "chartZoomIn" : MessageLookupByLibrary.simpleMessage("Zoom In"),
+    "chartZoomOut" : MessageLookupByLibrary.simpleMessage("Zoom Out"),
     "clickToView" : MessageLookupByLibrary.simpleMessage("Click to view..."),
     "configAPIkey" : MessageLookupByLibrary.simpleMessage("Enter API key"),
     "configAPIkeyEmpty" : MessageLookupByLibrary.simpleMessage("API key cannot be empty"),

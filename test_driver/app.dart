@@ -8,7 +8,6 @@ import 'package:cognite_cdf_demo/generated/l10n.dart';
 import 'package:cognite_cdf_demo/models/appstate.dart';
 import 'package:cognite_cdf_demo/ui/pages/home/index.dart';
 import 'package:cognite_cdf_demo/ui/theme/style.dart';
-import 'package:cognite_cdf_demo/mock/mock_appauth.dart';
 import 'package:cognite_cdf_demo/globals.dart';
 
 void main() async {
@@ -18,11 +17,11 @@ void main() async {
   Future<String> dataHandler(String msg) async {
     log.d("Got driver message: $msg");
     switch (msg) {
-      case "mockLogin":
-        {
-          appState.mocks.enableMock('authClient', MockFlutterAppAuth());
-        }
-        break;
+      // case "mockLogin":
+      //   {
+      //     appState.mocks.enableMock('authClient', MockFlutterAppAuth());
+      //   }
+      //   break;
       case "clearMocks":
         {
           appState.mocks.clearMocks();

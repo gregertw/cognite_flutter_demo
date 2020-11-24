@@ -41,5 +41,12 @@
   "configTimeseriesId": "Enter external timeseries id",
   "configTimeseriesIdEmpty": "Timeseries id cannot be empty",
   "configNrOfDays": "Enter number of days in initial range",
-  "configProjectFailed": "Not able to access CDF project"
+  "configProjectFailed": "Not able to access CDF project",
+  "chartZoomIn": "Zoom In",
+  "chartZoomOut": "Zoom Out",
+  "chartReset": "Reset",
+  "chartTooltip": "Tooltip",
+  "chartMarkers": "Markers",
+  "chartMaximum": "Maximum(on/off)",
+  "chartMinimum": "Minimum(on/off)"
 }

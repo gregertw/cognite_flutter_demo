@@ -42,6 +42,44 @@ class TimeSeriesHome extends StatelessWidget {
   }
 }
 
+class ReloadMarker extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    var hbm = Provider.of<HeartBeatModel>(context, listen: false);
+    return Container(
+      child: Stack(
+        children: <Widget>[
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Container(
+              height: 50,
+              child: InkWell(
+                key: Key('HomePage_ReloadInkwell'),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Visibility(
+                      visible: hbm.loading,
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(24, 0, 24, 0),
+                        child: ConstrainedBox(
+                          constraints:
+                              BoxConstraints(maxWidth: 15, maxHeight: 15),
+                          child: CircularProgressIndicator(),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 class CheckBoxButtons extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -59,20 +97,9 @@ class CheckBoxButtons extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Visibility(
-                      visible: hbm.loading,
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(24, 0, 24, 0),
-                        child: ConstrainedBox(
-                          constraints:
-                              BoxConstraints(maxWidth: 15, maxHeight: 15),
-                          child: CircularProgressIndicator(),
-                        ),
-                      ),
-                    ),
                     Row(
                       children: <Widget>[
-                        Text('Tooltip'),
+                        Text(S.of(context).chartTooltip),
                         Checkbox(
                           value: chart.showToolTip,
                           activeColor:
@@ -90,7 +117,7 @@ class CheckBoxButtons extends StatelessWidget {
                     ),
                     Row(
                       children: <Widget>[
-                        Text('Markers'),
+                        Text(S.of(context).chartMarkers),
                         Checkbox(
                           value: chart.showMarker,
                           activeColor:
@@ -110,8 +137,8 @@ class CheckBoxButtons extends StatelessWidget {
                       padding: const EdgeInsets.fromLTRB(24, 0, 0, 0),
                       child: Row(
                         children: <Widget>[
-                          Text('Zoom In'),
                           IconButton(
+                            tooltip: S.of(context).chartZoomIn,
                             icon: Icon(Icons.add,
                                 color: Theme.of(context).accentColor),
                             onPressed: () {
@@ -131,8 +158,8 @@ class CheckBoxButtons extends StatelessWidget {
                       padding: const EdgeInsets.fromLTRB(24, 0, 0, 0),
                       child: Row(
                         children: <Widget>[
-                          Text('Zoom Out'),
                           IconButton(
+                            tooltip: S.of(context).chartZoomOut,
                             icon: Icon(Icons.remove,
                                 color: Theme.of(context).accentColor),
                             onPressed: () {
@@ -148,8 +175,8 @@ class CheckBoxButtons extends StatelessWidget {
                       padding: const EdgeInsets.fromLTRB(24, 0, 0, 0),
                       child: Row(
                         children: <Widget>[
-                          Text('Reset'),
                           IconButton(
+                            tooltip: S.of(context).chartZoomOut,
                             icon: Icon(Icons.refresh,
                                 color: Theme.of(context).accentColor),
                             onPressed: () {
@@ -193,7 +220,7 @@ class TimeSeriesChart extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            CheckBoxButtons(),
+            ReloadMarker(),
             SfCartesianChart(
               key: Key('HomePage_TimeSeriesChart'),
               // Initialize category axis
@@ -212,7 +239,7 @@ class TimeSeriesChart extends StatelessWidget {
                   tooltipPosition: TooltipPosition.pointer),
               series: <CartesianSeries<DatapointModel, DateTime>>[
                 LineSeries<DatapointModel, DateTime>(
-                    name: "Maximum (on/off)",
+                    name: S.of(context).chartMaximum,
                     width: 2,
                     markerSettings: MarkerSettings(
                         height: 3, width: 3, isVisible: chart.showMarker),
@@ -221,7 +248,7 @@ class TimeSeriesChart extends StatelessWidget {
                     xValueMapper: (DatapointModel ts, _) => ts.datetime,
                     yValueMapper: (DatapointModel ts, _) => ts.max),
                 LineSeries<DatapointModel, DateTime>(
-                    name: "Minimum (on/off)",
+                    name: S.of(context).chartMinimum,
                     width: 2,
                     markerSettings: MarkerSettings(
                         height: 3, width: 3, isVisible: chart.showMarker),
@@ -242,8 +269,11 @@ class TimeSeriesChart extends StatelessWidget {
                   max: DateTime.fromMillisecondsSinceEpoch(hbm.rangeEnd),
                   showTicks: true,
                   showLabels: true,
+                  showTooltip: true,
+                  showDivisors: true,
                   activeColor: Color.fromARGB(255, 5, 90, 194),
                   inactiveColor: Color.fromARGB(100, 5, 90, 194),
+                  enableIntervalSelection: true,
                   dragMode: SliderDragMode.both,
                   enableDeferredUpdate: true,
                   deferredUpdateDelay: 500,
@@ -278,6 +308,7 @@ class TimeSeriesChart extends StatelessWidget {
                 ),
               ),
             ),
+            CheckBoxButtons(),
           ],
         ),
       ),

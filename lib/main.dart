@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:flutter/foundation.dart' show kIsWeb;
+//import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -13,9 +13,6 @@ import 'package:cognite_cdf_demo/models/appstate.dart';
 import 'package:cognite_cdf_demo/ui/pages/home/index.dart';
 import 'package:cognite_cdf_demo/ui/pages/config/index.dart';
 import 'package:cognite_cdf_demo/ui/theme/style.dart';
-// Import mock packages for the web version
-import 'package:cognite_cdf_demo/mock/mock_appauth.dart';
-import 'package:cognite_cdf_demo/globals.dart';
 
 void main() async {
   // A breaking change in the platform messaging, as of Flutter 1.12.13+hotfix.5,
@@ -35,12 +32,6 @@ void main() async {
   var prefs = await SharedPreferences.getInstance();
   // Let's initialise the app state with the stored preferences
   var appState = new AppStateModel(prefs, analytics);
-
-  // Appauth does not support web yet, use the mock
-  if (kIsWeb) {
-    log.i('Running in web mode...');
-    appState.mocks.enableMock('authClient', MockFlutterAppAuth());
-  }
 
   // Use dart zone to define Crashlytics as error handler for errors
   // that occur outside runApp

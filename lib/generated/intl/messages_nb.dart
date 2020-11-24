@@ -22,6 +22,13 @@ class MessageLookup extends MessageLookupByLibrary {
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
     "appTitle" : MessageLookupByLibrary.simpleMessage("Cognite CDF Demo"),
+    "chartMarkers" : MessageLookupByLibrary.simpleMessage("Punkter"),
+    "chartMaximum" : MessageLookupByLibrary.simpleMessage("Maximum(av/på)"),
+    "chartMinimum" : MessageLookupByLibrary.simpleMessage("Minimum(av/på)"),
+    "chartReset" : MessageLookupByLibrary.simpleMessage("Tilbakestill"),
+    "chartTooltip" : MessageLookupByLibrary.simpleMessage("Markørinfo"),
+    "chartZoomIn" : MessageLookupByLibrary.simpleMessage("Zoom inn"),
+    "chartZoomOut" : MessageLookupByLibrary.simpleMessage("Zoom ut"),
     "clickToView" : MessageLookupByLibrary.simpleMessage("Trykk for å se..."),
     "configAPIkey" : MessageLookupByLibrary.simpleMessage("Sett API nøkkel"),
     "configAPIkeyEmpty" : MessageLookupByLibrary.simpleMessage("API nøkkel kan ikke være tom"),

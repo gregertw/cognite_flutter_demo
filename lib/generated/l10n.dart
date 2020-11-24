@@ -464,6 +464,76 @@ class S {
       args: [],
     );
   }
+
+  /// `Zoom In`
+  String get chartZoomIn {
+    return Intl.message(
+      'Zoom In',
+      name: 'chartZoomIn',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Zoom Out`
+  String get chartZoomOut {
+    return Intl.message(
+      'Zoom Out',
+      name: 'chartZoomOut',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Reset`
+  String get chartReset {
+    return Intl.message(
+      'Reset',
+      name: 'chartReset',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Tooltip`
+  String get chartTooltip {
+    return Intl.message(
+      'Tooltip',
+      name: 'chartTooltip',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Markers`
+  String get chartMarkers {
+    return Intl.message(
+      'Markers',
+      name: 'chartMarkers',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Maximum(on/off)`
+  String get chartMaximum {
+    return Intl.message(
+      'Maximum(on/off)',
+      name: 'chartMaximum',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Minimum(on/off)`
+  String get chartMinimum {
+    return Intl.message(
+      'Minimum(on/off)',
+      name: 'chartMinimum',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
