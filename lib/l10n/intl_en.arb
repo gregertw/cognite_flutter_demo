@@ -48,5 +48,7 @@
   "chartTooltip": "Tooltip",
   "chartMarkers": "Markers",
   "chartMaximum": "Maximum(on/off)",
-  "chartMinimum": "Minimum(on/off)"
+  "chartMinimum": "Minimum(on/off)",
+  "chartAverage": "Average(on/off)",
+  "chartRawValues": "Raw Values < 1h (on/off)"
 }

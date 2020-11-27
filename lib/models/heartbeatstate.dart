@@ -2,13 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:cognite_cdf_sdk/cognite_cdf_sdk.dart';
 import 'package:cognite_cdf_demo/globals.dart';
 
+/// Keeps timeseries data state
 class HeartBeatModel with ChangeNotifier {
   CDFApiClient apiClient;
   String tsId;
   int startDays;
   DatapointsModel _dataPoints = DatapointsModel();
+  DatapointsModel _rawDataPoints = DatapointsModel();
   DatapointsFilterModel _filter = DatapointsFilterModel();
   int _activeLayer = 0;
+  int _activeRawLayer = 0;
   int _rangeStart = 0;
   int _rangeEnd = 0;
   bool _loading;
@@ -34,7 +37,21 @@ class HeartBeatModel with ChangeNotifier {
   int get resolution => _filter.resolution;
   int get activeLayer => _activeLayer;
 
-  // Defaults include min, max, average, and count for the last nrOfDays days
+  /// Defaults include all aggregations for the last nrOfDays days.
+  ///[
+  ///      "average",
+  ///      "max",
+  ///      "min",
+  ///      "count",
+  ///      "sum",
+  ///      "interpolation",
+  ///      "stepInterpolation",
+  ///      "totalVariation",
+  ///      "continuousVariance",
+  ///      "discreteVariance"
+  ///    ]
+  ///
+  /// NOTE! includeOutsidePoints is not supported for aggregates!
   void setFilter(
       {int start,
       int end,
@@ -42,6 +59,7 @@ class HeartBeatModel with ChangeNotifier {
       int nrOfDays,
       List<String> aggregates,
       bool includeOutsidePoints: false}) {
+    _filter.includeOutsidePoints = includeOutsidePoints;
     if (end == null) {
       _filter.end = DateTime.now().millisecondsSinceEpoch;
     } else {
@@ -75,8 +93,11 @@ class HeartBeatModel with ChangeNotifier {
     } else {
       _filter.aggregates = aggregates;
     }
+    if (_filter.aggregates.isNotEmpty) {
+      _filter.includeOutsidePoints = false;
+    }
     if (resolution == null) {
-      _filter.resolution = ((_filter.end - _filter.start) / 480000).round();
+      _filter.resolution = ((_filter.end - _filter.start) / 240000).round();
     } else {
       _filter.resolution = resolution;
     }
@@ -89,31 +110,55 @@ class HeartBeatModel with ChangeNotifier {
     }
   }
 
-  List<DatapointModel> get timeSeriesDataPoints {
+  /// Returns the last active layer of aggregates
+  List<DatapointModel> get timeSeriesAggregates {
     if (_dataPoints != null) {
       return _dataPoints.layer(layer: _activeLayer);
     }
     return [];
   }
 
-  List<DatapointModel> get timeSeriesFullRangeDataPoints {
+  /// Returns the first full range layer of aggregates.
+  List<DatapointModel> get timeSeriesFullRangeAggregates {
     if (_dataPoints != null) {
       return _dataPoints.layer(layer: 1);
     }
     return [];
   }
 
+  /// Returns the last layer of datapoints, note that only value is set!!!
+  List<DatapointModel> get timeSeriesDataPoints {
+    if (_rawDataPoints != null) {
+      return _rawDataPoints.layer(layer: _activeRawLayer);
+    }
+    return [];
+  }
+
+  /// Returns the first full range layer of raw datapoints.
+  List<DatapointModel> get timeSeriesFullRangeDataPoints {
+    if (_rawDataPoints != null) {
+      return _rawDataPoints.layer(layer: 1);
+    }
+    return [];
+  }
+
+  /// Deletes the last active layer
   bool zoomOut() {
     if (_activeLayer > 1) {
       _dataPoints.popLayer();
       _activeLayer -= 1;
+      if (_activeRawLayer > 1) {
+        _rawDataPoints.popLayer();
+        _activeRawLayer -= 1;
+      }
       notifyListeners();
       return true;
     }
     return false;
   }
 
-  void loadTimeSeries() {
+  // Given the last [setFilter], load aggregates and raw datapoints.
+  void loadTimeSeries({bool raw: false}) async {
     log.d(_filter.toString());
     if (_loading) {
       log.d("Already loading new timeseries, skipping...");
@@ -121,17 +166,29 @@ class HeartBeatModel with ChangeNotifier {
     }
     _loading = true;
     try {
-      TimeSeriesAPI(apiClient).getDatapoints(_filter).then((res) {
-        if (res != null && res.datapoints.isNotEmpty) {
-          log.d("New datapoints: ${res.datapointsLength}");
-          this._dataPoints.addDatapoints(res);
-          _activeLayer += 1;
-          _loading = false;
-          notifyListeners();
+      var aggregates = await TimeSeriesAPI(apiClient).getDatapoints(_filter);
+      if (aggregates != null && aggregates.datapoints.isNotEmpty) {
+        log.d("New datapoints: ${aggregates.datapointsLength}");
+        this._dataPoints.addDatapoints(aggregates);
+      }
+      if (raw) {
+        // Limit number of raw datapoints to 10 per second
+        _filter.limit = ((_filter.end - _filter.start) / 100).round();
+        log.d(_filter.toString());
+        var raw_dps =
+            await TimeSeriesAPI(apiClient).getDatapoints(_filter, raw: true);
+        if (raw_dps != null && raw_dps.datapoints.isNotEmpty) {
+          log.d("New raw datapoints: ${raw_dps.datapointsLength}");
+          this._rawDataPoints.addDatapoints(raw_dps);
+          _activeRawLayer += 1;
         }
-      });
+      }
+      _activeLayer += 1;
+      _loading = false;
+      notifyListeners();
     } catch (e) {
       _loading = false;
+      notifyListeners();
     }
   }
 }

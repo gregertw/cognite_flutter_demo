@@ -534,6 +534,26 @@ class S {
       args: [],
     );
   }
+
+  /// `Average(on/off)`
+  String get chartAverage {
+    return Intl.message(
+      'Average(on/off)',
+      name: 'chartAverage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Raw Values < 1h (on/off)`
+  String get chartRawValues {
+    return Intl.message(
+      'Raw Values < 1h (on/off)',
+      name: 'chartRawValues',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

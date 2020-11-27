@@ -22,9 +22,11 @@ class MessageLookup extends MessageLookupByLibrary {
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
     "appTitle" : MessageLookupByLibrary.simpleMessage("Cognite CDF Demo"),
+    "chartAverage" : MessageLookupByLibrary.simpleMessage("Snitt(av/på)"),
     "chartMarkers" : MessageLookupByLibrary.simpleMessage("Punkter"),
     "chartMaximum" : MessageLookupByLibrary.simpleMessage("Maximum(av/på)"),
     "chartMinimum" : MessageLookupByLibrary.simpleMessage("Minimum(av/på)"),
+    "chartRawValues" : MessageLookupByLibrary.simpleMessage("Rå verdier < 1t (av/på)"),
     "chartReset" : MessageLookupByLibrary.simpleMessage("Tilbakestill"),
     "chartTooltip" : MessageLookupByLibrary.simpleMessage("Markørinfo"),
     "chartZoomIn" : MessageLookupByLibrary.simpleMessage("Zoom inn"),

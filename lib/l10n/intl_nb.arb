@@ -48,5 +48,7 @@
   "chartTooltip": "Markørinfo",
   "chartMarkers": "Punkter",
   "chartMaximum": "Maximum(av/på)",
-  "chartMinimum": "Minimum(av/på)"
+  "chartMinimum": "Minimum(av/på)",
+  "chartAverage": "Snitt(av/på)",
+  "chartRawValues": "Rå verdier < 1t (av/på)"
 }

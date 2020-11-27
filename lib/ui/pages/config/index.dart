@@ -193,7 +193,7 @@ class ConfigPage extends StatelessWidget {
                             appState.verifyCDF();
                             Navigator.of(context).popAndPushNamed('/HomePage');
                           } else {
-                            Scaffold.of(context).showSnackBar(SnackBar(
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                                 content:
                                     Text(S.of(context).configProjectFailed)));
                           }

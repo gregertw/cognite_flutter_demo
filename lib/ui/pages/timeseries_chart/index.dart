@@ -148,7 +148,14 @@ class CheckBoxButtons extends StatelessWidget {
                                   start: chart.startRange,
                                   end: chart.endRange,
                                   resolution: chart.resolution);
-                              hbm.loadTimeSeries();
+                              // Only load raw datapoints when we have a short range
+                              if (((chart.endRange - chart.startRange) / 1000)
+                                      .round() <
+                                  3600) {
+                                hbm.loadTimeSeries(raw: true);
+                              } else {
+                                hbm.loadTimeSeries();
+                              }
                             },
                           ),
                         ],
@@ -176,7 +183,7 @@ class CheckBoxButtons extends StatelessWidget {
                       child: Row(
                         children: <Widget>[
                           IconButton(
-                            tooltip: S.of(context).chartZoomOut,
+                            tooltip: S.of(context).chartReset,
                             icon: Icon(Icons.refresh,
                                 color: Theme.of(context).accentColor),
                             onPressed: () {
@@ -209,7 +216,7 @@ class TimeSeriesChart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var hbm = Provider.of<HeartBeatModel>(context, listen: false);
-    var chart = Provider.of<ChartFeatureModel>(context);
+    var chart = Provider.of<ChartFeatureModel>(context, listen: false);
     // Initialise the range and controller
     chart.initRange(
         (hbm.rangeStart + (hbm.rangeEnd - hbm.rangeStart) / 3).round(),
@@ -239,23 +246,47 @@ class TimeSeriesChart extends StatelessWidget {
                   tooltipPosition: TooltipPosition.pointer),
               series: <CartesianSeries<DatapointModel, DateTime>>[
                 LineSeries<DatapointModel, DateTime>(
+                    isVisible: true,
+                    isVisibleInLegend: true,
+                    name: S.of(context).chartRawValues,
+                    width: 2,
+                    markerSettings: MarkerSettings(
+                        height: 3, width: 3, isVisible: chart.showMarker),
+                    dataSource: Provider.of<HeartBeatModel>(context)
+                        .timeSeriesDataPoints,
+                    xValueMapper: (DatapointModel ts, _) => ts.datetime,
+                    yValueMapper: (DatapointModel ts, _) => ts.value),
+                LineSeries<DatapointModel, DateTime>(
+                    isVisible: false,
+                    isVisibleInLegend: true,
                     name: S.of(context).chartMaximum,
                     width: 2,
                     markerSettings: MarkerSettings(
                         height: 3, width: 3, isVisible: chart.showMarker),
                     dataSource: Provider.of<HeartBeatModel>(context)
-                        .timeSeriesDataPoints,
+                        .timeSeriesAggregates,
                     xValueMapper: (DatapointModel ts, _) => ts.datetime,
                     yValueMapper: (DatapointModel ts, _) => ts.max),
                 LineSeries<DatapointModel, DateTime>(
+                    isVisible: false,
+                    isVisibleInLegend: true,
                     name: S.of(context).chartMinimum,
                     width: 2,
                     markerSettings: MarkerSettings(
                         height: 3, width: 3, isVisible: chart.showMarker),
                     dataSource: Provider.of<HeartBeatModel>(context)
-                        .timeSeriesDataPoints,
+                        .timeSeriesAggregates,
                     xValueMapper: (DatapointModel ts, _) => ts.datetime,
                     yValueMapper: (DatapointModel ts, _) => ts.min),
+                LineSeries<DatapointModel, DateTime>(
+                    name: S.of(context).chartAverage,
+                    width: 2,
+                    markerSettings: MarkerSettings(
+                        height: 3, width: 3, isVisible: chart.showMarker),
+                    dataSource: Provider.of<HeartBeatModel>(context)
+                        .timeSeriesAggregates,
+                    xValueMapper: (DatapointModel ts, _) => ts.datetime,
+                    yValueMapper: (DatapointModel ts, _) => ts.average),
               ],
             ),
             Container(
@@ -295,14 +326,9 @@ class TimeSeriesChart extends StatelessWidget {
                     series: <CartesianSeries<DatapointModel, DateTime>>[
                       LineSeries<DatapointModel, DateTime>(
                           dataSource: Provider.of<HeartBeatModel>(context)
-                              .timeSeriesFullRangeDataPoints,
+                              .timeSeriesFullRangeAggregates,
                           xValueMapper: (DatapointModel ts, _) => ts.datetime,
-                          yValueMapper: (DatapointModel ts, _) => ts.max),
-                      LineSeries<DatapointModel, DateTime>(
-                          dataSource: Provider.of<HeartBeatModel>(context)
-                              .timeSeriesFullRangeDataPoints,
-                          xValueMapper: (DatapointModel ts, _) => ts.datetime,
-                          yValueMapper: (DatapointModel ts, _) => ts.min),
+                          yValueMapper: (DatapointModel ts, _) => ts.average),
                     ],
                   ),
                 ),

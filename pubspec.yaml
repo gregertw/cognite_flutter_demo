@@ -2,6 +2,7 @@ name: cognite_cdf_demo
 description: A demo application for Cognite CDF
 homepage: https://docs.cognite.com/dev/
 version: 0.1.2+dev1
+publish_to: none
 
 environment:
   sdk: ">2.1.0 <3.0.0"
@@ -19,6 +20,8 @@ dependencies:
   shared_preferences: ^0.5.12
   firebase_analytics: ^6.0.1
   firebase_crashlytics: ^0.2.1
+  firebase_analytics_web: ^0.1.1
+  firebase_core_web: ^0.2.1+1
   flushbar: ^1.10.4
   cognite_cdf_sdk:
     path: ../cognite_cdf_sdk/
