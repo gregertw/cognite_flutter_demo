@@ -255,8 +255,8 @@ class TimeSeriesChart extends StatelessWidget {
                     isVisibleInLegend: true,
                     name: S.of(context).chartRawValues,
                     width: 2,
-                    markerSettings: MarkerSettings(
-                        height: 3, width: 3, isVisible: chart.showMarker),
+                    markerSettings:
+                        MarkerSettings(height: 3, width: 3, isVisible: true),
                     dataSource: Provider.of<HeartBeatModel>(context)
                         .timeSeriesDataPoints,
                     xValueMapper: (DatapointModel ts, _) => ts.datetime,
