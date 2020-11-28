@@ -494,3 +494,4 @@ gradle/wrapper/gradle-wrapper.jar
 gradle/wrapper/gradle-wrapper.properties
 android/key.properties
 .vscode/settings.json
+secrets.txt
