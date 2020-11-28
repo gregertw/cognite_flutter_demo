@@ -9,6 +9,7 @@ class ChartFeatureModel with ChangeNotifier {
   int startRange = 0;
   int endRange = 0;
   int resolution;
+  int resolutionFactor;
   get startRangeDate => DateTime.fromMillisecondsSinceEpoch(startRange);
   get endRangeDate => DateTime.fromMillisecondsSinceEpoch(endRange);
   get dateAxisFormat => _dateAxisFormat;
@@ -17,7 +18,7 @@ class ChartFeatureModel with ChangeNotifier {
 
   RangeController get rangeController => _rangeController;
 
-  ChartFeatureModel() {
+  ChartFeatureModel(this.resolutionFactor) {
     showMarker = false;
     showToolTip = true;
     _dateAxisFormat = 'MMM dd HH:mm';
@@ -62,7 +63,7 @@ class ChartFeatureModel with ChangeNotifier {
       startRange = start;
       endRange = end;
     }
-    resolution = ((endRange - startRange) / 460000).round();
+    resolution = ((endRange - startRange) / resolutionFactor).round();
     setDateAxisFormat();
     if (rangeController == null) {
       _rangeController =

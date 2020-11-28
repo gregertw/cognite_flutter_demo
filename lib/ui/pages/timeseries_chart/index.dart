@@ -25,9 +25,10 @@ class TimeSeriesHome extends StatelessWidget {
     return new MultiProvider(
       providers: [
         ChangeNotifierProvider(
-            create: (_) => HeartBeatModel(
-                apiClient, appState.cdfTimeSeriesId, appState.cdfNrOfDays)),
-        ChangeNotifierProvider(create: (_) => ChartFeatureModel())
+            create: (_) => HeartBeatModel(apiClient, appState.cdfTimeSeriesId,
+                appState.cdfNrOfDays, appState.resolutionFactor)),
+        ChangeNotifierProvider(
+            create: (_) => ChartFeatureModel(appState.resolutionFactor))
       ],
       child: Scaffold(
         key: Key("HomePage_Scaffold"),
@@ -142,19 +143,23 @@ class CheckBoxButtons extends StatelessWidget {
                             icon: Icon(Icons.add,
                                 color: Theme.of(context).accentColor),
                             onPressed: () {
-                              chart.setNewRange(zoom: 0.4);
-                              chart.applyRangeController();
-                              hbm.setFilter(
-                                  start: chart.startRange,
-                                  end: chart.endRange,
-                                  resolution: chart.resolution);
-                              // Only load raw datapoints when we have a short range
-                              if (((chart.endRange - chart.startRange) / 1000)
-                                      .round() <
-                                  3600) {
-                                hbm.loadTimeSeries(raw: true);
-                              } else {
-                                hbm.loadTimeSeries();
+                              // We don't want to zoom in more than 11s
+                              if ((chart.endRange - chart.startRange).round() >
+                                  11000) {
+                                chart.setNewRange(zoom: 0.4);
+                                chart.applyRangeController();
+                                hbm.setFilter(
+                                    start: chart.startRange,
+                                    end: chart.endRange,
+                                    resolution: chart.resolution);
+                                // Only load raw datapoints when we have a short range
+                                if (((chart.endRange - chart.startRange) / 1000)
+                                        .round() <
+                                    3600) {
+                                  hbm.loadTimeSeries(raw: true);
+                                } else {
+                                  hbm.loadTimeSeries();
+                                }
                               }
                             },
                           ),
@@ -216,7 +221,7 @@ class TimeSeriesChart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var hbm = Provider.of<HeartBeatModel>(context, listen: false);
-    var chart = Provider.of<ChartFeatureModel>(context, listen: false);
+    var chart = Provider.of<ChartFeatureModel>(context);
     // Initialise the range and controller
     chart.initRange(
         (hbm.rangeStart + (hbm.rangeEnd - hbm.rangeStart) / 3).round(),

@@ -7,6 +7,7 @@ class HeartBeatModel with ChangeNotifier {
   CDFApiClient apiClient;
   String tsId;
   int startDays;
+  int resolutionFactor;
   DatapointsModel _dataPoints = DatapointsModel();
   DatapointsModel _rawDataPoints = DatapointsModel();
   DatapointsFilterModel _filter = DatapointsFilterModel();
@@ -20,7 +21,8 @@ class HeartBeatModel with ChangeNotifier {
   get rangeEnd => _rangeEnd;
   get loading => _loading;
 
-  HeartBeatModel(this.apiClient, this.tsId, this.startDays) {
+  HeartBeatModel(
+      this.apiClient, this.tsId, this.startDays, this.resolutionFactor) {
     _loading = false;
     _filter.externalId = tsId;
     setFilter(nrOfDays: startDays);
@@ -97,7 +99,8 @@ class HeartBeatModel with ChangeNotifier {
       _filter.includeOutsidePoints = false;
     }
     if (resolution == null) {
-      _filter.resolution = ((_filter.end - _filter.start) / 240000).round();
+      _filter.resolution =
+          ((_filter.end - _filter.start) / resolutionFactor).round();
     } else {
       _filter.resolution = resolution;
     }
@@ -147,7 +150,7 @@ class HeartBeatModel with ChangeNotifier {
     if (_activeLayer > 1) {
       _dataPoints.popLayer();
       _activeLayer -= 1;
-      if (_activeRawLayer > 1) {
+      if (_activeRawLayer > 0) {
         _rawDataPoints.popLayer();
         _activeRawLayer -= 1;
       }
@@ -170,20 +173,20 @@ class HeartBeatModel with ChangeNotifier {
       if (aggregates != null && aggregates.datapoints.isNotEmpty) {
         log.d("New datapoints: ${aggregates.datapointsLength}");
         this._dataPoints.addDatapoints(aggregates);
+        _activeLayer += 1;
       }
       if (raw) {
         // Limit number of raw datapoints to 10 per second
         _filter.limit = ((_filter.end - _filter.start) / 100).round();
         log.d(_filter.toString());
-        var raw_dps =
+        var rawDPs =
             await TimeSeriesAPI(apiClient).getDatapoints(_filter, raw: true);
-        if (raw_dps != null && raw_dps.datapoints.isNotEmpty) {
-          log.d("New raw datapoints: ${raw_dps.datapointsLength}");
-          this._rawDataPoints.addDatapoints(raw_dps);
+        if (rawDPs != null && rawDPs.datapoints.isNotEmpty) {
+          log.d("New raw datapoints: ${rawDPs.datapointsLength}");
+          this._rawDataPoints.addDatapoints(rawDPs);
           _activeRawLayer += 1;
         }
       }
-      _activeLayer += 1;
       _loading = false;
       notifyListeners();
     } catch (e) {

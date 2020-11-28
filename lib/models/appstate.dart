@@ -25,6 +25,9 @@ class AppStateModel with ChangeNotifier {
   int _cdfProjectId;
   int _cdfApiKeyId;
   int _cdfNrOfDays = 10;
+  // Used to calculate resolution, the bigger the more points in a range are loaded.
+  // This is injected into ChartState and HeartbeatState.
+  int _resolutionFactor = 420000;
   StatusModel _cdfStatus;
 
   final SharedPreferences prefs;
@@ -44,6 +47,8 @@ class AppStateModel with ChangeNotifier {
   String get cdfProject => _cdfProject;
   int get cdfProjectId => _cdfProjectId;
   int get cdfApiKeyId => _cdfApiKeyId;
+  int get resolutionFactor => _resolutionFactor;
+  set resolutionFactor(i) => _resolutionFactor = i;
   set cdfProject(s) {
     _cdfProject = s;
     prefs.setString('cdfProject', s);
