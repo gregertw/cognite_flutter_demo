@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:logger/logger.dart';
+import 'package:dio/adapter_browser.dart';
 import 'package:cognite_cdf_demo/models/appstate.dart';
 import 'package:cognite_cdf_demo/ui/pages/config/index.dart';
 import 'package:cognite_cdf_demo/ui/pages/timeseries_chart/index.dart';
@@ -28,7 +29,8 @@ class HomePage extends StatelessWidget {
             project: appState.cdfProject,
             apikey: appState.cdfApiKey,
             baseUrl: appState.cdfURL,
-            logLevel: Level.error);
+            logLevel: Level.error,
+            httpAdapter: BrowserHttpClientAdapter());
 
     return TimeSeriesHome(apiClient: apiClient, appState: appState);
   }

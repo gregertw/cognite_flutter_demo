@@ -65,7 +65,7 @@ class ChartFeatureModel with ChangeNotifier {
     }
     resolution = ((endRange - startRange) / resolutionFactor).round();
     setDateAxisFormat();
-    if (rangeController == null) {
+    if (_rangeController == null) {
       _rangeController =
           RangeController(start: startRangeDate, end: endRangeDate);
       return;

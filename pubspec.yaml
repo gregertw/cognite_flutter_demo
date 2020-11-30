@@ -1,7 +1,7 @@
 name: cognite_cdf_demo
 description: A demo application for Cognite CDF
 homepage: https://docs.cognite.com/dev/
-version: 0.1.2+dev1
+version: 0.2.0
 publish_to: none
 
 environment:
@@ -23,13 +23,12 @@ dependencies:
   firebase_analytics_web: ^0.1.1
   firebase_core_web: ^0.2.1+1
   flushbar: ^1.10.4
-  cognite_cdf_sdk:
-    path: ../cognite_cdf_sdk/
-  syncfusion_flutter_charts:
+  cognite_cdf_sdk: ^0.1.2-dev.4
+  syncfusion_flutter_charts: #^18.3.51
     path: ../flutter-widgets/packages/syncfusion_flutter_charts
-  syncfusion_flutter_core:
+  syncfusion_flutter_core: #^18.3.51
     path: ../flutter-widgets/packages/syncfusion_flutter_core
-  syncfusion_flutter_sliders:
+  syncfusion_flutter_sliders: #^18.3.51
     path: ../flutter-widgets/packages/syncfusion_flutter_sliders
 dev_dependencies:
   flutter_test:

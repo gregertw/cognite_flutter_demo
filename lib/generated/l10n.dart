@@ -554,6 +554,66 @@ class S {
       args: [],
     );
   }
+
+  /// `Continuous Variance(on/off)`
+  String get chartContinuousVariance {
+    return Intl.message(
+      'Continuous Variance(on/off)',
+      name: 'chartContinuousVariance',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Discrete Variance(on/off)`
+  String get chartDiscreteVariance {
+    return Intl.message(
+      'Discrete Variance(on/off)',
+      name: 'chartDiscreteVariance',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Count(on/off)`
+  String get chartCount {
+    return Intl.message(
+      'Count(on/off)',
+      name: 'chartCount',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Interpolation(on/off)`
+  String get chartInterpolation {
+    return Intl.message(
+      'Interpolation(on/off)',
+      name: 'chartInterpolation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Step Interpolation(on/off)`
+  String get chartStepInterpolation {
+    return Intl.message(
+      'Step Interpolation(on/off)',
+      name: 'chartStepInterpolation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Total Variance(on/off)`
+  String get chartTotalVariance {
+    return Intl.message(
+      'Total Variance(on/off)',
+      name: 'chartTotalVariance',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

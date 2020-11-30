@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:dio/adapter_browser.dart';
 import 'package:cognite_cdf_demo/mock/mockmap.dart';
 import 'package:cognite_cdf_demo/generated/l10n.dart';
 import 'package:cognite_cdf_sdk/cognite_cdf_sdk.dart';
@@ -148,7 +149,10 @@ class AppStateModel with ChangeNotifier {
     _cdfTimeSeriesId = prefs.getString('cdfTimeSeriesId') ?? '';
     CDFApiClient client = _mocks.getMock('heartbeat') ??
         CDFApiClient(
-            project: _cdfProject, apikey: _cdfApiKey, baseUrl: _cdfURL);
+            project: _cdfProject,
+            apikey: _cdfApiKey,
+            baseUrl: _cdfURL,
+            httpAdapter: BrowserHttpClientAdapter());
     try {
       _cdfStatus = await client.getStatus();
     } catch (e) {

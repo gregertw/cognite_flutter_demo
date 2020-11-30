@@ -242,7 +242,11 @@ class TimeSeriesChart extends StatelessWidget {
                   dateFormat: DateFormat(chart.dateAxisFormat)),
               primaryYAxis: NumericAxis(
                   isVisible: true, anchorRangeToVisiblePoints: true),
-              legend: Legend(isVisible: true, position: LegendPosition.top),
+              legend: Legend(
+                  isVisible: true,
+                  position: LegendPosition.top,
+                  toggleSeriesVisibility: true,
+                  overflowMode: LegendItemOverflowMode.wrap),
               tooltipBehavior: TooltipBehavior(
                   enable: chart.showToolTip,
                   shared: true,
@@ -261,6 +265,15 @@ class TimeSeriesChart extends StatelessWidget {
                         .timeSeriesDataPoints,
                     xValueMapper: (DatapointModel ts, _) => ts.datetime,
                     yValueMapper: (DatapointModel ts, _) => ts.value),
+                LineSeries<DatapointModel, DateTime>(
+                    name: S.of(context).chartAverage,
+                    width: 2,
+                    markerSettings: MarkerSettings(
+                        height: 3, width: 3, isVisible: chart.showMarker),
+                    dataSource: Provider.of<HeartBeatModel>(context)
+                        .timeSeriesAggregates,
+                    xValueMapper: (DatapointModel ts, _) => ts.datetime,
+                    yValueMapper: (DatapointModel ts, _) => ts.average),
                 LineSeries<DatapointModel, DateTime>(
                     isVisible: false,
                     isVisibleInLegend: true,
@@ -284,14 +297,74 @@ class TimeSeriesChart extends StatelessWidget {
                     xValueMapper: (DatapointModel ts, _) => ts.datetime,
                     yValueMapper: (DatapointModel ts, _) => ts.min),
                 LineSeries<DatapointModel, DateTime>(
-                    name: S.of(context).chartAverage,
+                    isVisible: false,
+                    isVisibleInLegend: true,
+                    name: S.of(context).chartContinuousVariance,
                     width: 2,
                     markerSettings: MarkerSettings(
                         height: 3, width: 3, isVisible: chart.showMarker),
                     dataSource: Provider.of<HeartBeatModel>(context)
                         .timeSeriesAggregates,
                     xValueMapper: (DatapointModel ts, _) => ts.datetime,
-                    yValueMapper: (DatapointModel ts, _) => ts.average),
+                    yValueMapper: (DatapointModel ts, _) =>
+                        ts.continuousVariance),
+                LineSeries<DatapointModel, DateTime>(
+                    isVisible: false,
+                    isVisibleInLegend: true,
+                    name: S.of(context).chartDiscreteVariance,
+                    width: 2,
+                    markerSettings: MarkerSettings(
+                        height: 3, width: 3, isVisible: chart.showMarker),
+                    dataSource: Provider.of<HeartBeatModel>(context)
+                        .timeSeriesAggregates,
+                    xValueMapper: (DatapointModel ts, _) => ts.datetime,
+                    yValueMapper: (DatapointModel ts, _) =>
+                        ts.discreteVariance),
+                LineSeries<DatapointModel, DateTime>(
+                    isVisible: false,
+                    isVisibleInLegend: true,
+                    name: S.of(context).chartCount,
+                    width: 2,
+                    markerSettings: MarkerSettings(
+                        height: 3, width: 3, isVisible: chart.showMarker),
+                    dataSource: Provider.of<HeartBeatModel>(context)
+                        .timeSeriesAggregates,
+                    xValueMapper: (DatapointModel ts, _) => ts.datetime,
+                    yValueMapper: (DatapointModel ts, _) => ts.count),
+                LineSeries<DatapointModel, DateTime>(
+                    isVisible: false,
+                    isVisibleInLegend: true,
+                    name: S.of(context).chartInterpolation,
+                    width: 2,
+                    markerSettings: MarkerSettings(
+                        height: 3, width: 3, isVisible: chart.showMarker),
+                    dataSource: Provider.of<HeartBeatModel>(context)
+                        .timeSeriesAggregates,
+                    xValueMapper: (DatapointModel ts, _) => ts.datetime,
+                    yValueMapper: (DatapointModel ts, _) => ts.interpolation),
+                LineSeries<DatapointModel, DateTime>(
+                    isVisible: false,
+                    isVisibleInLegend: true,
+                    name: S.of(context).chartStepInterpolation,
+                    width: 2,
+                    markerSettings: MarkerSettings(
+                        height: 3, width: 3, isVisible: chart.showMarker),
+                    dataSource: Provider.of<HeartBeatModel>(context)
+                        .timeSeriesAggregates,
+                    xValueMapper: (DatapointModel ts, _) => ts.datetime,
+                    yValueMapper: (DatapointModel ts, _) =>
+                        ts.stepInterpolation),
+                LineSeries<DatapointModel, DateTime>(
+                    isVisible: false,
+                    isVisibleInLegend: true,
+                    name: S.of(context).chartTotalVariance,
+                    width: 2,
+                    markerSettings: MarkerSettings(
+                        height: 3, width: 3, isVisible: chart.showMarker),
+                    dataSource: Provider.of<HeartBeatModel>(context)
+                        .timeSeriesAggregates,
+                    xValueMapper: (DatapointModel ts, _) => ts.datetime,
+                    yValueMapper: (DatapointModel ts, _) => ts.totalVariance),
               ],
             ),
             Container(
@@ -325,7 +398,12 @@ class TimeSeriesChart extends StatelessWidget {
                   child: SfCartesianChart(
                     key: Key('HomePage_TimeSeriesChart_RangeSelector'),
                     margin: const EdgeInsets.all(0),
-                    primaryXAxis: DateTimeAxis(isVisible: false),
+                    primaryXAxis: DateTimeAxis(
+                        isVisible: false,
+                        minimum:
+                            DateTime.fromMillisecondsSinceEpoch(hbm.rangeStart),
+                        maximum:
+                            DateTime.fromMillisecondsSinceEpoch(hbm.rangeEnd)),
                     primaryYAxis: NumericAxis(isVisible: false),
                     plotAreaBorderWidth: 0,
                     series: <CartesianSeries<DatapointModel, DateTime>>[

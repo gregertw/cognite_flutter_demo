@@ -50,5 +50,11 @@
   "chartMaximum": "Maximum(av/på)",
   "chartMinimum": "Minimum(av/på)",
   "chartAverage": "Snitt(av/på)",
-  "chartRawValues": "Rå verdier < 1t (av/på)"
+  "chartRawValues": "Rå verdier < 1t (av/på)",
+  "chartContinuousVariance": "Kontinuerlig varians(av/på)",
+  "chartDiscreteVariance": "Diskret varians(av/på)",
+  "chartCount": "Antall(av/på)",
+  "chartInterpolation": "Interpolering(av/på)",
+  "chartStepInterpolation": "Stegvis interpolering(av/på)",
+  "chartTotalVariance": "Total varians(av/på)"
 }

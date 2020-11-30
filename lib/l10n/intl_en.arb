@@ -50,5 +50,11 @@
   "chartMaximum": "Maximum(on/off)",
   "chartMinimum": "Minimum(on/off)",
   "chartAverage": "Average(on/off)",
-  "chartRawValues": "Raw Values < 1h (on/off)"
+  "chartRawValues": "Raw Values < 1h (on/off)",
+  "chartContinuousVariance": "Continuous Variance(on/off)",
+  "chartDiscreteVariance": "Discrete Variance(on/off)",
+  "chartCount": "Count(on/off)",
+  "chartInterpolation": "Interpolation(on/off)",
+  "chartStepInterpolation": "Step Interpolation(on/off)",
+  "chartTotalVariance": "Total Variance(on/off)"
 }

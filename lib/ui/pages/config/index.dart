@@ -124,6 +124,7 @@ class ConfigPage extends StatelessWidget {
                             return null;
                           }
                         },
+                        obscureText: true,
                         keyboardType: TextInputType.visiblePassword,
                         style: new TextStyle(
                           fontFamily: "Poppins",
