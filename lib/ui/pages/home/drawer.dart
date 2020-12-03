@@ -3,20 +3,45 @@ import 'package:provider/provider.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:cognite_cdf_demo/models/appstate.dart';
 import 'package:cognite_cdf_demo/generated/l10n.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class HomePageDrawer extends StatelessWidget {
-  void _showFlushbar(BuildContext context, String title, String msg) {
-    Flushbar(
-      title: title,
-      message: msg,
-      icon: Icon(
-        Icons.info_outline,
-        size: 28,
-        color: Colors.blue.shade300,
-      ),
-      leftBarIndicatorColor: Colors.blue.shade300,
-      duration: Duration(seconds: 3),
-    )..show(context);
+  void _showFlushbar(BuildContext context, String title, String msg,
+      {String linkText}) {
+    if (linkText == null) {
+      Flushbar(
+        title: title,
+        message: msg,
+        icon: Icon(
+          Icons.info_outline,
+          size: 28,
+          color: Colors.blue.shade300,
+        ),
+        leftBarIndicatorColor: Colors.blue.shade300,
+        duration: Duration(seconds: 3),
+      )..show(context);
+    } else {
+      Flushbar(
+        title: title,
+        message: msg,
+        mainButton: FlatButton(
+          onPressed: () {
+            launch(linkText);
+          },
+          child: Text(
+            linkText,
+            style: TextStyle(color: Colors.amber),
+          ),
+        ),
+        icon: Icon(
+          Icons.info_outline,
+          size: 28,
+          color: Colors.blue.shade300,
+        ),
+        leftBarIndicatorColor: Colors.blue.shade300,
+        duration: Duration(seconds: 3),
+      )..show(context);
+    }
   }
 
   @override
@@ -47,6 +72,16 @@ class HomePageDrawer extends StatelessWidget {
                   context,
                   S.of(context).drawerLocalisationResultTitle,
                   S.of(context).drawerLocalisationResultMsg + appState.locale);
+            },
+          ),
+          ListTile(
+            key: Key("DrawerMenuTile_About"),
+            title: Text(S.of(context).drawerAbout),
+            onTap: () {
+              _showFlushbar(context, S.of(context).drawerAboutTitle,
+                  S.of(context).drawerAboutMessage,
+                  linkText:
+                      "https://github.com/gregertw/cognite-flutter-demo/issues");
             },
           ),
           ListTile(

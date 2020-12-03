@@ -215,81 +215,31 @@ class S {
     );
   }
 
-  /// `Refresh tokens`
-  String get drawerRefreshTokens {
+  /// `About...`
+  String get drawerAbout {
     return Intl.message(
-      'Refresh tokens',
-      name: 'drawerRefreshTokens',
+      'About...',
+      name: 'drawerAbout',
       desc: '',
       args: [],
     );
   }
 
-  /// `Tokens refreshed`
-  String get drawerRefreshTokensResultTitle {
+  /// `About this application`
+  String get drawerAboutTitle {
     return Intl.message(
-      'Tokens refreshed',
-      name: 'drawerRefreshTokensResultTitle',
+      'About this application',
+      name: 'drawerAboutTitle',
       desc: '',
       args: [],
     );
   }
 
-  /// `See user details for the new tokens.`
-  String get drawerRefreshTokensResultMsg {
+  /// `This application is a personal project of Greger Wedel (c). Report issues at: `
+  String get drawerAboutMessage {
     return Intl.message(
-      'See user details for the new tokens.',
-      name: 'drawerRefreshTokensResultMsg',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Get user info`
-  String get drawerGetUserInfo {
-    return Intl.message(
-      'Get user info',
-      name: 'drawerGetUserInfo',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `User info retrieved`
-  String get drawerGetUserInfoResultTitle {
-    return Intl.message(
-      'User info retrieved',
-      name: 'drawerGetUserInfoResultTitle',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `User details have been updated.`
-  String get drawerGetUserInfoResultMsg {
-    return Intl.message(
-      'User details have been updated.',
-      name: 'drawerGetUserInfoResultMsg',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `User info retrieval failed`
-  String get drawerGetUserInfoFailedTitle {
-    return Intl.message(
-      'User info retrieval failed',
-      name: 'drawerGetUserInfoFailedTitle',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Try to refresh token first!`
-  String get drawerGetUserInfoFailedMsg {
-    return Intl.message(
-      'Try to refresh token first!',
-      name: 'drawerGetUserInfoFailedMsg',
+      'This application is a personal project of Greger Wedel (c). Report issues at: ',
+      name: 'drawerAboutMessage',
       desc: '',
       args: [],
     );
@@ -490,6 +440,26 @@ class S {
     return Intl.message(
       'Reset',
       name: 'chartReset',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Request History`
+  String get chartHistory {
+    return Intl.message(
+      'Request History',
+      name: 'chartHistory',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Documentation`
+  String get chartInfo {
+    return Intl.message(
+      'Documentation',
+      name: 'chartInfo',
       desc: '',
       args: [],
     );

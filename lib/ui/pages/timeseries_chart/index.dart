@@ -9,6 +9,8 @@ import 'package:cognite_cdf_sdk/cognite_cdf_sdk.dart';
 import 'package:cognite_cdf_demo/generated/l10n.dart';
 import 'package:intl/intl.dart';
 import 'package:cognite_cdf_demo/ui/pages/home/drawer.dart';
+import 'package:cognite_cdf_demo/ui/pages/timeseries_chart/history.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class TimeSeriesHome extends StatelessWidget {
   const TimeSeriesHome({
@@ -201,6 +203,37 @@ class CheckBoxButtons extends StatelessWidget {
                                           (hbm.rangeEnd - hbm.rangeStart) / 3)
                                       .round());
                               chart.applyRangeController();
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(24, 0, 0, 0),
+                      child: Row(
+                        children: <Widget>[
+                          IconButton(
+                            tooltip: S.of(context).chartHistory,
+                            icon: Icon(Icons.history,
+                                color: Theme.of(context).accentColor),
+                            onPressed: () {
+                              historyDialog(context);
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(24, 0, 0, 0),
+                      child: Row(
+                        children: <Widget>[
+                          IconButton(
+                            tooltip: S.of(context).chartInfo,
+                            icon: Icon(Icons.info,
+                                color: Theme.of(context).accentColor),
+                            onPressed: () {
+                              launch(
+                                  'https://docs.cognite.com/dev/concepts/aggregation/');
                             },
                           ),
                         ],
