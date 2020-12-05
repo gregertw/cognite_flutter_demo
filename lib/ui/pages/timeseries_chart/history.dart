@@ -29,31 +29,33 @@ void historyDialog(BuildContext context) {
               ),
               title: Text("${element.method} - ${element.path}"),
               children: <Widget>[
-                (element.method == 'GET')
-                    ? null
-                    : Container(
-                        height: MediaQuery.of(context).size.height * (4 / 5),
-                        width: MediaQuery.of(context).size.width * (4 / 5),
-                        child: ListView(
-                          padding: const EdgeInsets.all(8),
-                          children: <Widget>[
-                            ExpansionTile(
+                Container(
+                  height: MediaQuery.of(context).size.height * (4 / 5),
+                  width: MediaQuery.of(context).size.width * (4 / 5),
+                  child: ListView(
+                    padding: const EdgeInsets.all(8),
+                    children: <Widget>[
+                      (element.method == 'GET')
+                          ? ListTile(
+                              title: Text('Request - GET'),
+                            )
+                          : ExpansionTile(
                               title: Text('Request'),
                               children: [
                                 Text(
                                     "${JsonEncoder.withIndent('  ').convert(element.request)} ")
                               ],
                             ),
-                            ExpansionTile(
-                              title: Text('Response'),
-                              children: [
-                                Text(
-                                    "${JsonEncoder.withIndent('  ').convert(element.response)} ")
-                              ],
-                            ),
-                          ],
-                        ),
+                      ExpansionTile(
+                        title: Text('Response'),
+                        children: [
+                          Text(
+                              "${JsonEncoder.withIndent('  ').convert(element.response)} ")
+                        ],
                       ),
+                    ],
+                  ),
+                ),
               ],
             );
           },

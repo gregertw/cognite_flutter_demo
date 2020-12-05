@@ -1,13 +1,14 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:dio/adapter_browser.dart';
+// Trick to load correct http adapter dependent on browser or app compile
+import 'httpadapter.dart' if (dart.library.html) 'webhttpadapter.dart';
 import 'package:cognite_cdf_demo/mock/mockmap.dart';
 import 'package:cognite_cdf_demo/generated/l10n.dart';
 import 'package:cognite_cdf_sdk/cognite_cdf_sdk.dart';
-
 import 'package:cognite_cdf_demo/globals.dart';
 
 class AppStateModel with ChangeNotifier {
@@ -30,6 +31,7 @@ class AppStateModel with ChangeNotifier {
   // This is injected into ChartState and HeartbeatState.
   int _resolutionFactor = 420000;
   StatusModel _cdfStatus;
+  CDFApiClient _apiClient;
 
   final SharedPreferences prefs;
   final FirebaseAnalytics analytics;
@@ -85,6 +87,8 @@ class AppStateModel with ChangeNotifier {
     _cdfNrOfDays = i;
     prefs.setInt('cdfNrOfDays', i);
   }
+
+  CDFApiClient get apiClient => _apiClient;
 
   MockMap get mocks => _mocks;
   String get locale => _locale ?? '';
@@ -147,14 +151,19 @@ class AppStateModel with ChangeNotifier {
     _cdfProject = prefs.getString('cdfProject') ?? 'publicdata';
     _cdfURL = prefs.getString('cdfURL') ?? 'https://api.cognitedata.com';
     _cdfTimeSeriesId = prefs.getString('cdfTimeSeriesId') ?? '';
-    CDFApiClient client = _mocks.getMock('heartbeat') ??
-        CDFApiClient(
-            project: _cdfProject,
-            apikey: _cdfApiKey,
-            baseUrl: _cdfURL,
-            httpAdapter: BrowserHttpClientAdapter());
+    if (_mocks.getMock('heartbeat') == null) {
+      _apiClient = CDFApiClient(
+          project: _cdfProject,
+          apikey: _cdfApiKey,
+          baseUrl: _cdfURL,
+          logLevel: Level.error,
+          httpAdapter: GenericHttpClientAdapter());
+    } else {
+      _apiClient = _mocks.getMock('heartbeat');
+    }
     try {
-      _cdfStatus = await client.getStatus();
+      _cdfStatus = await _apiClient.getStatus();
+      log.d(_cdfStatus);
     } catch (e) {
       _cdfStatus = null;
     }
