@@ -1,49 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:flushbar/flushbar.dart';
 import 'package:cognite_cdf_demo/models/appstate.dart';
 import 'package:cognite_cdf_demo/generated/l10n.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:overlay_support/overlay_support.dart';
 
 class HomePageDrawer extends StatelessWidget {
-  void _showFlushbar(BuildContext context, String title, String msg,
-      {String linkText}) {
-    if (linkText == null) {
-      Flushbar(
-        title: title,
-        message: msg,
-        icon: Icon(
-          Icons.info_outline,
-          size: 28,
-          color: Colors.blue.shade300,
-        ),
-        leftBarIndicatorColor: Colors.blue.shade300,
-        duration: Duration(seconds: 3),
-      )..show(context);
-    } else {
-      Flushbar(
-        title: title,
-        message: msg,
-        mainButton: FlatButton(
-          onPressed: () {
-            launch(linkText);
-          },
-          child: Text(
-            linkText,
-            style: TextStyle(color: Colors.amber),
-          ),
-        ),
-        icon: Icon(
-          Icons.info_outline,
-          size: 28,
-          color: Colors.blue.shade300,
-        ),
-        leftBarIndicatorColor: Colors.blue.shade300,
-        duration: Duration(seconds: 3),
-      )..show(context);
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     var appState = Provider.of<AppStateModel>(context);
@@ -68,20 +30,45 @@ class HomePageDrawer extends StatelessWidget {
               // supported locales. This is just a quick and dirty
               // switch
               appState.switchLocale();
-              _showFlushbar(
-                  context,
-                  S.of(context).drawerLocalisationResultTitle,
-                  S.of(context).drawerLocalisationResultMsg + appState.locale);
+              showSimpleNotification(
+                  Text(S.of(context).drawerLocalisationResultTitle),
+                  leading: Icon(
+                    Icons.info_outline,
+                    size: 28,
+                    color: Colors.blue.shade300,
+                  ),
+                  subtitle: Text(S.of(context).drawerLocalisationResultMsg +
+                      appState.locale),
+                  duration: Duration(seconds: 4),
+                  position: NotificationPosition.bottom);
             },
           ),
           ListTile(
             key: Key("DrawerMenuTile_About"),
             title: Text(S.of(context).drawerAbout),
             onTap: () {
-              _showFlushbar(context, S.of(context).drawerAboutTitle,
-                  S.of(context).drawerAboutMessage,
-                  linkText:
-                      "https://github.com/gregertw/cognite-flutter-demo/issues");
+              showSimpleNotification(Text(S.of(context).drawerAboutTitle),
+                  leading: Icon(
+                    Icons.info_outline,
+                    size: 28,
+                    color: Colors.blue.shade300,
+                  ), trailing: Builder(builder: (context) {
+                return FlatButton(
+                  textColor: Colors.yellow,
+                  onPressed: () {
+                    OverlaySupportEntry.of(context).dismiss();
+                    launch(
+                        "https://github.com/gregertw/cognite-flutter-demo/issues");
+                  },
+                  child: Text(
+                    "https://github.com/gregertw/cognite-flutter-demo/issues",
+                    style: TextStyle(color: Colors.amber),
+                  ),
+                );
+              }),
+                  subtitle: Text(S.of(context).drawerAboutMessage),
+                  duration: Duration(seconds: 4),
+                  position: NotificationPosition.bottom);
             },
           ),
           ListTile(

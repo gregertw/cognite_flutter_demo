@@ -1,6 +1,5 @@
 import 'package:cognite_cdf_sdk/cognite_cdf_sdk.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:logger/logger.dart';
 import 'package:dio/adapter_browser.dart';
@@ -18,11 +17,6 @@ class HomePage extends StatelessWidget {
         body: ConfigPage(),
       );
     }
-
-    // as documented in appstate.dart, we here set the defaultLokale
-    // from appState to apply loaded locale from sharedpreferences on
-    // startup.
-    Intl.defaultLocale = appState.locale;
 
     var apiClient = appState.mocks.getMock('heartbeat') ??
         CDFApiClient(

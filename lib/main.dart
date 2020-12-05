@@ -2,6 +2,8 @@ import 'dart:async';
 //import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:intl/intl.dart';
+import 'package:overlay_support/overlay_support.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
@@ -31,40 +33,50 @@ void main() async {
   // Get an instance so that globals are initialised
   var prefs = await SharedPreferences.getInstance();
   // Let's initialise the app state with the stored preferences
-  var appState = new AppStateModel(prefs, analytics);
+  var appState = AppStateModel(prefs, analytics);
+
+  // as documented in appstate.dart, we here set the defaultLokale
+  // from appState to apply loaded locale from sharedpreferences on
+  // startup.
+  Intl.defaultLocale = appState.locale;
 
   // Use dart zone to define Crashlytics as error handler for errors
   // that occur outside runApp
   runZonedGuarded<Future<Null>>(() async {
-    runApp(new MaterialApp(
-      debugShowCheckedModeBanner: false, // set to true to see the debug banner
-      navigatorObservers: [
-        FirebaseAnalyticsObserver(analytics: analytics),
-      ],
-      onGenerateTitle: (context) => S.of(context).appTitle,
-      localizationsDelegates: [
-        S.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      supportedLocales: S.delegate.supportedLocales,
-      home: new ChangeNotifierProvider.value(
-        value: appState,
-        child: new HomePage(),
+    runApp(
+      OverlaySupport(
+        child: MaterialApp(
+          debugShowCheckedModeBanner:
+              false, // set to true to see the debug banner
+          navigatorObservers: [
+            FirebaseAnalyticsObserver(analytics: analytics),
+          ],
+          onGenerateTitle: (context) => S.of(context).appTitle,
+          localizationsDelegates: [
+            S.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: S.delegate.supportedLocales,
+          home: ChangeNotifierProvider.value(
+            value: appState,
+            child: HomePage(),
+          ),
+          theme: appTheme,
+          routes: <String, WidgetBuilder>{
+            "/HomePage": (BuildContext context) => ChangeNotifierProvider.value(
+                  value: appState,
+                  child: HomePage(),
+                ),
+            "/ConfigPage": (BuildContext context) =>
+                ChangeNotifierProvider.value(
+                  value: appState,
+                  child: ConfigPage(),
+                ),
+          },
+        ),
       ),
-      theme: appTheme,
-      routes: <String, WidgetBuilder>{
-        "/HomePage": (BuildContext context) => new ChangeNotifierProvider.value(
-              value: appState,
-              child: new HomePage(),
-            ),
-        "/ConfigPage": (BuildContext context) =>
-            new ChangeNotifierProvider.value(
-              value: appState,
-              child: new ConfigPage(),
-            ),
-      },
-    ));
+    );
   }, FirebaseCrashlytics.instance.recordError);
 }
