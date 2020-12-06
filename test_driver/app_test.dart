@@ -2,7 +2,7 @@ import 'package:flutter_driver/flutter_driver.dart';
 import 'package:test/test.dart';
 
 void main() {
-  group('cognite_cdf_demo', () {
+  group('cognite_flutter_demo', () {
     // First, define the Finders and use them to locate widgets from the
     // test suite. Note: the Strings provided to the `byValueKey` method must
     // be the same as the Strings we used for the Keys.
@@ -72,5 +72,5 @@ void main() {
       await driver.tap(exitButtonFinder);
       await driver.waitFor(loginButtonFinder);
     });
-  }); // group('cognite_cdf_demo')
+  }); // group('cognite_flutter_demo')
 }

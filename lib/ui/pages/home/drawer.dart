@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:cognite_cdf_demo/models/appstate.dart';
-import 'package:cognite_cdf_demo/generated/l10n.dart';
+import 'package:cognite_flutter_demo/models/appstate.dart';
+import 'package:cognite_flutter_demo/generated/l10n.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:overlay_support/overlay_support.dart';
 

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:provider/provider.dart';
-import 'package:cognite_cdf_demo/models/heartbeatstate.dart';
+import 'package:cognite_flutter_demo/models/heartbeatstate.dart';
 
 void historyDialog(BuildContext context) {
   var hbm = Provider.of<HeartBeatModel>(context, listen: false);

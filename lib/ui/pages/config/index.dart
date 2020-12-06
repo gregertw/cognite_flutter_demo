@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:cognite_cdf_demo/models/appstate.dart';
+import 'package:cognite_flutter_demo/models/appstate.dart';
 import 'package:provider/provider.dart';
-import 'package:cognite_cdf_demo/generated/l10n.dart';
-import 'package:cognite_cdf_demo/globals.dart';
+import 'package:cognite_flutter_demo/generated/l10n.dart';
+import 'package:cognite_flutter_demo/globals.dart';
 
 class ConfigPage extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();

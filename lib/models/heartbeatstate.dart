@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cognite_cdf_sdk/cognite_cdf_sdk.dart';
-import 'package:cognite_cdf_demo/globals.dart';
+import 'package:cognite_flutter_demo/globals.dart';
 
 /// Keeps timeseries data state
 class HeartBeatModel with ChangeNotifier {

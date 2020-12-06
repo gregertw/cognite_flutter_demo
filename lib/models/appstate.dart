@@ -6,10 +6,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 // Trick to load correct http adapter dependent on browser or app compile
 import 'httpadapter.dart' if (dart.library.html) 'webhttpadapter.dart';
-import 'package:cognite_cdf_demo/mock/mockmap.dart';
-import 'package:cognite_cdf_demo/generated/l10n.dart';
+import 'package:cognite_flutter_demo/mock/mockmap.dart';
+import 'package:cognite_flutter_demo/generated/l10n.dart';
 import 'package:cognite_cdf_sdk/cognite_cdf_sdk.dart';
-import 'package:cognite_cdf_demo/globals.dart';
+import 'package:cognite_flutter_demo/globals.dart';
 
 class AppStateModel with ChangeNotifier {
   bool _authenticated = true;

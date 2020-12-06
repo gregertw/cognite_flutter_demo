@@ -8,9 +8,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1058078351513:android:ba42ec537dcc241c035808",
+        "mobilesdk_app_id": "1:1058078351513:android:09fb1845af6e213f035808",
         "android_client_info": {
-          "package_name": "io.greger.cognite_cdf_demo"
+          "package_name": "io.greger.cognite_flutter_demo"
         }
       },
       "oauth_client": [
@@ -30,6 +30,13 @@
             {
               "client_id": "1058078351513-7gk8gln5u6h2odsjgr8qhnnkokjub0gf.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "1058078351513-2mottpglivq207qsu2ump11n1j2upjbf.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "cognite-cdf-demo"
+              }
             }
           ]
         }

@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:cognite_cdf_demo/generated/l10n.dart';
-import 'package:cognite_cdf_demo/models/appstate.dart';
-import 'package:cognite_cdf_demo/ui/pages/home/index.dart';
-import 'package:cognite_cdf_demo/ui/theme/style.dart';
-import 'package:cognite_cdf_demo/globals.dart';
+import 'package:cognite_flutter_demo/generated/l10n.dart';
+import 'package:cognite_flutter_demo/models/appstate.dart';
+import 'package:cognite_flutter_demo/ui/pages/home/index.dart';
+import 'package:cognite_flutter_demo/ui/theme/style.dart';
+import 'package:cognite_flutter_demo/globals.dart';
 
 void main() async {
   AppStateModel appState;

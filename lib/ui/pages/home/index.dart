@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:cognite_cdf_demo/models/appstate.dart';
-import 'package:cognite_cdf_demo/models/heartbeatstate.dart';
-import 'package:cognite_cdf_demo/models/chartstate.dart';
-import 'package:cognite_cdf_demo/ui/pages/home/drawer.dart';
-import 'package:cognite_cdf_demo/ui/pages/config/index.dart';
-import 'package:cognite_cdf_demo/generated/l10n.dart';
-import 'package:cognite_cdf_demo/ui/pages/timeseries_chart/index.dart';
+import 'package:cognite_flutter_demo/models/appstate.dart';
+import 'package:cognite_flutter_demo/models/heartbeatstate.dart';
+import 'package:cognite_flutter_demo/models/chartstate.dart';
+import 'package:cognite_flutter_demo/ui/pages/home/drawer.dart';
+import 'package:cognite_flutter_demo/ui/pages/config/index.dart';
+import 'package:cognite_flutter_demo/generated/l10n.dart';
+import 'package:cognite_flutter_demo/ui/pages/timeseries_chart/index.dart';
 
 class HomePage extends StatelessWidget {
   @override

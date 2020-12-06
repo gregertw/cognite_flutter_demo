@@ -1,4 +1,4 @@
-package io.greger.cognite_cdf_demo
+package io.greger.cognite_flutter_demo
 
 import io.flutter.embedding.android.FlutterActivity
 

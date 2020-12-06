@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:cognite_cdf_demo/models/heartbeatstate.dart';
+import 'package:cognite_flutter_demo/models/heartbeatstate.dart';
 
 class ReloadMarker extends StatelessWidget {
   @override

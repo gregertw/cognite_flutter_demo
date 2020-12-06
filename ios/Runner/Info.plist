@@ -30,7 +30,7 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>io.greger.cognite_cdf_demo</string>
+				<string>io.greger.cognite_flutter_demo</string>
 			</array>
 		</dict>
 	</array>

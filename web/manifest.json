@@ -1,6 +1,6 @@
 {
-    "name": "cognite_cdf_demo",
-    "short_name": "cognite_cdf_demo",
+    "name": "cognite_flutter_demo",
+    "short_name": "cognite_flutter_demo",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

@@ -44,7 +44,7 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId "io.greger.cognite_cdf_demo"
+        applicationId "io.greger.cognite_flutter_demo"
         minSdkVersion 16
         targetSdkVersion 29
         versionCode flutterVersionCode.toInteger()
@@ -54,7 +54,7 @@ android {
         // This needs to match the domain of the redirectUrl used for AuthClient
         // See https://github.com/openid/AppAuth-Android/tree/master/app
         manifestPlaceholders = [
-                'appAuthRedirectScheme': 'io.greger.cognite_cdf_demo'
+                'appAuthRedirectScheme': 'io.greger.cognite_flutter_demo'
         ]
     }
 

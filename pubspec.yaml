@@ -1,4 +1,4 @@
-name: cognite_cdf_demo
+name: cognite_flutter_demo
 description: A demo application for Cognite CDF
 homepage: https://docs.cognite.com/dev/
 version: 0.2.0
@@ -18,10 +18,8 @@ dependencies:
   provider: ^4.3.2+2
   logger: ^0.9.4
   shared_preferences: ^0.5.12
-  firebase_analytics: ^6.0.1
+  firebase_analytics: ^6.3.0
   firebase_crashlytics: ^0.2.1
-  firebase_analytics_web: ^0.1.1
-  firebase_core_web: ^0.2.1+1
   overlay_support: ^1.0.5
   url_launcher: ^5.4.10
   cognite_cdf_sdk: ^0.1.3

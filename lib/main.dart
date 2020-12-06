@@ -10,11 +10,11 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:cognite_cdf_demo/generated/l10n.dart';
-import 'package:cognite_cdf_demo/models/appstate.dart';
-import 'package:cognite_cdf_demo/ui/pages/home/index.dart';
-import 'package:cognite_cdf_demo/ui/pages/config/index.dart';
-import 'package:cognite_cdf_demo/ui/theme/style.dart';
+import 'package:cognite_flutter_demo/generated/l10n.dart';
+import 'package:cognite_flutter_demo/models/appstate.dart';
+import 'package:cognite_flutter_demo/ui/pages/home/index.dart';
+import 'package:cognite_flutter_demo/ui/pages/config/index.dart';
+import 'package:cognite_flutter_demo/ui/theme/style.dart';
 
 void main() async {
   // A breaking change in the platform messaging, as of Flutter 1.12.13+hotfix.5,
