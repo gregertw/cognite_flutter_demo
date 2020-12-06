@@ -19,7 +19,7 @@
   "drawerConfig": "Innstillinger",
   "drawerAbout": "Om...",
   "drawerAboutTitle": "Om denne applikasjonen",
-  "drawerAboutMessage": "Denne applikasjonen er et personlig prosjekt fra Greger Wedel (c). Rapportér problemer på:",
+  "drawerAboutMessage": "Denne applikasjonen er et personlig prosjekt fra Greger Wedel (c). Appen er registrert i Firebase Analytics og brukernavn (email), prosjektid, og ekstern tidsserie id blir registrert ved innlogging. Rapportér problemer på:",
   "drawerLocalisation": "Nåværende lokalisering",
   "drawerLocalisationResultTitle": "Lokalisering endret",
   "drawerLocalisationResultMsg": "Endret til ",

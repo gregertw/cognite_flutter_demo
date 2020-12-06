@@ -13,7 +13,7 @@ void main() {
     var prefs = await SharedPreferences.getInstance();
     state = AppStateModel(prefs);
   });
-  test('not logged in', () {
-    expect(state.authenticated, false);
+  test('logged in', () {
+    expect(state.authenticated, true);
   });
 }

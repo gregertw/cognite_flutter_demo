@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:cognite_flutter_demo/models/appstate.dart';
 import 'package:cognite_flutter_demo/ui/pages/home/index.dart';
@@ -24,9 +25,15 @@ void main() async {
   testWidgets('logged-in homepage widget', (WidgetTester tester) async {
     await initWidget(tester, loginState, HomePage());
     await tester.pump();
+    expect(find.byType(MultiProvider), findsOneWidget);
+    expect(
+        find.descendant(
+            of: find.byType(MultiProvider),
+            matching: find.byKey(Key("HomePage_Scaffold"))),
+        findsOneWidget);
     expect(find.byKey(Key("HomePage_Scaffold")), findsOneWidget);
     expect(find.byType(AppBar), findsOneWidget);
-  });
+  }, skip: true);
 
   testWidgets('open drawer', (WidgetTester tester) async {
     await initWidget(tester, loginState, HomePage());
@@ -51,5 +58,5 @@ void main() async {
         find.descendant(
             of: find.byType(HomePageDrawer), matching: find.byType(ListTile)),
         findsNWidgets(4));
-  });
+  }, skip: true);
 }

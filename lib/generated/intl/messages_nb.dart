@@ -52,7 +52,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "configTimeseriesId" : MessageLookupByLibrary.simpleMessage("Sett ekstern tidsseries-id"),
     "configTimeseriesIdEmpty" : MessageLookupByLibrary.simpleMessage("Tidsserie-id kan ikke være tom"),
     "drawerAbout" : MessageLookupByLibrary.simpleMessage("Om..."),
-    "drawerAboutMessage" : MessageLookupByLibrary.simpleMessage("Denne applikasjonen er et personlig prosjekt fra Greger Wedel (c). Rapportér problemer på:"),
+    "drawerAboutMessage" : MessageLookupByLibrary.simpleMessage("Denne applikasjonen er et personlig prosjekt fra Greger Wedel (c). Appen er registrert i Firebase Analytics og brukernavn (email), prosjektid, og ekstern tidsserie id blir registrert ved innlogging. Rapportér problemer på:"),
     "drawerAboutTitle" : MessageLookupByLibrary.simpleMessage("Om denne applikasjonen"),
     "drawerButtomSheetApiKeyId" : MessageLookupByLibrary.simpleMessage("Nøkkelid"),
     "drawerButtomSheetExpires" : MessageLookupByLibrary.simpleMessage("Utløper"),

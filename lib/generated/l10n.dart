@@ -235,10 +235,10 @@ class S {
     );
   }
 
-  /// `This application is a personal project of Greger Wedel (c). Report issues at: `
+  /// `This application is a personal project of Greger Wedel (c). The app is registered with Firebase Analytics and username (email), project id, and timeseries external id are registered on login.  Report issues at: `
   String get drawerAboutMessage {
     return Intl.message(
-      'This application is a personal project of Greger Wedel (c). Report issues at: ',
+      'This application is a personal project of Greger Wedel (c). The app is registered with Firebase Analytics and username (email), project id, and timeseries external id are registered on login.  Report issues at: ',
       name: 'drawerAboutMessage',
       desc: '',
       args: [],

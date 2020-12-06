@@ -19,7 +19,7 @@
   "drawerConfig": "Settings",
   "drawerAbout": "About...",
   "drawerAboutTitle": "About this application",
-  "drawerAboutMessage": "This application is a personal project of Greger Wedel (c). Report issues at: ",
+  "drawerAboutMessage": "This application is a personal project of Greger Wedel (c). The app is registered with Firebase Analytics and username (email), project id, and timeseries external id are registered on login.  Report issues at: ",
   "drawerLocalisation": "Current localisation",
   "drawerLocalisationResultTitle": "Locale changed",
   "drawerLocalisationResultMsg": "Changed to ",

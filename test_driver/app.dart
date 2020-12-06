@@ -7,6 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:cognite_flutter_demo/generated/l10n.dart';
 import 'package:cognite_flutter_demo/models/appstate.dart';
 import 'package:cognite_flutter_demo/ui/pages/home/index.dart';
+import 'package:cognite_flutter_demo/ui/pages/config/index.dart';
 import 'package:cognite_flutter_demo/ui/theme/style.dart';
 import 'package:cognite_flutter_demo/globals.dart';
 
@@ -49,26 +50,31 @@ void main() async {
   appState = new AppStateModel(prefs);
 
   runApp(
-    new MaterialApp(
-        onGenerateTitle: (context) => S.of(context).appTitle,
-        localizationsDelegates: [
-          S.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-        supportedLocales: S.delegate.supportedLocales,
-        home: new ChangeNotifierProvider.value(
-          value: appState,
-          child: new HomePage(),
-        ),
-        theme: appTheme,
-        routes: <String, WidgetBuilder>{
-          "/HomePage": (BuildContext context) =>
-              new ChangeNotifierProvider.value(
-                value: appState,
-                child: new HomePage(),
-              ),
-        }),
+    MaterialApp(
+      debugShowCheckedModeBanner: false, // set to true to see the debug banner
+      onGenerateTitle: (context) => S.of(context).appTitle,
+      localizationsDelegates: [
+        S.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: S.delegate.supportedLocales,
+      home: ChangeNotifierProvider.value(
+        value: appState,
+        child: HomePage(),
+      ),
+      theme: appTheme,
+      routes: <String, WidgetBuilder>{
+        "/HomePage": (BuildContext context) => ChangeNotifierProvider.value(
+              value: appState,
+              child: HomePage(),
+            ),
+        "/ConfigPage": (BuildContext context) => ChangeNotifierProvider.value(
+              value: appState,
+              child: ConfigPage(),
+            ),
+      },
+    ),
   );
 }
