@@ -16,7 +16,7 @@
 		<string>no</string>
 	</array>
 	<key>CFBundleName</key>
-	<string>cognite-cdf-demo</string>
+	<string>io.greger.cognite-flutter-demo</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>

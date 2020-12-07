@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>1058078351513-2mottpglivq207qsu2ump11n1j2upjbf.apps.googleusercontent.com</string>
+	<string>1058078351513-f0jn6mt7t43i245eegdcjeval4e07v5l.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.1058078351513-2mottpglivq207qsu2ump11n1j2upjbf</string>
+	<string>com.googleusercontent.apps.1058078351513-f0jn6mt7t43i245eegdcjeval4e07v5l</string>
 	<key>API_KEY</key>
 	<string>AIzaSyDcSUu0AVkanFE_luNCoNdOFZlP-x79FiI</string>
 	<key>GCM_SENDER_ID</key>
@@ -13,7 +13,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>cognite-cdf-demo</string>
+	<string>io.greger.cognite-flutter-demo</string>
 	<key>PROJECT_ID</key>
 	<string>cognite-cdf-demo</string>
 	<key>STORAGE_BUCKET</key>
@@ -29,7 +29,7 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:1058078351513:ios:2e144ca8305ff296035808</string>
+	<string>1:1058078351513:ios:e122fed4c390775a035808</string>
 	<key>DATABASE_URL</key>
 	<string>https://cognite-cdf-demo.firebaseio.com</string>
 </dict>
