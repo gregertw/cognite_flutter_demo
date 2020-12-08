@@ -54,7 +54,7 @@ android {
         // This needs to match the domain of the redirectUrl used for AuthClient
         // See https://github.com/openid/AppAuth-Android/tree/master/app
         manifestPlaceholders = [
-                'appAuthRedirectScheme': 'io.greger.cognite_flutter_demo'
+                'appAuthRedirectScheme': 'io.greger.cognite-flutter-demo'
         ]
     }
 
