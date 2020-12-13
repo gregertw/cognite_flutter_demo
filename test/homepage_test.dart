@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:provider/provider.dart';
+import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:cognite_flutter_demo/models/appstate.dart';
 import 'package:cognite_flutter_demo/ui/pages/home/index.dart';
@@ -13,31 +13,38 @@ void main() async {
   // We need mock initial values for SharedPreferences
   SharedPreferences.setMockInitialValues({});
   var prefs = await SharedPreferences.getInstance();
-  loginState = AppStateModel(prefs);
   // Make a mock client we can use to make mocked http responses
-  loginState.mocks.enableMock('heartbeat', CDFMockApiClient());
-  loginState.verifyCDF();
+  var client = CDFMockApiClient(logLevel: Level.error);
+  setUpAll(() async {
+    loginState = AppStateModel(prefs);
+    loginState.mocks.enableMock('heartbeat', client);
+    client.setMock(body: """{
+    "data": {
+        "user": "user@cognite.com",
+        "loggedIn": true,
+        "project": "publicdata",
+        "projectId": 5977964818434649,
+        "apiKeyId": 934347347677
+    }
+}""");
+    await loginState.verifyCDF();
+  });
 
   test('logged in state', () {
-    expect(loginState.authenticated, true);
+    expect(loginState.cdfLoggedIn, true);
   });
 
   testWidgets('logged-in homepage widget', (WidgetTester tester) async {
     await initWidget(tester, loginState, HomePage());
-    await tester.pump();
-    expect(find.byType(MultiProvider), findsOneWidget);
-    expect(
-        find.descendant(
-            of: find.byType(MultiProvider),
-            matching: find.byKey(Key("HomePage_Scaffold"))),
-        findsOneWidget);
+    await tester.pumpAndSettle();
+    expect(loginState.cdfLoggedIn, true);
     expect(find.byKey(Key("HomePage_Scaffold")), findsOneWidget);
     expect(find.byType(AppBar), findsOneWidget);
-  }, skip: true);
+  });
 
   testWidgets('open drawer', (WidgetTester tester) async {
     await initWidget(tester, loginState, HomePage());
-    await tester.pump();
+    await tester.pumpAndSettle();
     // Find the menu button
     final finder = find.descendant(
         of: find.byKey(Key("HomePage_Scaffold")),
@@ -58,5 +65,5 @@ void main() async {
         find.descendant(
             of: find.byType(HomePageDrawer), matching: find.byType(ListTile)),
         findsNWidgets(4));
-  }, skip: true);
+  });
 }
