@@ -15,6 +15,7 @@ class TimeSeriesChart extends StatelessWidget {
   Widget build(BuildContext context) {
     var hbm = Provider.of<HeartBeatModel>(context, listen: false);
     var chart = Provider.of<ChartFeatureModel>(context);
+    var zoomPan = ZoomPanBehavior(enableDoubleTapZooming: true);
     // Initialise the range and controller
     chart.initRange(
         (hbm.rangeStart + (hbm.rangeEnd - hbm.rangeStart) / 3).round(),
@@ -36,6 +37,7 @@ class TimeSeriesChart extends StatelessWidget {
                     dateFormat: DateFormat(chart.dateAxisFormat)),
                 primaryYAxis: NumericAxis(
                     isVisible: true, anchorRangeToVisiblePoints: true),
+                zoomPanBehavior: zoomPan,
                 legend: Legend(
                     isVisible: true,
                     position: LegendPosition.top,
@@ -47,6 +49,29 @@ class TimeSeriesChart extends StatelessWidget {
                     opacity: 0.4,
                     format: 'point.y',
                     tooltipPosition: TooltipPosition.pointer),
+                onZoomEnd: (ZoomPanArgs args) {
+                  // Double-click zoom
+                  if (args.axis is DateTimeAxis &&
+                      args.currentZoomFactor < args.previousZoomFactor) {
+                    // We don't want to zoom in more than 11s
+                    if ((chart.endRange - chart.startRange).round() > 11000) {
+                      chart.setNewRange(zoom: 0.4);
+                      chart.applyRangeController();
+                      zoomPan.reset();
+                      hbm.setFilter(
+                          start: chart.startRange,
+                          end: chart.endRange,
+                          resolution: chart.resolution);
+                      // Only load raw datapoints when we have a short range
+                      if (((chart.endRange - chart.startRange) / 1000).round() <
+                          3600) {
+                        hbm.loadTimeSeries(raw: true);
+                      } else {
+                        hbm.loadTimeSeries();
+                      }
+                    }
+                  }
+                },
                 series: <CartesianSeries<DatapointModel, DateTime>>[
                   LineSeries<DatapointModel, DateTime>(
                       isVisible: true,
