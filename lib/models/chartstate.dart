@@ -8,6 +8,8 @@ class ChartFeatureModel with ChangeNotifier {
   String _dateAxisFormat;
   int startRange = 0;
   int endRange = 0;
+  int _startSpan = 0;
+  int _endSpan = 0;
   int resolution;
   int resolutionFactor;
   get startRangeDate => DateTime.fromMillisecondsSinceEpoch(startRange);
@@ -17,6 +19,8 @@ class ChartFeatureModel with ChangeNotifier {
   RangeController _rangeController;
 
   RangeController get rangeController => _rangeController;
+  get startSpan => _startSpan;
+  get endSpan => _endSpan;
 
   ChartFeatureModel(this.resolutionFactor) {
     showMarker = false;
@@ -48,17 +52,29 @@ class ChartFeatureModel with ChangeNotifier {
     }
   }
 
-  void initRange(int start, int end) {
+  void initRange(int start, int end, {int startSpan, int endSpan}) {
     if (startRange == 0 || endRange == 0) {
       setNewRange(start: start, end: end);
+      _startSpan = startSpan;
+      _endSpan = endSpan;
     }
   }
 
-  void setNewRange({int start, int end, double zoom: 0.0}) {
+  void setNewRange({int start, int end, double zoom: 0.0, double pan: 0.0}) {
     if (zoom != 0.0) {
       var range = (endRange - startRange) / 2;
       startRange = startRange + (range * zoom).round();
       endRange = endRange - (range * zoom).round();
+    } else if (pan != 0.0) {
+      var range = (endRange - startRange) / 2;
+      startRange = startRange + (range * pan).round();
+      endRange = endRange + (range * pan).round();
+      // Don't go outside range controller min and max range
+      if (startRange < _startSpan) {
+        startRange = _startSpan;
+      } else if (endRange > _endSpan) {
+        endRange = _endSpan;
+      }
     } else {
       startRange = start;
       endRange = end;

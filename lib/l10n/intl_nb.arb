@@ -37,6 +37,8 @@
   "configTimeseriesIdEmpty": "Tidsserie-id kan ikke være tom",
   "configNrOfDays": "Sett antall dager i første diagram",
   "configProjectFailed": "Tilgang til CDF prosjektet feilet",
+  "chartLeft": "Gå venstre",
+  "chartRight": "Gå høyre",
   "chartZoomIn": "Zoom inn",
   "chartZoomOut": "Zoom ut",
   "chartReset": "Tilbakestill",

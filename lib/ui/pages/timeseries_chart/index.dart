@@ -19,7 +19,9 @@ class TimeSeriesChart extends StatelessWidget {
     // Initialise the range and controller
     chart.initRange(
         (hbm.rangeStart + (hbm.rangeEnd - hbm.rangeStart) / 3).round(),
-        (hbm.rangeEnd - (hbm.rangeEnd - hbm.rangeStart) / 3).round());
+        (hbm.rangeEnd - (hbm.rangeEnd - hbm.rangeStart) / 3).round(),
+        startSpan: hbm.rangeStart,
+        endSpan: hbm.rangeEnd);
     return SingleChildScrollView(
       child: Padding(
         padding: EdgeInsets.fromLTRB(5, 0, 5, 50),

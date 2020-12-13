@@ -415,6 +415,26 @@ class S {
     );
   }
 
+  /// `Pan Left`
+  String get chartLeft {
+    return Intl.message(
+      'Pan Left',
+      name: 'chartLeft',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Pan Right`
+  String get chartRight {
+    return Intl.message(
+      'Pan Right',
+      name: 'chartRight',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Zoom In`
   String get chartZoomIn {
     return Intl.message(

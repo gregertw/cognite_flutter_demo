@@ -37,6 +37,8 @@
   "configTimeseriesIdEmpty": "Timeseries id cannot be empty",
   "configNrOfDays": "Enter number of days in initial range",
   "configProjectFailed": "Not able to access CDF project",
+  "chartLeft": "Pan Left",
+  "chartRight": "Pan Right",
   "chartZoomIn": "Zoom In",
   "chartZoomOut": "Zoom Out",
   "chartReset": "Reset",
