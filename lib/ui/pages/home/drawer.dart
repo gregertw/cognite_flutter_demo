@@ -48,6 +48,7 @@ class HomePageDrawer extends StatelessWidget {
             title: Text(S.of(context).drawerAbout),
             onTap: () {
               showSimpleNotification(Text(S.of(context).drawerAboutTitle),
+                  key: Key('DrawerMenu_NotificationAbout'),
                   leading: Icon(
                     Icons.info_outline,
                     size: 28,

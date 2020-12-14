@@ -1,7 +1,7 @@
 name: cognite_flutter_demo
 description: A demo application for Cognite CDF
 homepage: https://docs.cognite.com/dev/
-version: 0.2.1
+version: 0.3.0
 publish_to: none
 
 environment:
@@ -48,7 +48,6 @@ flutter_icons:
   image_path: "assets/icon.png"
 
 flutter:
-
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.

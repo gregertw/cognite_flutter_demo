@@ -6,17 +6,16 @@ import 'package:cognite_flutter_demo/ui/pages/home/drawer.dart';
 import 'initwidget.dart';
 
 void main() async {
-  AppStateModel loginState;
+  AppStateModel appState;
   // We need mock initial values for SharedPreferences
   SharedPreferences.setMockInitialValues({});
   var prefs = await SharedPreferences.getInstance();
-  loginState = AppStateModel(prefs);
+  appState = AppStateModel(prefs);
 
   testWidgets('is drawer ready', (WidgetTester tester) async {
-    await initWidget(tester, loginState, HomePageDrawer());
+    await initWidget(tester, appState, HomePageDrawer());
     await tester.pump();
 
-    expect(loginState.authenticated, true);
     // We should have opened the drawer
     expect(find.byType(HomePageDrawer), findsOneWidget);
     expect(find.byKey(Key("DrawerMenu_Header")), findsOneWidget);
@@ -27,7 +26,7 @@ void main() async {
   });
 
   testWidgets('log out from drawer', (WidgetTester tester) async {
-    await initWidget(tester, loginState, HomePageDrawer());
+    await initWidget(tester, appState, HomePageDrawer());
     await tester.pump();
 
     final buttonFinder = find.descendant(
@@ -36,6 +35,6 @@ void main() async {
     await tester.tap(buttonFinder);
     await tester.pump();
     // Authenticated state should be false
-    expect(loginState.authenticated, false);
+    expect(appState.authenticated, false);
   });
 }
