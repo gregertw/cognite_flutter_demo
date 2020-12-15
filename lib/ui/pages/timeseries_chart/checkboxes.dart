@@ -18,6 +18,49 @@ class CheckBoxButtons extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.fromLTRB(24, 0, 0, 0),
           child: IconButton(
+            tooltip: S.of(context).chartLeft,
+            icon: Icon(Icons.arrow_back, color: Theme.of(context).accentColor),
+            onPressed: () {
+              chart.setNewRange(pan: -0.5);
+              chart.applyRangeController();
+              hbm.setFilter(
+                  start: chart.startRange,
+                  end: chart.endRange,
+                  resolution: chart.resolution);
+              // Only load raw datapoints when we have a short range
+              if (((chart.endRange - chart.startRange) / 1000).round() < 3600) {
+                hbm.loadTimeSeries(raw: true);
+              } else {
+                hbm.loadTimeSeries();
+              }
+            },
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(24, 0, 0, 0),
+          child: IconButton(
+            tooltip: S.of(context).chartRight,
+            icon:
+                Icon(Icons.arrow_forward, color: Theme.of(context).accentColor),
+            onPressed: () {
+              chart.setNewRange(pan: 0.5);
+              chart.applyRangeController();
+              hbm.setFilter(
+                  start: chart.startRange,
+                  end: chart.endRange,
+                  resolution: chart.resolution);
+              // Only load raw datapoints when we have a short range
+              if (((chart.endRange - chart.startRange) / 1000).round() < 3600) {
+                hbm.loadTimeSeries(raw: true);
+              } else {
+                hbm.loadTimeSeries();
+              }
+            },
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(24, 0, 0, 0),
+          child: IconButton(
             tooltip: S.of(context).chartZoomIn,
             icon: Icon(Icons.add, color: Theme.of(context).accentColor),
             onPressed: () {

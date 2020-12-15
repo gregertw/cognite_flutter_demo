@@ -48,22 +48,22 @@ class HomePageDrawer extends StatelessWidget {
             title: Text(S.of(context).drawerAbout),
             onTap: () {
               showSimpleNotification(Text(S.of(context).drawerAboutTitle),
+                  key: Key('DrawerMenu_NotificationAbout'),
                   leading: Icon(
                     Icons.info_outline,
                     size: 28,
                     color: Colors.blue.shade300,
                   ), trailing: Builder(builder: (context) {
                 return FlatButton(
+                  autofocus: true,
                   textColor: Colors.yellow,
                   onPressed: () {
                     OverlaySupportEntry.of(context).dismiss();
                     launch(
                         "https://github.com/gregertw/cognite-flutter-demo/issues");
                   },
-                  child: Text(
-                    "https://github.com/gregertw/cognite-flutter-demo/issues",
-                    style: TextStyle(color: Colors.amber),
-                  ),
+                  child:
+                      Icon(Icons.link, size: 28, color: Colors.blue.shade300),
                 );
               }),
                   subtitle: Text(S.of(context).drawerAboutMessage),

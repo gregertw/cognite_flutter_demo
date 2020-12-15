@@ -146,7 +146,7 @@ class AppStateModel with ChangeNotifier {
     log.d('Sent analytics events: $name');
   }
 
-  void verifyCDF() async {
+  Future<bool> verifyCDF() async {
     _cdfApiKey = prefs.getString('cdfApiKey') ?? '';
     _cdfProject = prefs.getString('cdfProject') ?? 'publicdata';
     _cdfURL = prefs.getString('cdfURL') ?? 'https://api.cognitedata.com';
@@ -166,6 +166,7 @@ class AppStateModel with ChangeNotifier {
       log.d(_cdfStatus);
     } catch (e) {
       _cdfStatus = null;
+      return false;
     }
     if (_cdfStatus != null) {
       setUserInfo(Map.from({'email': _cdfStatus.user, 'name': 'N/A'}));
@@ -175,6 +176,7 @@ class AppStateModel with ChangeNotifier {
     sendAnalyticsEvent(
         'login', {'project': _cdfProject, 'timeseries': _cdfTimeSeriesId});
     notifyListeners();
+    return true;
   }
 
   void setUserInfo(data) {
