@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:cognite_flutter_demo/models/appstate.dart';
 import 'package:cognite_flutter_demo/ui/pages/home/index.dart';
@@ -14,7 +13,7 @@ void main() async {
   SharedPreferences.setMockInitialValues({});
   var prefs = await SharedPreferences.getInstance();
   // Make a mock client we can use to make mocked http responses
-  var client = CDFMockApiClient(logLevel: Level.error);
+  var client = CDFMockApiClient();
   setUpAll(() async {
     appState = AppStateModel(prefs);
     appState.mocks.enableMock('heartbeat', client);

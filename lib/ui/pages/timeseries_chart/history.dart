@@ -5,7 +5,7 @@ import 'package:cognite_flutter_demo/models/heartbeatstate.dart';
 
 void historyDialog(BuildContext context) {
   var hbm = Provider.of<HeartBeatModel>(context, listen: false);
-  List<Widget> dialogs = List<Widget>();
+  List<Widget> dialogs = [];
   int i = 1;
   hbm.apiClient.history.forEach((element) {
     dialogs.add(SimpleDialogOption(
