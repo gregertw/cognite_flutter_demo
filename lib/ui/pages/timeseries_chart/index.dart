@@ -201,7 +201,7 @@ class TimeSeriesChart extends StatelessWidget {
                     max: DateTime.fromMillisecondsSinceEpoch(hbm.rangeEnd),
                     showTicks: true,
                     showLabels: true,
-                    showTooltip: true,
+                    enableTooltip: true,
                     showDivisors: true,
                     activeColor: Color.fromARGB(255, 5, 90, 194),
                     inactiveColor: Color.fromARGB(100, 5, 90, 194),

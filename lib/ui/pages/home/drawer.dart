@@ -54,9 +54,9 @@ class HomePageDrawer extends StatelessWidget {
                     size: 28,
                     color: Colors.blue.shade300,
                   ), trailing: Builder(builder: (context) {
-                return FlatButton(
+                return TextButton(
                   autofocus: true,
-                  textColor: Colors.yellow,
+                  style: TextButton.styleFrom(primary: Colors.yellow),
                   onPressed: () {
                     OverlaySupportEntry.of(context).dismiss();
                     launch(

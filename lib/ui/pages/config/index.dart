@@ -185,9 +185,13 @@ class ConfigPage extends StatelessWidget {
                     new Container(
                       padding: const EdgeInsets.symmetric(
                           vertical: 16.0, horizontal: 16.0),
-                      child: RaisedButton(
-                        textTheme: Theme.of(context).buttonTheme.textTheme,
-                        color: Theme.of(context).buttonColor,
+                      child: ElevatedButton(
+                        key: Key('LocationPage_StartListeningButton'),
+                        style: ElevatedButton.styleFrom(
+                          elevation: 20.0,
+                          onPrimary: Theme.of(context).primaryColorLight,
+                          padding: const EdgeInsets.all(8.0),
+                        ),
                         onPressed: () {
                           if (_formKey.currentState.validate()) {
                             _formKey.currentState.save();
