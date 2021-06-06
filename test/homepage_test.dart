@@ -8,7 +8,7 @@ import 'package:cognite_cdf_sdk/cognite_cdf_sdk.dart';
 import 'initwidget.dart';
 
 void main() async {
-  AppStateModel appState;
+  AppStateModel? appState;
   // We need mock initial values for SharedPreferences
   SharedPreferences.setMockInitialValues({});
   var prefs = await SharedPreferences.getInstance();
@@ -16,7 +16,7 @@ void main() async {
   var client = CDFMockApiClient();
   setUpAll(() async {
     appState = AppStateModel(prefs);
-    appState.mocks.enableMock('heartbeat', client);
+    appState!.mocks.enableMock('heartbeat', client);
     client.setMock(body: """{
     "data": {
         "user": "user@cognite.com",
@@ -26,17 +26,17 @@ void main() async {
         "apiKeyId": 934347347677
     }
 }""");
-    await appState.verifyCDF();
+    await appState!.verifyCDF();
   });
 
   test('logged in state', () {
-    expect(appState.cdfLoggedIn, true);
+    expect(appState!.cdfLoggedIn, true);
   });
 
   testWidgets('logged-in homepage widget', (WidgetTester tester) async {
     await initWidget(tester, appState, HomePage());
     await tester.pumpAndSettle();
-    expect(appState.cdfLoggedIn, true);
+    expect(appState!.cdfLoggedIn, true);
     expect(find.byKey(Key("HomePage_Scaffold")), findsOneWidget);
     expect(find.byType(AppBar), findsOneWidget);
   });

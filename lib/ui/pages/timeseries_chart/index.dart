@@ -54,9 +54,9 @@ class TimeSeriesChart extends StatelessWidget {
                 onZoomEnd: (ZoomPanArgs args) {
                   // Double-click zoom
                   if (args.axis is DateTimeAxis &&
-                      args.currentZoomFactor < args.previousZoomFactor) {
+                      args.currentZoomFactor < args.previousZoomFactor!) {
                     // We don't want to zoom in more than 11s
-                    if ((chart.endRange - chart.startRange).round() > 11000) {
+                    if ((chart.endRange! - chart.startRange!).round() > 11000) {
                       chart.setNewRange(zoom: 0.4);
                       chart.applyRangeController();
                       zoomPan.reset();
@@ -65,7 +65,8 @@ class TimeSeriesChart extends StatelessWidget {
                           end: chart.endRange,
                           resolution: chart.resolution);
                       // Only load raw datapoints when we have a short range
-                      if (((chart.endRange - chart.startRange) / 1000).round() <
+                      if (((chart.endRange! - chart.startRange!) / 1000)
+                              .round() <
                           3600) {
                         hbm.loadTimeSeries(raw: true);
                       } else {

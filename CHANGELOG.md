@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## Jun 6, 2021
+
+* Migrate to null-safety
+* Upgrade all dependencies
 
 ## Jan 30, 2020
 

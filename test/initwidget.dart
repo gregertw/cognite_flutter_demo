@@ -10,7 +10,7 @@ import 'package:cognite_flutter_demo/ui/pages/config/index.dart';
 import 'package:cognite_flutter_demo/ui/pages/home/index.dart';
 
 // Helper function to encapsulate code needed to instantiate the HomePage() widget
-dynamic initWidget(WidgetTester tester, AppStateModel state, Widget child) {
+dynamic initWidget(WidgetTester tester, AppStateModel? state, Widget child) {
   return tester.pumpWidget(
     OverlaySupport(
       child: MaterialApp(

@@ -13,28 +13,28 @@ import 'package:cognite_flutter_demo/globals.dart';
 
 class AppStateModel with ChangeNotifier {
   bool _authenticated = true;
-  String _userToken;
-  String _idToken;
-  String _refreshToken;
-  DateTime _expires;
-  String _email;
-  String _name;
-  String _locale;
-  String _cdfProject;
-  String _cdfTimeSeriesId;
-  String _cdfApiKey;
-  String _cdfURL;
-  int _cdfProjectId;
-  int _cdfApiKeyId;
+  String? _userToken;
+  String? _idToken;
+  String? _refreshToken;
+  DateTime? _expires;
+  String? _email;
+  String? _name;
+  String? _locale;
+  String? _cdfProject;
+  String? _cdfTimeSeriesId;
+  String? _cdfApiKey;
+  late String _cdfURL;
+  int? _cdfProjectId;
+  int? _cdfApiKeyId;
   int _cdfNrOfDays = 10;
   // Used to calculate resolution, the bigger the more points in a range are loaded.
   // This is injected into ChartState and HeartbeatState.
   int _resolutionFactor = 420000;
-  StatusModel _cdfStatus;
-  CDFApiClient _apiClient;
+  StatusModel? _cdfStatus;
+  CDFApiClient? _apiClient;
 
   final SharedPreferences prefs;
-  final FirebaseAnalytics analytics;
+  final FirebaseAnalytics? analytics;
   // We use a mockmap to enable and disable mock functions/classes.
   // The mock should be injected as a dependency where external dependencies need
   // to be mocked as part of testing.
@@ -44,12 +44,12 @@ class AppStateModel with ChangeNotifier {
   String get userToken => _userToken ?? '';
   String get idToken => _idToken ?? '';
   String get refreshToken => _refreshToken ?? '';
-  DateTime get expires => _expires;
-  String get email => _email;
-  String get name => _name;
-  String get cdfProject => _cdfProject;
-  int get cdfProjectId => _cdfProjectId;
-  int get cdfApiKeyId => _cdfApiKeyId;
+  DateTime? get expires => _expires;
+  String? get email => _email;
+  String? get name => _name;
+  String get cdfProject => _cdfProject ?? '';
+  int get cdfProjectId => _cdfProjectId ?? 0;
+  int get cdfApiKeyId => _cdfApiKeyId ?? 0;
   int get resolutionFactor => _resolutionFactor;
   set resolutionFactor(i) => _resolutionFactor = i;
   set cdfProject(s) {
@@ -57,7 +57,7 @@ class AppStateModel with ChangeNotifier {
     prefs.setString('cdfProject', s);
   }
 
-  String get cdfApiKey => _cdfApiKey;
+  String get cdfApiKey => _cdfApiKey!;
   set cdfApiKey(s) {
     _cdfApiKey = s;
     prefs.setString('cdfApiKey', s);
@@ -69,17 +69,17 @@ class AppStateModel with ChangeNotifier {
     prefs.setString('cdfURL', s);
   }
 
-  String get cdfTimeSeriesId => _cdfTimeSeriesId;
+  String get cdfTimeSeriesId => _cdfTimeSeriesId!;
   set cdfTimeSeriesId(s) {
     _cdfTimeSeriesId = s;
     prefs.setString('cdfTimeSeriesId', s);
   }
 
-  bool get cdfLoggedIn {
+  bool? get cdfLoggedIn {
     if (_cdfStatus == null) {
       return false;
     }
-    return _cdfStatus.loggedIn;
+    return _cdfStatus!.loggedIn;
   }
 
   int get cdfNrOfDays => _cdfNrOfDays;
@@ -88,7 +88,7 @@ class AppStateModel with ChangeNotifier {
     prefs.setInt('cdfNrOfDays', i);
   }
 
-  CDFApiClient get apiClient => _apiClient;
+  CDFApiClient? get apiClient => _apiClient;
 
   MockMap get mocks => _mocks;
   String get locale => _locale ?? '';
@@ -104,7 +104,7 @@ class AppStateModel with ChangeNotifier {
     setLocale(null);
   }
 
-  void setLocale(String loc) {
+  void setLocale(String? loc) {
     if (loc == null) {
       loc = prefs.getString('locale');
       if (loc == null) {
@@ -112,8 +112,8 @@ class AppStateModel with ChangeNotifier {
       }
     }
     _locale = loc;
-    S.load(Locale(_locale));
-    prefs.setString('locale', _locale);
+    S.load(Locale(_locale!));
+    prefs.setString('locale', _locale!);
     notifyListeners();
   }
 
@@ -139,7 +139,7 @@ class AppStateModel with ChangeNotifier {
     if (this.analytics == null) {
       return;
     }
-    await this.analytics.logEvent(
+    await this.analytics!.logEvent(
           name: name,
           parameters: params,
         );
@@ -166,19 +166,19 @@ class AppStateModel with ChangeNotifier {
           logLevel: Level.error,
           httpAdapter: GenericHttpClientAdapter());
     } else {
-      _apiClient = _mocks.getMock('heartbeat');
+      _apiClient = _mocks.getMock('heartbeat') as CDFApiClient?;
     }
     try {
-      _cdfStatus = await _apiClient.getStatus();
+      _cdfStatus = await _apiClient!.getStatus();
       log.d(_cdfStatus);
     } catch (e) {
       _cdfStatus = null;
       return false;
     }
     if (_cdfStatus != null) {
-      setUserInfo(Map.from({'email': _cdfStatus.user, 'name': 'N/A'}));
-      _cdfApiKeyId = _cdfStatus.apiKeyId;
-      _cdfProjectId = _cdfStatus.projectId;
+      setUserInfo(Map.from({'email': _cdfStatus!.user, 'name': 'N/A'}));
+      _cdfApiKeyId = _cdfStatus!.apiKeyId;
+      _cdfProjectId = _cdfStatus!.projectId;
     }
     sendAnalyticsEvent(
         'login', {'project': _cdfProject, 'timeseries': _cdfTimeSeriesId});

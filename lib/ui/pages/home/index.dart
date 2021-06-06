@@ -12,7 +12,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var appState = Provider.of<AppStateModel>(context);
-    if (!appState.cdfLoggedIn) {
+    if (!appState.cdfLoggedIn!) {
       return Scaffold(
         body: ConfigPage(),
       );

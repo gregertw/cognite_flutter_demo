@@ -28,7 +28,8 @@ class CheckBoxButtons extends StatelessWidget {
                   end: chart.endRange,
                   resolution: chart.resolution);
               // Only load raw datapoints when we have a short range
-              if (((chart.endRange - chart.startRange) / 1000).round() < 3600) {
+              if (((chart.endRange! - chart.startRange!) / 1000).round() <
+                  3600) {
                 hbm.loadTimeSeries(raw: true);
               } else {
                 hbm.loadTimeSeries();
@@ -50,7 +51,8 @@ class CheckBoxButtons extends StatelessWidget {
                   end: chart.endRange,
                   resolution: chart.resolution);
               // Only load raw datapoints when we have a short range
-              if (((chart.endRange - chart.startRange) / 1000).round() < 3600) {
+              if (((chart.endRange! - chart.startRange!) / 1000).round() <
+                  3600) {
                 hbm.loadTimeSeries(raw: true);
               } else {
                 hbm.loadTimeSeries();
@@ -65,7 +67,7 @@ class CheckBoxButtons extends StatelessWidget {
             icon: Icon(Icons.add, color: Theme.of(context).accentColor),
             onPressed: () {
               // We don't want to zoom in more than 11s
-              if ((chart.endRange - chart.startRange).round() > 11000) {
+              if ((chart.endRange! - chart.startRange!).round() > 11000) {
                 chart.setNewRange(zoom: 0.4);
                 chart.applyRangeController();
                 hbm.setFilter(
@@ -73,7 +75,7 @@ class CheckBoxButtons extends StatelessWidget {
                     end: chart.endRange,
                     resolution: chart.resolution);
                 // Only load raw datapoints when we have a short range
-                if (((chart.endRange - chart.startRange) / 1000).round() <
+                if (((chart.endRange! - chart.startRange!) / 1000).round() <
                     3600) {
                   hbm.loadTimeSeries(raw: true);
                 } else {

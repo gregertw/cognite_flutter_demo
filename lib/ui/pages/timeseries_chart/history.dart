@@ -7,10 +7,10 @@ void historyDialog(BuildContext context) {
   var hbm = Provider.of<HeartBeatModel>(context, listen: false);
   List<Widget> dialogs = [];
   int i = 1;
-  hbm.apiClient.history.forEach((element) {
+  hbm.apiClient!.history!.forEach((element) {
     dialogs.add(SimpleDialogOption(
       child: Text(
-          "$i: ${element.path} (${DateTime.fromMillisecondsSinceEpoch(element.timestampStart).toLocal().toIso8601String()})"),
+          "$i: ${element.path} (${DateTime.fromMillisecondsSinceEpoch(element.timestampStart!).toLocal().toIso8601String()})"),
       onPressed: () {
         showDialog(
           context: context,
@@ -22,7 +22,7 @@ void historyDialog(BuildContext context) {
                     width: 4.0,
                     color: Theme.of(context)
                         .inputDecorationTheme
-                        .focusedBorder
+                        .focusedBorder!
                         .borderSide
                         .color),
                 borderRadius: BorderRadius.circular(10.0),
@@ -74,7 +74,7 @@ void historyDialog(BuildContext context) {
               width: 4.0,
               color: Theme.of(context)
                   .inputDecorationTheme
-                  .focusedBorder
+                  .focusedBorder!
                   .borderSide
                   .color),
           borderRadius: BorderRadius.circular(10.0),

@@ -56,11 +56,11 @@ class ConfigPage extends StatelessWidget {
                                 color: Theme.of(context).accentColor),
                           ),
                         ),
-                        onSaved: (String val) {
+                        onSaved: (String? val) {
                           appState.cdfProject = val;
                         },
                         validator: (val) {
-                          if (val.length == 0) {
+                          if (val!.length == 0) {
                             return S.of(context).configProjectEmpty;
                           } else {
                             return null;
@@ -85,11 +85,11 @@ class ConfigPage extends StatelessWidget {
                                 color: Theme.of(context).accentColor),
                           ),
                         ),
-                        onSaved: (String val) {
+                        onSaved: (String? val) {
                           appState.cdfURL = val;
                         },
                         validator: (val) {
-                          if (val.length == 0) {
+                          if (val!.length == 0) {
                             return S.of(context).configBaseURLEmpty;
                           } else {
                             return null;
@@ -114,11 +114,11 @@ class ConfigPage extends StatelessWidget {
                                 color: Theme.of(context).accentColor),
                           ),
                         ),
-                        onSaved: (String val) {
+                        onSaved: (String? val) {
                           appState.cdfApiKey = val;
                         },
                         validator: (val) {
-                          if (val.length == 0) {
+                          if (val!.length == 0) {
                             return S.of(context).configAPIkeyEmpty;
                           } else {
                             return null;
@@ -145,11 +145,11 @@ class ConfigPage extends StatelessWidget {
                           ),
                         ),
                         keyboardType: TextInputType.text,
-                        onSaved: (String val) {
+                        onSaved: (String? val) {
                           appState.cdfTimeSeriesId = val;
                         },
                         validator: (val) {
-                          if (val.length == 0) {
+                          if (val!.length == 0) {
                             return S.of(context).configTimeseriesIdEmpty;
                           } else {
                             return null;
@@ -174,8 +174,8 @@ class ConfigPage extends StatelessWidget {
                           ),
                         ),
                         keyboardType: TextInputType.number,
-                        onSaved: (String val) {
-                          appState.cdfNrOfDays = int.parse(val);
+                        onSaved: (String? val) {
+                          appState.cdfNrOfDays = int.parse(val!);
                         },
                         style: new TextStyle(
                           fontFamily: "Poppins",
@@ -193,8 +193,8 @@ class ConfigPage extends StatelessWidget {
                           padding: const EdgeInsets.all(8.0),
                         ),
                         onPressed: () {
-                          if (_formKey.currentState.validate()) {
-                            _formKey.currentState.save();
+                          if (_formKey.currentState!.validate()) {
+                            _formKey.currentState!.save();
                             appState.verifyCDF();
                             Navigator.of(context).popAndPushNamed('/HomePage');
                           } else {
