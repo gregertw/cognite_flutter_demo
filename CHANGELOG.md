@@ -1,5 +1,10 @@
 # CHANGELOG
 
+
+## Jan 30, 2020
+
+* Clean up template-dir with screenshots
+
 ## Dec 15, 2020
 
 * Increase test coverage with more widget tests
