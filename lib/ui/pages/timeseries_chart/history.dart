@@ -7,7 +7,7 @@ void historyDialog(BuildContext context) {
   var hbm = Provider.of<HeartBeatModel>(context, listen: false);
   List<Widget> dialogs = [];
   int i = 1;
-  hbm.apiClient!.history!.forEach((element) {
+  hbm.apiClient.history.forEach((element) {
     dialogs.add(SimpleDialogOption(
       child: Text(
           "$i: ${element.path} (${DateTime.fromMillisecondsSinceEpoch(element.timestampStart!).toLocal().toIso8601String()})"),
@@ -19,12 +19,8 @@ void historyDialog(BuildContext context) {
               contentPadding: EdgeInsets.fromLTRB(15, 15, 15, 15),
               shape: RoundedRectangleBorder(
                 side: BorderSide(
-                    width: 4.0,
-                    color: Theme.of(context)
-                        .inputDecorationTheme
-                        .focusedBorder!
-                        .borderSide
-                        .color),
+                  width: 4.0,
+                ),
                 borderRadius: BorderRadius.circular(10.0),
               ),
               title: Text("${element.method} - ${element.path}"),
@@ -71,12 +67,8 @@ void historyDialog(BuildContext context) {
         title: Text('Request History'),
         shape: RoundedRectangleBorder(
           side: BorderSide(
-              width: 4.0,
-              color: Theme.of(context)
-                  .inputDecorationTheme
-                  .focusedBorder!
-                  .borderSide
-                  .color),
+            width: 4.0,
+          ),
           borderRadius: BorderRadius.circular(10.0),
         ),
         children: dialogs,

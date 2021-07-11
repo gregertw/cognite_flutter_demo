@@ -46,14 +46,14 @@ class ConfigPage extends StatelessWidget {
                     new ListTile(
                       leading: const Icon(Icons.pages_rounded),
                       title: new TextFormField(
-                        cursorColor: Theme.of(context).accentColor,
+                        cursorColor: Theme.of(context).colorScheme.secondary,
                         initialValue: appState.cdfProject,
                         decoration: new InputDecoration(
                           labelText: S.of(context).configProject,
                           border: new OutlineInputBorder(
                             borderRadius: new BorderRadius.circular(25.0),
                             borderSide: new BorderSide(
-                                color: Theme.of(context).accentColor),
+                                color: Theme.of(context).colorScheme.secondary),
                           ),
                         ),
                         onSaved: (String? val) {
@@ -75,14 +75,14 @@ class ConfigPage extends StatelessWidget {
                     new ListTile(
                       leading: const Icon(Icons.web_rounded),
                       title: new TextFormField(
-                        cursorColor: Theme.of(context).accentColor,
+                        cursorColor: Theme.of(context).colorScheme.secondary,
                         initialValue: appState.cdfURL,
                         decoration: new InputDecoration(
                           labelText: S.of(context).configBaseURL,
                           border: new OutlineInputBorder(
                             borderRadius: new BorderRadius.circular(25.0),
                             borderSide: new BorderSide(
-                                color: Theme.of(context).accentColor),
+                                color: Theme.of(context).colorScheme.secondary),
                           ),
                         ),
                         onSaved: (String? val) {
@@ -104,25 +104,41 @@ class ConfigPage extends StatelessWidget {
                     new ListTile(
                       leading: const Icon(Icons.security_rounded),
                       title: new TextFormField(
-                        cursorColor: Theme.of(context).accentColor,
+                        cursorColor: Theme.of(context).colorScheme.secondary,
                         initialValue: appState.cdfApiKey,
                         decoration: new InputDecoration(
                           labelText: S.of(context).configAPIkey,
                           border: new OutlineInputBorder(
                             borderRadius: new BorderRadius.circular(25.0),
                             borderSide: new BorderSide(
-                                color: Theme.of(context).accentColor),
+                                color: Theme.of(context).colorScheme.secondary),
                           ),
                         ),
                         onSaved: (String? val) {
                           appState.cdfApiKey = val;
                         },
-                        validator: (val) {
-                          if (val!.length == 0) {
-                            return S.of(context).configAPIkeyEmpty;
-                          } else {
-                            return null;
-                          }
+                        obscureText: true,
+                        keyboardType: TextInputType.visiblePassword,
+                        style: new TextStyle(
+                          fontFamily: "Poppins",
+                        ),
+                      ),
+                    ),
+                    new ListTile(
+                      leading: const Icon(Icons.security_rounded),
+                      title: new TextFormField(
+                        cursorColor: Theme.of(context).colorScheme.secondary,
+                        initialValue: appState.cdfToken ?? '',
+                        decoration: new InputDecoration(
+                          labelText: S.of(context).configToken,
+                          border: new OutlineInputBorder(
+                            borderRadius: new BorderRadius.circular(25.0),
+                            borderSide: new BorderSide(
+                                color: Theme.of(context).colorScheme.secondary),
+                          ),
+                        ),
+                        onSaved: (String? val) {
+                          appState.cdfToken = val;
                         },
                         obscureText: true,
                         keyboardType: TextInputType.visiblePassword,
@@ -134,14 +150,14 @@ class ConfigPage extends StatelessWidget {
                     new ListTile(
                       leading: const Icon(Icons.timer),
                       title: new TextFormField(
-                        cursorColor: Theme.of(context).accentColor,
+                        cursorColor: Theme.of(context).colorScheme.secondary,
                         initialValue: appState.cdfTimeSeriesId,
                         decoration: new InputDecoration(
                           labelText: S.of(context).configTimeseriesId,
                           border: new OutlineInputBorder(
                             borderRadius: new BorderRadius.circular(25.0),
                             borderSide: new BorderSide(
-                                color: Theme.of(context).accentColor),
+                                color: Theme.of(context).colorScheme.secondary),
                           ),
                         ),
                         keyboardType: TextInputType.text,
@@ -163,14 +179,14 @@ class ConfigPage extends StatelessWidget {
                     new ListTile(
                       leading: const Icon(Icons.timer),
                       title: new TextFormField(
-                        cursorColor: Theme.of(context).accentColor,
+                        cursorColor: Theme.of(context).colorScheme.secondary,
                         initialValue: appState.cdfNrOfDays.toString(),
                         decoration: new InputDecoration(
                           labelText: S.of(context).configNrOfDays,
                           border: new OutlineInputBorder(
                             borderRadius: new BorderRadius.circular(25.0),
                             borderSide: new BorderSide(
-                                color: Theme.of(context).accentColor),
+                                color: Theme.of(context).colorScheme.secondary),
                           ),
                         ),
                         keyboardType: TextInputType.number,

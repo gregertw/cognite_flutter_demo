@@ -6,10 +6,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 // Trick to load correct http adapter dependent on browser or app compile
 import 'httpadapter.dart' if (dart.library.html) 'webhttpadapter.dart';
-import 'package:cognite_flutter_demo/mock/mockmap.dart';
-import 'package:cognite_flutter_demo/generated/l10n.dart';
 import 'package:cognite_cdf_sdk/cognite_cdf_sdk.dart';
 import 'package:cognite_flutter_demo/globals.dart';
+import 'package:cognite_flutter_demo/mock/mockmap.dart';
+import 'package:cognite_flutter_demo/generated/l10n.dart';
 
 class AppStateModel with ChangeNotifier {
   bool _authenticated = true;
@@ -21,7 +21,7 @@ class AppStateModel with ChangeNotifier {
   String? _name;
   String? _locale;
   String? _cdfProject;
-  String? _cdfTimeSeriesId;
+  String _cdfTimeSeriesId = '';
   String? _cdfApiKey;
   late String _cdfURL;
   int? _cdfProjectId;
@@ -30,18 +30,18 @@ class AppStateModel with ChangeNotifier {
   // Used to calculate resolution, the bigger the more points in a range are loaded.
   // This is injected into ChartState and HeartbeatState.
   int _resolutionFactor = 420000;
-  StatusModel? _cdfStatus;
-  CDFApiClient? _apiClient;
+  StatusModel _cdfStatus = StatusModel();
+  late CDFApiClient _apiClient;
 
   final SharedPreferences prefs;
   final FirebaseAnalytics? analytics;
+
   // We use a mockmap to enable and disable mock functions/classes.
   // The mock should be injected as a dependency where external dependencies need
   // to be mocked as part of testing.
   MockMap _mocks = MockMap();
 
   bool get authenticated => _authenticated;
-  String get userToken => _userToken ?? '';
   String get idToken => _idToken ?? '';
   String get refreshToken => _refreshToken ?? '';
   DateTime? get expires => _expires;
@@ -57,7 +57,13 @@ class AppStateModel with ChangeNotifier {
     prefs.setString('cdfProject', s);
   }
 
-  String get cdfApiKey => _cdfApiKey!;
+  String? get cdfToken => _userToken ?? null;
+  set cdfToken(s) {
+    _userToken = s;
+    prefs.setString('userToken', s);
+  }
+
+  String? get cdfApiKey => _cdfApiKey;
   set cdfApiKey(s) {
     _cdfApiKey = s;
     prefs.setString('cdfApiKey', s);
@@ -69,18 +75,13 @@ class AppStateModel with ChangeNotifier {
     prefs.setString('cdfURL', s);
   }
 
-  String get cdfTimeSeriesId => _cdfTimeSeriesId!;
+  String get cdfTimeSeriesId => _cdfTimeSeriesId;
   set cdfTimeSeriesId(s) {
     _cdfTimeSeriesId = s;
     prefs.setString('cdfTimeSeriesId', s);
   }
 
-  bool? get cdfLoggedIn {
-    if (_cdfStatus == null) {
-      return false;
-    }
-    return _cdfStatus!.loggedIn;
-  }
+  bool get cdfLoggedIn => _cdfStatus.loggedIn;
 
   int get cdfNrOfDays => _cdfNrOfDays;
   set cdfNrOfDays(i) {
@@ -88,13 +89,12 @@ class AppStateModel with ChangeNotifier {
     prefs.setInt('cdfNrOfDays', i);
   }
 
-  CDFApiClient? get apiClient => _apiClient;
+  CDFApiClient get apiClient => _apiClient;
 
   MockMap get mocks => _mocks;
   String get locale => _locale ?? '';
 
   AppStateModel(this.prefs, [this.analytics]) {
-    verifyCDF();
     // this will load locale from prefs
     // Note that you need to use
     // Intl.defaultLocale = appState.locale;
@@ -148,31 +148,33 @@ class AppStateModel with ChangeNotifier {
 
   Future<bool> verifyCDF() async {
     _cdfApiKey = prefs.getString('cdfApiKey') ?? '';
+    _userToken = prefs.getString('userToken') ?? null;
     _cdfProject = prefs.getString('cdfProject') ?? 'publicdata';
     _cdfURL = prefs.getString('cdfURL') ?? 'https://api.cognitedata.com';
     _cdfTimeSeriesId = prefs.getString('cdfTimeSeriesId') ?? '';
     if (_mocks.getMock('heartbeat') == null) {
       _apiClient = CDFApiClient(
           project: _cdfProject,
+          token: _userToken,
           apikey: _cdfApiKey,
           baseUrl: _cdfURL,
           logLevel: Level.error,
           httpAdapter: GenericHttpClientAdapter());
     } else {
-      _apiClient = _mocks.getMock('heartbeat') as CDFApiClient?;
+      _apiClient = _mocks.getMock('heartbeat') as CDFApiClient;
     }
     try {
-      _cdfStatus = await _apiClient!.getStatus();
+      _cdfStatus = await _apiClient.getStatus();
       log.d(_cdfStatus);
     } catch (e) {
-      _cdfStatus = null;
       return false;
     }
-    if (_cdfStatus != null) {
-      setUserInfo(Map.from({'email': _cdfStatus!.user, 'name': 'N/A'}));
-      _cdfApiKeyId = _cdfStatus!.apiKeyId;
-      _cdfProjectId = _cdfStatus!.projectId;
+    if (!_cdfStatus.loggedIn) {
+      return false;
     }
+    setUserInfo(Map.from({'email': _cdfStatus.user ?? '', 'name': 'N/A'}));
+    _cdfApiKeyId = _cdfStatus.apiKeyId;
+    _cdfProjectId = _cdfStatus.projectId;
     sendAnalyticsEvent(
         'login', {'project': _cdfProject, 'timeseries': _cdfTimeSeriesId});
     notifyListeners();
@@ -205,12 +207,10 @@ class AppStateModel with ChangeNotifier {
     _idToken = null;
     _refreshToken = null;
     _expires = null;
-    _cdfStatus = null;
     _cdfApiKey = null;
     _cdfApiKeyId = null;
     _cdfProject = null;
     _cdfProjectId = null;
-    _cdfTimeSeriesId = null;
     prefs.clear();
     notifyListeners();
   }

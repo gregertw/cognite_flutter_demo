@@ -390,6 +390,16 @@ class S {
     );
   }
 
+  /// `Enter token`
+  String get configToken {
+    return Intl.message(
+      'Enter token',
+      name: 'configToken',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Enter external timeseries id`
   String get configTimeseriesId {
     return Intl.message(

@@ -66,6 +66,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "Enter external timeseries id"),
         "configTimeseriesIdEmpty": MessageLookupByLibrary.simpleMessage(
             "Timeseries id cannot be empty"),
+        "configToken": MessageLookupByLibrary.simpleMessage("Enter token"),
         "drawerAbout": MessageLookupByLibrary.simpleMessage("About..."),
         "drawerAboutMessage": MessageLookupByLibrary.simpleMessage(
             "This application is a personal project of Greger Wedel (c). The app is registered with Firebase Analytics and username (email), project id, and timeseries external id are registered on login.  Report issues at: "),

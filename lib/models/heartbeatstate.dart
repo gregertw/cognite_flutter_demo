@@ -4,7 +4,7 @@ import 'package:cognite_flutter_demo/globals.dart';
 
 /// Keeps timeseries data state
 class HeartBeatModel with ChangeNotifier {
-  CDFApiClient? apiClient;
+  CDFApiClient apiClient;
   String tsId;
   int startDays;
   int resolutionFactor;

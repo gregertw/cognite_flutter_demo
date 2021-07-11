@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## Jul 11, 2021
+
+* Another full update of dependencies
+* Add new form field for token to support OpenID Connect token
+* Various cleanups due to updates to CDF SDK null-safety updates
+* Update style.dart to be a simplified version to facilitate easier updates later
+* Upgrade to version 0.4.0
+
 ## Jun 6, 2021
 
 * Migrate to null-safety

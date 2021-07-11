@@ -203,7 +203,7 @@ class TimeSeriesChart extends StatelessWidget {
                     showTicks: true,
                     showLabels: true,
                     enableTooltip: true,
-                    showDivisors: true,
+                    showDividers: true,
                     activeColor: Color.fromARGB(255, 5, 90, 194),
                     inactiveColor: Color.fromARGB(100, 5, 90, 194),
                     enableIntervalSelection: true,

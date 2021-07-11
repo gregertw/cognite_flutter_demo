@@ -49,9 +49,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "chartZoomOut": MessageLookupByLibrary.simpleMessage("Zoom ut"),
         "clickToView":
             MessageLookupByLibrary.simpleMessage("Trykk for å se..."),
-        "configAPIkey": MessageLookupByLibrary.simpleMessage("Sett API nøkkel"),
+        "configAPIkey":
+            MessageLookupByLibrary.simpleMessage("Sett API nøkkel eller token"),
         "configAPIkeyEmpty": MessageLookupByLibrary.simpleMessage(
-            "API nøkkel kan ikke være tom"),
+            "API nøkkel/token kan ikke være tom"),
         "configBaseURL": MessageLookupByLibrary.simpleMessage("Sett base-URL"),
         "configBaseURLEmpty":
             MessageLookupByLibrary.simpleMessage("Base-URL kan ikke være tom"),
