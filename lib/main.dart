@@ -1,5 +1,6 @@
 import 'dart:async';
 //import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
@@ -25,15 +26,18 @@ void main() async {
 
   await Firebase.initializeApp();
 
-  // Pass all uncaught errors from the framework to Crashlytics.
-  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
-
+  if (!kIsWeb) {
+    // Pass all uncaught errors from the framework to Crashlytics.
+    FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
+  }
   FirebaseAnalytics analytics = FirebaseAnalytics();
 
   // Get an instance so that globals are initialised
   var prefs = await SharedPreferences.getInstance();
   // Let's initialise the app state with the stored preferences
   var appState = AppStateModel(prefs, analytics);
+  // Load values from prefs and check token state
+  appState.verifyCDF();
 
   // as documented in appstate.dart, we here set the defaultLokale
   // from appState to apply loaded locale from sharedpreferences on

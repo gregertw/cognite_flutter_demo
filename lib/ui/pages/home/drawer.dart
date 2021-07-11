@@ -54,11 +54,11 @@ class HomePageDrawer extends StatelessWidget {
                     size: 28,
                     color: Colors.blue.shade300,
                   ), trailing: Builder(builder: (context) {
-                return FlatButton(
+                return TextButton(
                   autofocus: true,
-                  textColor: Colors.yellow,
+                  style: TextButton.styleFrom(primary: Colors.yellow),
                   onPressed: () {
-                    OverlaySupportEntry.of(context).dismiss();
+                    OverlaySupportEntry.of(context)!.dismiss();
                     launch(
                         "https://github.com/gregertw/cognite-flutter-demo/issues");
                   },
@@ -92,7 +92,7 @@ Widget buildDrawerHeader(BuildContext context) {
   var appState = Provider.of<AppStateModel>(context);
   return UserAccountsDrawerHeader(
     key: Key("DrawerMenu_Header"),
-    accountName: Text(appState.cdfProject == null
+    accountName: Text(appState.cdfProject == ''
         ? S.of(context).drawerHeaderInitialName
         : appState.cdfProject),
     accountEmail: Text(appState.cdfLoggedIn == true
@@ -112,19 +112,19 @@ Widget buildDrawerHeader(BuildContext context) {
             children: <Widget>[
               ListTile(
                 title: Text(S.of(context).drawerProjectName),
-                subtitle: Text(appState.cdfProject == null
+                subtitle: Text(appState.cdfProject == ''
                     ? S.of(context).drawerEmptyProject
                     : appState.cdfProject),
               ),
               ListTile(
                 title: Text(S.of(context).drawerButtomSheetProjectId),
-                subtitle: Text(appState.cdfProjectId == null
+                subtitle: Text(appState.cdfProjectId == 0
                     ? ''
                     : appState.cdfProjectId.toString()),
               ),
               ListTile(
                 title: Text(S.of(context).drawerButtomSheetApiKeyId),
-                subtitle: Text(appState.cdfApiKeyId == null
+                subtitle: Text(appState.cdfApiKeyId == 0
                     ? ''
                     : appState.cdfApiKeyId.toString()),
               ),

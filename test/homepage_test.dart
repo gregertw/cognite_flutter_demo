@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:cognite_flutter_demo/models/appstate.dart';
 import 'package:cognite_flutter_demo/ui/pages/home/index.dart';
@@ -9,15 +8,15 @@ import 'package:cognite_cdf_sdk/cognite_cdf_sdk.dart';
 import 'initwidget.dart';
 
 void main() async {
-  AppStateModel appState;
+  AppStateModel? appState;
   // We need mock initial values for SharedPreferences
   SharedPreferences.setMockInitialValues({});
   var prefs = await SharedPreferences.getInstance();
   // Make a mock client we can use to make mocked http responses
-  var client = CDFMockApiClient(logLevel: Level.error);
+  var client = CDFMockApiClient();
   setUpAll(() async {
     appState = AppStateModel(prefs);
-    appState.mocks.enableMock('heartbeat', client);
+    appState!.mocks.enableMock('heartbeat', client);
     client.setMock(body: """{
     "data": {
         "user": "user@cognite.com",
@@ -27,17 +26,17 @@ void main() async {
         "apiKeyId": 934347347677
     }
 }""");
-    await appState.verifyCDF();
+    await appState!.verifyCDF();
   });
 
   test('logged in state', () {
-    expect(appState.cdfLoggedIn, true);
+    expect(appState!.cdfLoggedIn, true);
   });
 
   testWidgets('logged-in homepage widget', (WidgetTester tester) async {
     await initWidget(tester, appState, HomePage());
     await tester.pumpAndSettle();
-    expect(appState.cdfLoggedIn, true);
+    expect(appState!.cdfLoggedIn, true);
     expect(find.byKey(Key("HomePage_Scaffold")), findsOneWidget);
     expect(find.byType(AppBar), findsOneWidget);
   });

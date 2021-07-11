@@ -33,6 +33,7 @@
   "configBaseURLEmpty": "URL cannot be empty",
   "configAPIkey": "Enter API key",
   "configAPIkeyEmpty": "API key cannot be empty",
+  "configToken": "Enter token",
   "configTimeseriesId": "Enter external timeseries id",
   "configTimeseriesIdEmpty": "Timeseries id cannot be empty",
   "configNrOfDays": "Enter number of days in initial range",

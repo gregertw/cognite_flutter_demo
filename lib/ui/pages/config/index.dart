@@ -46,21 +46,21 @@ class ConfigPage extends StatelessWidget {
                     new ListTile(
                       leading: const Icon(Icons.pages_rounded),
                       title: new TextFormField(
-                        cursorColor: Theme.of(context).accentColor,
+                        cursorColor: Theme.of(context).colorScheme.secondary,
                         initialValue: appState.cdfProject,
                         decoration: new InputDecoration(
                           labelText: S.of(context).configProject,
                           border: new OutlineInputBorder(
                             borderRadius: new BorderRadius.circular(25.0),
                             borderSide: new BorderSide(
-                                color: Theme.of(context).accentColor),
+                                color: Theme.of(context).colorScheme.secondary),
                           ),
                         ),
-                        onSaved: (String val) {
+                        onSaved: (String? val) {
                           appState.cdfProject = val;
                         },
                         validator: (val) {
-                          if (val.length == 0) {
+                          if (val!.length == 0) {
                             return S.of(context).configProjectEmpty;
                           } else {
                             return null;
@@ -75,21 +75,21 @@ class ConfigPage extends StatelessWidget {
                     new ListTile(
                       leading: const Icon(Icons.web_rounded),
                       title: new TextFormField(
-                        cursorColor: Theme.of(context).accentColor,
+                        cursorColor: Theme.of(context).colorScheme.secondary,
                         initialValue: appState.cdfURL,
                         decoration: new InputDecoration(
                           labelText: S.of(context).configBaseURL,
                           border: new OutlineInputBorder(
                             borderRadius: new BorderRadius.circular(25.0),
                             borderSide: new BorderSide(
-                                color: Theme.of(context).accentColor),
+                                color: Theme.of(context).colorScheme.secondary),
                           ),
                         ),
-                        onSaved: (String val) {
+                        onSaved: (String? val) {
                           appState.cdfURL = val;
                         },
                         validator: (val) {
-                          if (val.length == 0) {
+                          if (val!.length == 0) {
                             return S.of(context).configBaseURLEmpty;
                           } else {
                             return null;
@@ -104,25 +104,41 @@ class ConfigPage extends StatelessWidget {
                     new ListTile(
                       leading: const Icon(Icons.security_rounded),
                       title: new TextFormField(
-                        cursorColor: Theme.of(context).accentColor,
+                        cursorColor: Theme.of(context).colorScheme.secondary,
                         initialValue: appState.cdfApiKey,
                         decoration: new InputDecoration(
                           labelText: S.of(context).configAPIkey,
                           border: new OutlineInputBorder(
                             borderRadius: new BorderRadius.circular(25.0),
                             borderSide: new BorderSide(
-                                color: Theme.of(context).accentColor),
+                                color: Theme.of(context).colorScheme.secondary),
                           ),
                         ),
-                        onSaved: (String val) {
+                        onSaved: (String? val) {
                           appState.cdfApiKey = val;
                         },
-                        validator: (val) {
-                          if (val.length == 0) {
-                            return S.of(context).configAPIkeyEmpty;
-                          } else {
-                            return null;
-                          }
+                        obscureText: true,
+                        keyboardType: TextInputType.visiblePassword,
+                        style: new TextStyle(
+                          fontFamily: "Poppins",
+                        ),
+                      ),
+                    ),
+                    new ListTile(
+                      leading: const Icon(Icons.security_rounded),
+                      title: new TextFormField(
+                        cursorColor: Theme.of(context).colorScheme.secondary,
+                        initialValue: appState.cdfToken ?? '',
+                        decoration: new InputDecoration(
+                          labelText: S.of(context).configToken,
+                          border: new OutlineInputBorder(
+                            borderRadius: new BorderRadius.circular(25.0),
+                            borderSide: new BorderSide(
+                                color: Theme.of(context).colorScheme.secondary),
+                          ),
+                        ),
+                        onSaved: (String? val) {
+                          appState.cdfToken = val;
                         },
                         obscureText: true,
                         keyboardType: TextInputType.visiblePassword,
@@ -134,22 +150,22 @@ class ConfigPage extends StatelessWidget {
                     new ListTile(
                       leading: const Icon(Icons.timer),
                       title: new TextFormField(
-                        cursorColor: Theme.of(context).accentColor,
+                        cursorColor: Theme.of(context).colorScheme.secondary,
                         initialValue: appState.cdfTimeSeriesId,
                         decoration: new InputDecoration(
                           labelText: S.of(context).configTimeseriesId,
                           border: new OutlineInputBorder(
                             borderRadius: new BorderRadius.circular(25.0),
                             borderSide: new BorderSide(
-                                color: Theme.of(context).accentColor),
+                                color: Theme.of(context).colorScheme.secondary),
                           ),
                         ),
                         keyboardType: TextInputType.text,
-                        onSaved: (String val) {
+                        onSaved: (String? val) {
                           appState.cdfTimeSeriesId = val;
                         },
                         validator: (val) {
-                          if (val.length == 0) {
+                          if (val!.length == 0) {
                             return S.of(context).configTimeseriesIdEmpty;
                           } else {
                             return null;
@@ -163,19 +179,19 @@ class ConfigPage extends StatelessWidget {
                     new ListTile(
                       leading: const Icon(Icons.timer),
                       title: new TextFormField(
-                        cursorColor: Theme.of(context).accentColor,
+                        cursorColor: Theme.of(context).colorScheme.secondary,
                         initialValue: appState.cdfNrOfDays.toString(),
                         decoration: new InputDecoration(
                           labelText: S.of(context).configNrOfDays,
                           border: new OutlineInputBorder(
                             borderRadius: new BorderRadius.circular(25.0),
                             borderSide: new BorderSide(
-                                color: Theme.of(context).accentColor),
+                                color: Theme.of(context).colorScheme.secondary),
                           ),
                         ),
                         keyboardType: TextInputType.number,
-                        onSaved: (String val) {
-                          appState.cdfNrOfDays = int.parse(val);
+                        onSaved: (String? val) {
+                          appState.cdfNrOfDays = int.parse(val!);
                         },
                         style: new TextStyle(
                           fontFamily: "Poppins",
@@ -185,12 +201,16 @@ class ConfigPage extends StatelessWidget {
                     new Container(
                       padding: const EdgeInsets.symmetric(
                           vertical: 16.0, horizontal: 16.0),
-                      child: RaisedButton(
-                        textTheme: Theme.of(context).buttonTheme.textTheme,
-                        color: Theme.of(context).buttonColor,
+                      child: ElevatedButton(
+                        key: Key('LocationPage_StartListeningButton'),
+                        style: ElevatedButton.styleFrom(
+                          elevation: 20.0,
+                          onPrimary: Theme.of(context).primaryColorLight,
+                          padding: const EdgeInsets.all(8.0),
+                        ),
                         onPressed: () {
-                          if (_formKey.currentState.validate()) {
-                            _formKey.currentState.save();
+                          if (_formKey.currentState!.validate()) {
+                            _formKey.currentState!.save();
                             appState.verifyCDF();
                             Navigator.of(context).popAndPushNamed('/HomePage');
                           } else {

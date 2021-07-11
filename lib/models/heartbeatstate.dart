@@ -15,7 +15,7 @@ class HeartBeatModel with ChangeNotifier {
   int _activeRawLayer = 0;
   int _rangeStart = 0;
   int _rangeEnd = 0;
-  bool _loading;
+  bool? _loading;
 
   get rangeStart => _rangeStart;
   get rangeEnd => _rangeEnd;
@@ -55,11 +55,11 @@ class HeartBeatModel with ChangeNotifier {
   ///
   /// NOTE! includeOutsidePoints is not supported for aggregates!
   void setFilter(
-      {int start,
-      int end,
-      int resolution,
-      int nrOfDays,
-      List<String> aggregates,
+      {int? start,
+      int? end,
+      int? resolution,
+      int? nrOfDays,
+      List<String>? aggregates,
       bool includeOutsidePoints: false}) {
     _filter.includeOutsidePoints = includeOutsidePoints;
     if (end == null) {
@@ -115,7 +115,7 @@ class HeartBeatModel with ChangeNotifier {
 
   /// Returns the last active layer of aggregates
   List<DatapointModel> get timeSeriesAggregates {
-    if (_dataPoints != null) {
+    if (_dataPoints.datapointsLength != 0) {
       return _dataPoints.layer(layer: _activeLayer);
     }
     return [];
@@ -123,7 +123,7 @@ class HeartBeatModel with ChangeNotifier {
 
   /// Returns the first full range layer of aggregates.
   List<DatapointModel> get timeSeriesFullRangeAggregates {
-    if (_dataPoints != null) {
+    if (_dataPoints.datapointsLength != 0) {
       return _dataPoints.layer(layer: 1);
     }
     return [];
@@ -131,7 +131,7 @@ class HeartBeatModel with ChangeNotifier {
 
   /// Returns the last layer of datapoints, note that only value is set!!!
   List<DatapointModel> get timeSeriesDataPoints {
-    if (_rawDataPoints != null) {
+    if (_rawDataPoints.datapointsLength != 0) {
       return _rawDataPoints.layer(layer: _activeRawLayer);
     }
     return [];
@@ -139,7 +139,7 @@ class HeartBeatModel with ChangeNotifier {
 
   /// Returns the first full range layer of raw datapoints.
   List<DatapointModel> get timeSeriesFullRangeDataPoints {
-    if (_rawDataPoints != null) {
+    if (_rawDataPoints.datapointsLength != 0) {
       return _rawDataPoints.layer(layer: 1);
     }
     return [];
@@ -163,14 +163,15 @@ class HeartBeatModel with ChangeNotifier {
   // Given the last [setFilter], load aggregates and raw datapoints.
   void loadTimeSeries({bool raw: false}) async {
     log.d(_filter.toString());
-    if (_loading) {
+    if (_loading!) {
       log.d("Already loading new timeseries, skipping...");
       return;
     }
     _loading = true;
     try {
       var aggregates = await TimeSeriesAPI(apiClient).getDatapoints(_filter);
-      if (aggregates != null && aggregates.datapoints.isNotEmpty) {
+      if (aggregates.datapointsLength != 0 &&
+          aggregates.datapoints.isNotEmpty) {
         log.d("New datapoints: ${aggregates.datapointsLength}");
         this._dataPoints.addDatapoints(aggregates);
         _activeLayer += 1;
@@ -181,7 +182,7 @@ class HeartBeatModel with ChangeNotifier {
         log.d(_filter.toString());
         var rawDPs =
             await TimeSeriesAPI(apiClient).getDatapoints(_filter, raw: true);
-        if (rawDPs != null && rawDPs.datapoints.isNotEmpty) {
+        if (rawDPs.datapointsLength != 0 && rawDPs.datapoints.isNotEmpty) {
           log.d("New raw datapoints: ${rawDPs.datapointsLength}");
           this._rawDataPoints.addDatapoints(rawDPs);
           _activeRawLayer += 1;
