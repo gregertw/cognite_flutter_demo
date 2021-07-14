@@ -1,22 +1,44 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:provider/provider.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:cognite_flutter_demo/models/appstate.dart';
+import 'package:cognite_flutter_demo/generated/l10n.dart';
+import 'package:cognite_flutter_demo/ui/theme/style.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:cognite_cdf_sdk/cognite_cdf_sdk.dart';
 import 'package:cognite_flutter_demo/ui/pages/home/index.dart';
 import 'package:cognite_flutter_demo/ui/pages/home/drawer.dart';
-import 'package:cognite_cdf_sdk/cognite_cdf_sdk.dart';
-import 'initwidget.dart';
+
+dynamic initWidget(WidgetTester tester, AppStateModel state) {
+  return tester.pumpWidget(
+    new MaterialApp(
+      onGenerateTitle: (context) => S.of(context).appTitle,
+      localizationsDelegates: [
+        S.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ],
+      supportedLocales: S.delegate.supportedLocales,
+      theme: appTheme,
+      home: new ChangeNotifierProvider.value(
+        value: state,
+        child: new HomePage(),
+      ),
+    ),
+  );
+}
 
 void main() async {
-  AppStateModel? appState;
+  AppStateModel appState;
   // We need mock initial values for SharedPreferences
   SharedPreferences.setMockInitialValues({});
   var prefs = await SharedPreferences.getInstance();
+  appState = AppStateModel(prefs);
   // Make a mock client we can use to make mocked http responses
   var client = CDFMockApiClient();
   setUpAll(() async {
-    appState = AppStateModel(prefs);
-    appState!.mocks.enableMock('heartbeat', client);
+    appState.mocks.enableMock('heartbeat', client);
     client.setMock(body: """{
     "data": {
         "user": "user@cognite.com",
@@ -26,23 +48,23 @@ void main() async {
         "apiKeyId": 934347347677
     }
 }""");
-    await appState!.verifyCDF();
+    await appState.verifyCDF();
   });
 
   test('logged in state', () {
-    expect(appState!.cdfLoggedIn, true);
+    expect(appState.cdfLoggedIn, true);
   });
 
   testWidgets('logged-in homepage widget', (WidgetTester tester) async {
-    await initWidget(tester, appState, HomePage());
+    await initWidget(tester, appState);
     await tester.pumpAndSettle();
-    expect(appState!.cdfLoggedIn, true);
+    expect(appState.cdfLoggedIn, true);
     expect(find.byKey(Key("HomePage_Scaffold")), findsOneWidget);
     expect(find.byType(AppBar), findsOneWidget);
   });
 
   testWidgets('open drawer', (WidgetTester tester) async {
-    await initWidget(tester, appState, HomePage());
+    await initWidget(tester, appState);
     await tester.pumpAndSettle();
     // Find the menu button
     final finder = find.descendant(

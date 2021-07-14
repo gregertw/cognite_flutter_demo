@@ -152,6 +152,13 @@ class AppStateModel with ChangeNotifier {
     _cdfProject = prefs.getString('cdfProject') ?? 'publicdata';
     _cdfURL = prefs.getString('cdfURL') ?? 'https://api.cognitedata.com';
     _cdfTimeSeriesId = prefs.getString('cdfTimeSeriesId') ?? '';
+    // TODO Remove this
+    _cdfProject = prefs.getString('cdfProject') ?? 'gregerwedel';
+    _cdfURL = prefs.getString('cdfURL') ?? 'https://greenfield.cognitedata.com';
+    _cdfApiKey = prefs.getString('cdfApiKey') ??
+        'NjU5ODQ3YjQtZjI0MS00YTI4LWFiM2UtMDRmYjc4ZGRjYTdk';
+    _cdfTimeSeriesId = prefs.getString('cdfTimeSeriesId') ??
+        'fitbit_c2009283ac84526e9f0e01ef4cc9fa2a';
     if (_mocks.getMock('heartbeat') == null) {
       _apiClient = CDFApiClient(
           project: _cdfProject,

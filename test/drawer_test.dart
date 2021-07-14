@@ -1,9 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:provider/provider.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:cognite_flutter_demo/models/appstate.dart';
+import 'package:cognite_flutter_demo/generated/l10n.dart';
+import 'package:cognite_flutter_demo/ui/theme/style.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:cognite_flutter_demo/ui/pages/home/drawer.dart';
-import 'initwidget.dart';
+
+dynamic initWidget(WidgetTester tester, AppStateModel state) {
+  return tester.pumpWidget(
+    new MaterialApp(
+      onGenerateTitle: (context) => S.of(context).appTitle,
+      localizationsDelegates: [
+        S.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ],
+      supportedLocales: S.delegate.supportedLocales,
+      theme: appTheme,
+      home: new ChangeNotifierProvider.value(
+        value: state,
+        child: new HomePageDrawer(),
+      ),
+    ),
+  );
+}
 
 void main() async {
   AppStateModel appState;
@@ -13,7 +35,7 @@ void main() async {
   appState = AppStateModel(prefs);
 
   testWidgets('is drawer ready', (WidgetTester tester) async {
-    await initWidget(tester, appState, HomePageDrawer());
+    await initWidget(tester, appState);
     await tester.pump();
 
     // We should have opened the drawer
@@ -26,7 +48,7 @@ void main() async {
   });
 
   testWidgets('log out from drawer', (WidgetTester tester) async {
-    await initWidget(tester, appState, HomePageDrawer());
+    await initWidget(tester, appState);
     await tester.pump();
 
     final buttonFinder = find.descendant(
