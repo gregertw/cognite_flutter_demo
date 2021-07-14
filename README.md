@@ -9,7 +9,7 @@ This app can run on any Flutter supported platform. The [web version is hosted o
 ## iOS and Android versions
 
 Due to the work related to releasing official apps, the iOS and Adroid versions of this demo app are available as tests
-previews.You can download the Android version from https://www.dropbox.com/s/wzpikapz8zjul2f/cognite_flutter_demo.apk?dl=1 and the iOS app is available from Testflight at https://testflight.apple.com/join/BaSD6V0J
+previews.You can download the Android version from https://www.dropbox.com/s/3c11p2pmrweixs0/cognite_flutter_demo.aab?dl=1 and the iOS app is available from Testflight at https://testflight.apple.com/join/BaSD6V0J
 
 ## About this repository
 
@@ -25,10 +25,6 @@ This app uses Syncfusion packages for displaying charts under a community licens
 
 See more details on:
 https://github.com/syncfusion/flutter-widgets/tree/master/packages/syncfusion_flutter_core
-
-**NOTE!!!** The current syncfusion version has an issue with nullsafety. In the syncfusion_flutter_core package, the
-pubspec.yaml file has `pedantic: ">=1.9.0 <1.9.9"` as a dependency. This has to be changed to `pedantic: ^1.10.0-nullsafety`. You can clone the 18.3.51 package in the directory above this app and do the change in 
-`packages/syncfusion_flutter_core/pubspec.yaml`.
 
 ## Disclaimer
 
