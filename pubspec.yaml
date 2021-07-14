@@ -24,7 +24,7 @@ dependencies:
   firebase_crashlytics: ^2.0.7
   overlay_support: ^1.2.1
   url_launcher: ^6.0.9
-  cognite_cdf_sdk: ^0.2.0-nullsafety.1
+  cognite_cdf_sdk: ^0.2.0
   syncfusion_flutter_charts: ^19.2.46+1 
   syncfusion_flutter_core: ^19.2.46
   syncfusion_flutter_sliders: ^19.2.46 
