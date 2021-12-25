@@ -1,6 +1,6 @@
 {
-    "name": "cognite_flutter_demo",
-    "short_name": "cognite_flutter_demo",
+    "name": "actingweb_firstapp",
+    "short_name": "actingweb_firstapp",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

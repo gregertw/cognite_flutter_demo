@@ -60,7 +60,8 @@ class ChartFeatureModel with ChangeNotifier {
     }
   }
 
-  void setNewRange({int? start, int? end, double zoom: 0.0, double pan: 0.0}) {
+  void setNewRange(
+      {int? start, int? end, double zoom = 0.0, double pan = 0.0}) {
     if (zoom != 0.0) {
       var range = (endRange! - startRange!) / 2;
       startRange = startRange! + (range * zoom).round();

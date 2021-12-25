@@ -1,74 +1,70 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:cognite_flutter_demo/models/appstate.dart';
-import 'package:cognite_flutter_demo/generated/l10n.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:cognite_flutter_demo/ui/theme/style.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:cognite_cdf_sdk/cognite_cdf_sdk.dart';
 import 'package:cognite_flutter_demo/ui/pages/home/index.dart';
 import 'package:cognite_flutter_demo/ui/pages/home/drawer.dart';
+import 'package:cognite_flutter_demo/ui/pages/login/index.dart';
 
+// Helper function to encapsulate code needed to instantiate the HomePage() widget
 dynamic initWidget(WidgetTester tester, AppStateModel state) {
   return tester.pumpWidget(
-    new MaterialApp(
-      onGenerateTitle: (context) => S.of(context).appTitle,
-      localizationsDelegates: [
-        S.delegate,
+    MaterialApp(
+      onGenerateTitle: (context) => AppLocalizations.of(context)!.appTitle,
+      localizationsDelegates: const [
+        AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
       ],
-      supportedLocales: S.delegate.supportedLocales,
+      supportedLocales: AppLocalizations.supportedLocales,
       theme: appTheme,
-      home: new ChangeNotifierProvider.value(
+      home: ChangeNotifierProvider.value(
         value: state,
-        child: new HomePage(),
+        child: const HomePage(),
       ),
     ),
   );
 }
 
 void main() async {
-  AppStateModel appState;
+  AppStateModel loginState, logoutState;
   // We need mock initial values for SharedPreferences
   SharedPreferences.setMockInitialValues({});
   var prefs = await SharedPreferences.getInstance();
-  appState = AppStateModel(prefs);
-  // Make a mock client we can use to make mocked http responses
-  var client = CDFMockApiClient();
-  setUpAll(() async {
-    appState.mocks.enableMock('heartbeat', client);
-    client.setMock(body: """{
-    "data": {
-        "user": "user@cognite.com",
-        "loggedIn": true,
-        "project": "publicdata",
-        "projectId": 5977964818434649,
-        "apiKeyId": 934347347677
-    }
-}""");
-    await appState.verifyCDF();
+  // We have one logged in state and one logged out, to be used with various tests
+  loginState = AppStateModel(prefs: prefs, mock: true);
+  logoutState = AppStateModel(prefs: prefs, mock: true);
+
+  test('logged in state', () async {
+    await loginState.authorize();
+    expect(loginState.authenticated, true);
   });
 
-  test('logged in state', () {
-    expect(appState.cdfLoggedIn, true);
+  testWidgets('logged-out homepage widget', (WidgetTester tester) async {
+    await initWidget(tester, logoutState);
+    await tester.pump();
+    expect(find.byType(LoginPage), findsOneWidget);
   });
 
   testWidgets('logged-in homepage widget', (WidgetTester tester) async {
-    await initWidget(tester, appState);
-    await tester.pumpAndSettle();
-    expect(appState.cdfLoggedIn, true);
-    expect(find.byKey(Key("HomePage_Scaffold")), findsOneWidget);
+    await initWidget(tester, loginState);
+    await tester.pump();
+    expect(find.byKey(const Key("HomePage_Scaffold")), findsOneWidget);
     expect(find.byType(AppBar), findsOneWidget);
+    // We should find the map toggle button
+    expect(find.byType(FloatingActionButton), findsOneWidget);
   });
 
   testWidgets('open drawer', (WidgetTester tester) async {
-    await initWidget(tester, appState);
-    await tester.pumpAndSettle();
+    await initWidget(tester, loginState);
+    await tester.pump();
     // Find the menu button
     final finder = find.descendant(
-        of: find.byKey(Key("HomePage_Scaffold")),
+        of: find.byKey(const Key("HomePage_Scaffold")),
         matching: find.byTooltip("Open navigation menu"));
     // and tap it to open
     await tester.tap(finder);
@@ -85,6 +81,6 @@ void main() async {
     expect(
         find.descendant(
             of: find.byType(HomePageDrawer), matching: find.byType(ListTile)),
-        findsNWidgets(4));
+        findsNWidgets(5));
   });
 }

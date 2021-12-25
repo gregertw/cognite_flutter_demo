@@ -33,6 +33,7 @@
   "configBaseURLEmpty": "Base-URL kan ikke være tom",
   "configAPIkey": "Sett API nøkkel eller token",
   "configAPIkeyEmpty": "API nøkkel/token kan ikke være tom",
+  "configToken": "Legg inn token ",
   "configTimeseriesId": "Sett ekstern tidsseries-id",
   "configTimeseriesIdEmpty": "Tidsserie-id kan ikke være tom",
   "configNrOfDays": "Sett antall dager i første diagram",

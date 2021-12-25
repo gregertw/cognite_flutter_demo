@@ -8,9 +8,9 @@ class HeartBeatModel with ChangeNotifier {
   String tsId;
   int startDays;
   int resolutionFactor;
-  DatapointsModel _dataPoints = DatapointsModel();
-  DatapointsModel _rawDataPoints = DatapointsModel();
-  DatapointsFilterModel _filter = DatapointsFilterModel();
+  final DatapointsModel _dataPoints = DatapointsModel();
+  final DatapointsModel _rawDataPoints = DatapointsModel();
+  final DatapointsFilterModel _filter = DatapointsFilterModel();
   int _activeLayer = 0;
   int _activeRawLayer = 0;
   int _rangeStart = 0;
@@ -60,7 +60,7 @@ class HeartBeatModel with ChangeNotifier {
       int? resolution,
       int? nrOfDays,
       List<String>? aggregates,
-      bool includeOutsidePoints: false}) {
+      bool includeOutsidePoints = false}) {
     _filter.includeOutsidePoints = includeOutsidePoints;
     if (end == null) {
       _filter.end = DateTime.now().millisecondsSinceEpoch;
@@ -161,7 +161,7 @@ class HeartBeatModel with ChangeNotifier {
   }
 
   // Given the last [setFilter], load aggregates and raw datapoints.
-  void loadTimeSeries({bool raw: false}) async {
+  void loadTimeSeries({bool raw = false}) async {
     log.d(_filter.toString());
     if (_loading!) {
       log.d("Already loading new timeseries, skipping...");
@@ -173,7 +173,7 @@ class HeartBeatModel with ChangeNotifier {
       if (aggregates.datapointsLength != 0 &&
           aggregates.datapoints.isNotEmpty) {
         log.d("New datapoints: ${aggregates.datapointsLength}");
-        this._dataPoints.addDatapoints(aggregates);
+        _dataPoints.addDatapoints(aggregates);
         _activeLayer += 1;
       }
       if (raw) {
@@ -184,7 +184,7 @@ class HeartBeatModel with ChangeNotifier {
             await TimeSeriesAPI(apiClient).getDatapoints(_filter, raw: true);
         if (rawDPs.datapointsLength != 0 && rawDPs.datapoints.isNotEmpty) {
           log.d("New raw datapoints: ${rawDPs.datapointsLength}");
-          this._rawDataPoints.addDatapoints(rawDPs);
+          _rawDataPoints.addDatapoints(rawDPs);
           _activeRawLayer += 1;
         }
       }
