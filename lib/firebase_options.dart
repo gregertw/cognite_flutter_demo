@@ -50,7 +50,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyDFGA5xRa-aa4WMbIUebHvXiZOpg67GhWw',
-    appId: '1:1058078351513:android:09fb1845af6e213f035808',
+    appId: '1:1058078351513:android:946f8a8d7c6dc700035808',
     messagingSenderId: '1058078351513',
     projectId: 'cognite-cdf-demo',
     databaseURL: 'https://cognite-cdf-demo.firebaseio.com',
@@ -59,12 +59,12 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyDcSUu0AVkanFE_luNCoNdOFZlP-x79FiI',
-    appId: '1:1058078351513:ios:e122fed4c390775a035808',
+    appId: '1:1058078351513:ios:ac219fd2cf70a267035808',
     messagingSenderId: '1058078351513',
     projectId: 'cognite-cdf-demo',
     databaseURL: 'https://cognite-cdf-demo.firebaseio.com',
     storageBucket: 'cognite-cdf-demo.appspot.com',
-    iosClientId: '1058078351513-f0jn6mt7t43i245eegdcjeval4e07v5l.apps.googleusercontent.com',
-    iosBundleId: 'io.greger.cognite-flutter-demo',
+    iosClientId: '1058078351513-2vna1u6q5v6ei3efmsv5s4r2ka8efqsa.apps.googleusercontent.com',
+    iosBundleId: 'io.greger.cogniteflutterdemo',
   );
 }

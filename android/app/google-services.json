@@ -8,9 +8,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1058078351513:android:09fb1845af6e213f035808",
+        "mobilesdk_app_id": "1:1058078351513:android:946f8a8d7c6dc700035808",
         "android_client_info": {
-          "package_name": "io.greger.cognite_flutter_demo"
+          "package_name": "io.greger.cogniteflutterdemo"
         }
       },
       "oauth_client": [
