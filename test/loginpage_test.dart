@@ -34,16 +34,14 @@ void main() async {
   SharedPreferences.setMockInitialValues({});
   var prefs = await SharedPreferences.getInstance();
   // We have one logged in state and one logged out, to be used with various tests
-  state = AppStateModel(prefs: prefs);
+  state = AppStateModel(prefs: prefs, mock: true);
   testWidgets('LoginPage', (WidgetTester tester) async {
     await initWidget(tester, state);
 
     await tester.pump();
     expect(find.byType(Image), findsOneWidget);
-    expect(find.byType(Text), findsNWidgets(3));
+    expect(find.byType(Text), findsNWidgets(2));
     expect(find.byType(AuthPage), findsOneWidget);
-    expect(find.byType(ElevatedButton), findsNWidgets(2));
-    // Here we could tap the button, but it only triggers
-    // a webpage with login from auth0, so we cannot test that in a widget test
+    expect(find.byType(ElevatedButton), findsNWidgets(1));
   });
 }

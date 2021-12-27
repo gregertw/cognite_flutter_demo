@@ -1,4 +1,6 @@
+import 'package:cognite_cdf_sdk/cognite_cdf_sdk.dart';
 import 'package:flutter/material.dart';
+import 'dart:io';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -40,6 +42,16 @@ void main() async {
   logoutState = AppStateModel(prefs: prefs, mock: true);
 
   test('logged in state', () async {
+    // Need CDF apiclient mock data for status
+    (loginState.apiClient as CDFMockApiClient).setMock(body: """{
+        "subject": "user@cognite.com",
+        "projects": [
+          {
+            "projectUrlName": "publicdata",
+            "groups": [62353240994493, 7356024348897575]
+          }
+        ]
+      }""");
     await loginState.authorize();
     expect(loginState.authenticated, true);
   });
@@ -51,17 +63,47 @@ void main() async {
   });
 
   testWidgets('logged-in homepage widget', (WidgetTester tester) async {
+    // Need CDF apiclient mock data for status
+    (loginState.apiClient as CDFMockApiClient).setMock(body: """{
+        "subject": "user@cognite.com",
+        "projects": [
+          {
+            "projectUrlName": "publicdata",
+            "groups": [62353240994493, 7356024348897575]
+          }
+        ]
+      }""");
+    await loginState.authorize();
+    await tester.pump(const Duration(seconds: 1));
+    expect(loginState.authenticated, true);
+    // Need timeseries mock data
+    var mock = File(Directory.current.path + '/test/response-1.json')
+        .readAsStringSync();
+    (loginState.apiClient as CDFMockApiClient).setMock(body: mock);
     await initWidget(tester, loginState);
-    await tester.pump();
+    await tester.pumpAndSettle(const Duration(seconds: 1));
     expect(find.byKey(const Key("HomePage_Scaffold")), findsOneWidget);
     expect(find.byType(AppBar), findsOneWidget);
-    // We should find the map toggle button
-    expect(find.byType(FloatingActionButton), findsOneWidget);
   });
 
   testWidgets('open drawer', (WidgetTester tester) async {
+    (loginState.apiClient as CDFMockApiClient).setMock(body: """{
+        "subject": "user@cognite.com",
+        "projects": [
+          {
+            "projectUrlName": "publicdata",
+            "groups": [62353240994493, 7356024348897575]
+          }
+        ]
+      }""");
+    await loginState.authorize();
+    await tester.pump(const Duration(seconds: 1));
+    expect(loginState.authenticated, true);
+    var mock = File(Directory.current.path + '/test/response-1.json')
+        .readAsStringSync();
+    (loginState.apiClient as CDFMockApiClient).setMock(body: mock);
     await initWidget(tester, loginState);
-    await tester.pump();
+    await tester.pump(const Duration(seconds: 1));
     // Find the menu button
     final finder = find.descendant(
         of: find.byKey(const Key("HomePage_Scaffold")),
@@ -81,6 +123,6 @@ void main() async {
     expect(
         find.descendant(
             of: find.byType(HomePageDrawer), matching: find.byType(ListTile)),
-        findsNWidgets(5));
+        findsNWidgets(4));
   });
 }

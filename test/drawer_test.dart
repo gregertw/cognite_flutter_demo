@@ -1,3 +1,4 @@
+import 'package:cognite_cdf_sdk/cognite_cdf_sdk.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:provider/provider.dart';
@@ -38,16 +39,25 @@ void main() async {
   testWidgets('is drawer ready', (WidgetTester tester) async {
     await initWidget(tester, loginState);
     await tester.pump();
+    (loginState.apiClient as CDFMockApiClient).setMock(body: """{
+        "subject": "user@cognite.com",
+        "projects": [
+          {
+            "projectUrlName": "publicdata",
+            "groups": [62353240994493, 7356024348897575]
+          }
+        ]
+      }""");
     await loginState.authorize();
+    await tester.pump(const Duration(seconds: 1));
     expect(loginState.authenticated, true);
     // We should have opened the drawer
     expect(find.byType(HomePageDrawer), findsOneWidget);
     expect(find.byKey(const Key("DrawerMenu_Header")), findsOneWidget);
-    expect(
-        find.byKey(const Key("DrawerMenuTile_RefreshTokens")), findsOneWidget);
-    expect(find.byKey(const Key("DrawerMenuTile_GetUserInfo")), findsOneWidget);
+    expect(find.byKey(const Key("DrawerMenuTile_Config")), findsOneWidget);
     expect(
         find.byKey(const Key("DrawerMenuTile_Localisation")), findsOneWidget);
+    expect(find.byKey(const Key("DrawerMenuTile_About")), findsOneWidget);
   });
 
   testWidgets('log out from drawer', (WidgetTester tester) async {

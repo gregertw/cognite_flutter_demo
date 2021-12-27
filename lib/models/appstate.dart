@@ -83,12 +83,23 @@ class AppStateModel with ChangeNotifier {
     if (mock) {
       _authClient = AuthClient(
           provider: 'mock', clientId: '', clientSecret: '', web: web);
+      _apiClient = CDFMockApiClient();
     } else {
       _authClient = AuthClient(
           clientId: Environment.clientIdAAD,
           clientSecret: Environment.secretAAD,
           provider: 'aad',
           web: web);
+      if (_mocks.getCDF() == null) {
+        _apiClient = CDFApiClient(
+            project: _cdfProject,
+            token: auth!.accessToken,
+            baseUrl: cdfURL,
+            logLevel: Level.error,
+            httpAdapter: GenericHttpClientAdapter());
+      } else {
+        _apiClient = _mocks.getCDF() as CDFApiClient;
+      }
     }
     refreshSession();
     // this will load locale from prefs
@@ -207,16 +218,6 @@ class AppStateModel with ChangeNotifier {
   }
 
   Future<bool> _verifyCDF() async {
-    if (_mocks.getCDF() == null) {
-      _apiClient = CDFApiClient(
-          project: _cdfProject,
-          token: auth!.accessToken,
-          baseUrl: cdfURL,
-          logLevel: Level.error,
-          httpAdapter: GenericHttpClientAdapter());
-    } else {
-      _apiClient = _mocks.getCDF() as CDFApiClient;
-    }
     try {
       _cdfStatus = await _apiClient.getStatus();
       log.d(_cdfStatus);
