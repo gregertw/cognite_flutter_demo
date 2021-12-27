@@ -19,7 +19,7 @@ class HeartBeatModel with ChangeNotifier {
 
   get rangeStart => _rangeStart;
   get rangeEnd => _rangeEnd;
-  get loading => _loading;
+  get loading => _loading ?? false;
 
   HeartBeatModel(
       this.apiClient, this.tsId, this.startDays, this.resolutionFactor) {

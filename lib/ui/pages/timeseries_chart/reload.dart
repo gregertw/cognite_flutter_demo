@@ -3,10 +3,10 @@ import 'package:provider/provider.dart';
 import 'package:cognite_flutter_demo/models/heartbeatstate.dart';
 
 class ReloadMarker extends StatelessWidget {
-  const ReloadMarker({Key? key}) : super(key: key);
+  // ignore: prefer_const_constructors_in_immutables
+  ReloadMarker({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    var hbm = Provider.of<HeartBeatModel>(context, listen: false);
     return Stack(
       children: <Widget>[
         Align(
@@ -19,7 +19,8 @@ class ReloadMarker extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Visibility(
-                    visible: hbm.loading,
+                    visible: Provider.of<HeartBeatModel>(context, listen: true)
+                        .loading,
                     child: Padding(
                       padding: const EdgeInsets.fromLTRB(24, 0, 24, 0),
                       child: ConstrainedBox(

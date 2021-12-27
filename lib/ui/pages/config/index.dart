@@ -164,7 +164,7 @@ class ConfigPage extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(
                           vertical: 16.0, horizontal: 16.0),
                       child: ElevatedButton(
-                        key: const Key('LocationPage_StartListeningButton'),
+                        key: const Key('LocationPage_OkButton'),
                         style: ElevatedButton.styleFrom(
                           elevation: 20.0,
                           onPrimary: Theme.of(context).primaryColorLight,
@@ -173,7 +173,7 @@ class ConfigPage extends StatelessWidget {
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
                             _formKey.currentState!.save();
-                            appState.verifyCDF();
+                            //appState.verifyCDF();
                             Navigator.of(context).popAndPushNamed('/HomePage');
                           } else {
                             ScaffoldMessenger.of(context).showSnackBar(SnackBar(

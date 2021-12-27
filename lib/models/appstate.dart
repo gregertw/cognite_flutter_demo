@@ -87,6 +87,7 @@ class AppStateModel with ChangeNotifier {
       _authClient = AuthClient(
           clientId: Environment.clientIdAAD,
           clientSecret: Environment.secretAAD,
+          provider: 'aad',
           web: web);
     }
     refreshSession();
@@ -97,6 +98,18 @@ class AppStateModel with ChangeNotifier {
     // as the widget tree will not automatically refresh until build time
     // See lib/ui/pages/home/index.dart for an example.
     setLocale(null);
+    _cdfProject = prefs!.getString('cdfProject') ?? 'publicdata';
+    _cdfURL = prefs!.getString('cdfURL') ?? 'https://api.cognitedata.com';
+    _cdfTimeSeriesId = prefs!.getString('cdfTimeSeriesId') ?? '';
+    // TODO Remove this
+    _cdfProject = prefs!.getString('cdfProject') ?? 'gregerwedel';
+    _cdfURL =
+        prefs!.getString('cdfURL') ?? 'https://greenfield.cognitedata.com';
+    _cdfTimeSeriesId = prefs!.getString('cdfTimeSeriesId') ??
+        'fitbit_c2009283ac84526e9f0e01ef4cc9fa2a';
+    if (authenticated) {
+      _verifyCDF();
+    }
   }
 
   /// Use to set locale explicitly.
@@ -177,6 +190,7 @@ class AppStateModel with ChangeNotifier {
     if (res ?? false) {
       prefs!.setString('session', _authClient.toString());
       _authenticated = true;
+      _verifyCDF();
       notifyListeners();
       return true;
     }
@@ -192,21 +206,11 @@ class AppStateModel with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<bool> verifyCDF() async {
-    _cdfProject = prefs!.getString('cdfProject') ?? 'publicdata';
-    _cdfURL = prefs!.getString('cdfURL') ?? 'https://api.cognitedata.com';
-    _cdfTimeSeriesId = prefs!.getString('cdfTimeSeriesId') ?? '';
-    // TODO Remove this
-    _cdfProject = prefs!.getString('cdfProject') ?? 'gregerwedel';
-    _cdfURL =
-        prefs!.getString('cdfURL') ?? 'https://greenfield.cognitedata.com';
-    _cdfTimeSeriesId = prefs!.getString('cdfTimeSeriesId') ??
-        'fitbit_c2009283ac84526e9f0e01ef4cc9fa2a';
+  Future<bool> _verifyCDF() async {
     if (_mocks.getCDF() == null) {
       _apiClient = CDFApiClient(
           project: _cdfProject,
           token: auth!.accessToken,
-          apikey: auth!.accessToken,
           baseUrl: cdfURL,
           logLevel: Level.error,
           httpAdapter: GenericHttpClientAdapter());
@@ -220,12 +224,12 @@ class AppStateModel with ChangeNotifier {
       return false;
     }
     if (!_cdfStatus.loggedIn) {
+      logOut();
       return false;
     }
     _cdfProjectId = _cdfStatus.projectId;
     sendAnalyticsEvent(
         'login', {'project': _cdfProject, 'timeseries': _cdfTimeSeriesId});
-    notifyListeners();
     return true;
   }
 }

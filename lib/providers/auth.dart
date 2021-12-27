@@ -23,6 +23,19 @@ class MockOAuth2Client extends GitHubOAuth2Client {
   }
 }
 
+class AADOauth2Client extends OAuth2Client {
+  AADOauth2Client(
+      {required String redirectUri, required String customUriScheme})
+      : super(
+            authorizeUrl:
+                'https://login.microsoftonline.com/61027128-daec-41ce-a3c8-c232d8d67eec/oauth2/v2.0/authorize',
+            tokenUrl:
+                'https://login.microsoftonline.com/61027128-daec-41ce-a3c8-c232d8d67eec/oauth2/v2.0/token',
+            redirectUri: redirectUri,
+            customUriScheme: customUriScheme,
+            credentialsLocation: CredentialsLocation.BODY);
+}
+
 class AuthUserInfo {
   String? email;
   String? username;
@@ -91,16 +104,23 @@ class AuthClient {
   String? provider;
   // For Android and iOS, this must match the URI in the [_redirectUrls].
   // Must be the same as the Android applicationId and iOS bundle scheme.
-  static const String _customUriScheme = 'io.actingweb.firstapp';
+  static const String _customUriScheme = 'io.greger.cogniteflutterdemo"';
   static const Map<String, String> _redirectUrls = {
     'mock': 'localhost',
-    'aad': 'io.actingweb.firstapp://oauthredirect',
+    'aad': 'io.greger.cogniteflutterdemo://oauth',
+    'aad_web': 'http://localhost:59119/',
   };
   static const Map<String, List<String>> _scopes = {
-    'aad': <String>[],
+    'aad': <String>[
+      'user.read',
+      'openid',
+      'https://greenfield.cognitedata.com/.default'
+    ],
+    'aad_web': <String>['https://greenfield.cognitedata.com/.default'],
   };
   static const Map<String, Map<String, String>> _userInfoUrls = {
-    'aad': {'host': 'api.github.com', 'path': '/user'},
+    'aad': {'host': 'graph.microsoft.com', 'path': '/v1.0/me/profile'},
+    'aad_web': {'host': 'graph.microsoft.com', 'path': '/v1.0/me/profile'},
   };
 
   // End default configs
@@ -177,7 +197,8 @@ class AuthClient {
         clientSecret = '';
         break;
       case 'aad':
-        authProvider = GitHubOAuth2Client(
+      case 'aad_web':
+        authProvider = AADOauth2Client(
             redirectUri: redirectUrl!, customUriScheme: customUriScheme!);
         clientId = Environment.clientIdAAD;
         clientSecret = Environment.secretAAD;
@@ -216,6 +237,9 @@ class AuthClient {
       return false;
     }
     _accessToken = res.accessToken;
+    if (res.respMap.containsKey('id_token')) {
+      _idToken = res.respMap['id_token'];
+    }
     // TODO: Set idtoken here.
     if (res.expirationDate != null) {
       _expiresToken = res.expirationDate!;

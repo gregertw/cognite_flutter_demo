@@ -13,7 +13,7 @@ void main() async {
     FlutterError.dumpErrorToConsole(details);
   };
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  group('first_app', () {
+  group('demo', () {
     // First, define the Finders and use them to locate widgets from the
     // test suite. Note: the Strings provided to the `byValueKey` method must
     // be the same as the Strings we used for the Keys.
@@ -40,5 +40,5 @@ void main() async {
       await tester.pumpAndSettle();
       expect(loginButtonFinder, findsOneWidget);
     });
-  }); // group('first_app')
+  });
 }

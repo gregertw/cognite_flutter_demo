@@ -55,8 +55,8 @@ class AuthPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 200.0,
-      width: 150.0,
+      height: 80.0,
+      width: 120.0,
       constraints: const BoxConstraints(maxHeight: 200.0, maxWidth: 150.0),
       child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 16.0),

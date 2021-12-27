@@ -5,7 +5,7 @@ import 'package:cognite_flutter_demo/models/appstate.dart';
 import 'package:cognite_flutter_demo/models/heartbeatstate.dart';
 import 'package:cognite_flutter_demo/models/chartstate.dart';
 import 'package:cognite_flutter_demo/ui/pages/home/drawer.dart';
-import 'package:cognite_flutter_demo/ui/pages/config/index.dart';
+import 'package:cognite_flutter_demo/ui/pages/login/index.dart';
 import 'package:cognite_flutter_demo/ui/pages/timeseries_chart/index.dart';
 
 class HomePage extends StatelessWidget {
@@ -13,9 +13,9 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var appState = Provider.of<AppStateModel>(context);
-    if (!appState.cdfLoggedIn) {
-      return Scaffold(
-        body: ConfigPage(),
+    if (!appState.authenticated) {
+      return const Scaffold(
+        body: LoginPage(),
       );
     }
     return MultiProvider(

@@ -30,7 +30,7 @@ class TimeSeriesChart extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              const ReloadMarker(),
+              ReloadMarker(),
               SfCartesianChart(
                 key: const Key('HomePage_TimeSeriesChart'),
                 // Initialize category axis
@@ -195,52 +195,51 @@ class TimeSeriesChart extends StatelessWidget {
                 ],
               ),
               SizedBox(
-                height: 120,
-                child: Center(
-                  child: SfRangeSelector(
-                    dateFormat: DateFormat.MMMd(),
-                    dateIntervalType: DateIntervalType.days,
-                    interval: 1,
-                    min: DateTime.fromMillisecondsSinceEpoch(hbm.rangeStart),
-                    max: DateTime.fromMillisecondsSinceEpoch(hbm.rangeEnd),
-                    showTicks: true,
-                    showLabels: true,
-                    enableTooltip: true,
-                    showDividers: true,
-                    activeColor: const Color.fromARGB(255, 5, 90, 194),
-                    inactiveColor: const Color.fromARGB(100, 5, 90, 194),
-                    enableIntervalSelection: true,
-                    dragMode: SliderDragMode.both,
-                    enableDeferredUpdate: true,
-                    deferredUpdateDelay: 500,
-                    controller: chart.rangeController,
-                    onChanged: (SfRangeValues values) {
-                      chart.setNewDateRange(values.start, values.end);
-                      hbm.setFilter(
-                          start: chart.startRange,
-                          end: chart.endRange,
-                          resolution: chart.resolution);
-                      hbm.loadTimeSeries();
-                    },
-                    child: SfCartesianChart(
-                      key: const Key('HomePage_TimeSeriesChart_RangeSelector'),
-                      margin: const EdgeInsets.all(0),
-                      primaryXAxis: DateTimeAxis(
-                          isVisible: false,
-                          minimum: DateTime.fromMillisecondsSinceEpoch(
-                              hbm.rangeStart),
-                          maximum: DateTime.fromMillisecondsSinceEpoch(
-                              hbm.rangeEnd)),
-                      primaryYAxis: NumericAxis(isVisible: false),
-                      plotAreaBorderWidth: 0,
-                      series: <CartesianSeries<DatapointModel, DateTime>>[
-                        LineSeries<DatapointModel, DateTime>(
-                            dataSource: Provider.of<HeartBeatModel>(context)
-                                .timeSeriesFullRangeAggregates,
-                            xValueMapper: (DatapointModel ts, _) => ts.datetime,
-                            yValueMapper: (DatapointModel ts, _) => ts.average),
-                      ],
-                    ),
+                height: 80,
+                width: null,
+                child: SfRangeSelector(
+                  dateFormat: DateFormat.MMMd(),
+                  dateIntervalType: DateIntervalType.days,
+                  interval: 1,
+                  min: DateTime.fromMillisecondsSinceEpoch(hbm.rangeStart),
+                  max: DateTime.fromMillisecondsSinceEpoch(hbm.rangeEnd),
+                  showTicks: true,
+                  showLabels: true,
+                  enableTooltip: true,
+                  showDividers: true,
+                  activeColor: const Color.fromARGB(255, 5, 90, 194),
+                  inactiveColor: const Color.fromARGB(100, 5, 90, 194),
+                  enableIntervalSelection: true,
+                  dragMode: SliderDragMode.both,
+                  enableDeferredUpdate: true,
+                  deferredUpdateDelay: 500,
+                  controller: chart.rangeController,
+                  onChanged: (SfRangeValues values) {
+                    chart.setNewDateRange(values.start, values.end);
+                    hbm.setFilter(
+                        start: chart.startRange,
+                        end: chart.endRange,
+                        resolution: chart.resolution);
+                    hbm.loadTimeSeries();
+                  },
+                  child: SfCartesianChart(
+                    key: const Key('HomePage_TimeSeriesChart_RangeSelector'),
+                    margin: const EdgeInsets.all(0),
+                    primaryXAxis: DateTimeAxis(
+                        isVisible: false,
+                        minimum:
+                            DateTime.fromMillisecondsSinceEpoch(hbm.rangeStart),
+                        maximum:
+                            DateTime.fromMillisecondsSinceEpoch(hbm.rangeEnd)),
+                    primaryYAxis: NumericAxis(isVisible: false),
+                    plotAreaBorderWidth: 0,
+                    series: <CartesianSeries<DatapointModel, DateTime>>[
+                      LineSeries<DatapointModel, DateTime>(
+                          dataSource: Provider.of<HeartBeatModel>(context)
+                              .timeSeriesFullRangeAggregates,
+                          xValueMapper: (DatapointModel ts, _) => ts.datetime,
+                          yValueMapper: (DatapointModel ts, _) => ts.average),
+                    ],
                   ),
                 ),
               ),
