@@ -54,19 +54,24 @@ class HomePageDrawer extends StatelessWidget {
                   ), trailing: Builder(builder: (context) {
                 return TextButton(
                   autofocus: true,
-                  style: TextButton.styleFrom(primary: Colors.yellow),
                   onPressed: () {
                     OverlaySupportEntry.of(context)!.dismiss();
                     launch(
                         "https://github.com/gregertw/cognite-flutter-demo/issues");
                   },
-                  child:
-                      Icon(Icons.link, size: 28, color: Colors.blue.shade300),
+                  child: Column(
+                    children: const [
+                      Icon(Icons.link, size: 28, color: Colors.white),
+                      Text(
+                          'https://github.com/gregertw/cognite-flutter-demo/issues',
+                          style: TextStyle(color: Colors.white))
+                    ],
+                  ),
                 );
               }),
                   subtitle:
                       Text(AppLocalizations.of(context)!.drawerAboutMessage),
-                  duration: const Duration(seconds: 4),
+                  duration: const Duration(seconds: 6),
                   position: NotificationPosition.bottom);
             },
           ),
@@ -111,15 +116,21 @@ Widget buildDrawerHeader(BuildContext context) {
             children: <Widget>[
               ListTile(
                 title: Text(AppLocalizations.of(context)!.drawerProjectName),
-                subtitle: Text(appState.cdfProject == ''
+                subtitle: SelectableText(appState.cdfProject == ''
                     ? AppLocalizations.of(context)!.drawerEmptyProject
                     : appState.cdfProject),
               ),
               ListTile(
+                title: Text(AppLocalizations.of(context)!.drawerTimeSeriesId),
+                subtitle: SelectableText(appState.cdfTimeSeriesId == ''
+                    ? ''
+                    : appState.cdfTimeSeriesId),
+              ),
+              ListTile(
                 title: Text(
                     AppLocalizations.of(context)!.drawerButtomSheetProjectId),
-                subtitle: Text(appState.cdfProjectId == 0
-                    ? ''
+                subtitle: SelectableText(appState.cdfProjectId == 0
+                    ? 'N/A'
                     : appState.cdfProjectId.toString()),
               ),
             ],

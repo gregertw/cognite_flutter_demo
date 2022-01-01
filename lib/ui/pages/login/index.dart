@@ -21,31 +21,48 @@ class LoginPage extends StatelessWidget {
       ),
     );
     Column body;
-    if (!appState.authenticated) {
-      if (appState.cdfCluster.isEmpty) {
-        body = Column(
-          children: [logo, ClusterPage()],
-          mainAxisAlignment: MainAxisAlignment.center,
-        );
-      } else {
-        body = Column(
-          children: [logo, welcome, const AuthPage()],
-          mainAxisAlignment: MainAxisAlignment.center,
-        );
-      }
+    if (appState.cdfCluster.isEmpty) {
+      body = Column(
+        children: [
+          logo,
+          Container(
+            width: 400,
+            padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+            decoration: BoxDecoration(
+                color: Theme.of(context).primaryColorLight,
+                borderRadius: BorderRadius.circular(10)),
+            child: ClusterPage(),
+          ),
+        ],
+        mainAxisAlignment: MainAxisAlignment.center,
+      );
+    } else if (!appState.authenticated) {
+      body = Column(
+        children: [logo, welcome, const AuthPage()],
+        mainAxisAlignment: MainAxisAlignment.center,
+      );
+    } else if (appState.cdfProject.isEmpty) {
+      body = Column(
+        children: [
+          logo,
+          Container(
+            width: 400,
+            padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+            decoration: BoxDecoration(
+                color: Theme.of(context).primaryColorLight,
+                borderRadius: BorderRadius.circular(10)),
+            child: const ProjectPage(),
+          ),
+        ],
+        mainAxisAlignment: MainAxisAlignment.center,
+      );
     } else {
-      if (appState.cdfProject.isEmpty) {
-        body = Column(
-          children: [logo, const ProjectPage()],
-          mainAxisAlignment: MainAxisAlignment.center,
-        );
-      } else {
-        body = Column(
-          children: [logo, welcome],
-          mainAxisAlignment: MainAxisAlignment.center,
-        );
-      }
+      body = Column(
+        children: [logo, welcome],
+        mainAxisAlignment: MainAxisAlignment.center,
+      );
     }
+
     return Scaffold(
       body: Container(
         width: MediaQuery.of(context).size.width,
@@ -76,23 +93,16 @@ class ProjectPage extends StatelessWidget {
               ),
             )
             .toList();
-    return Container(
-      width: 400,
-      padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
-      decoration: BoxDecoration(
-          color: Theme.of(context).primaryColorLight,
-          borderRadius: BorderRadius.circular(10)),
-      child: ListTile(
-        title: const Text('CDF Project'),
-        trailing: DropdownButton<String>(
-          items: _dropDownMenuItems,
-          underline: Container(),
-          value: appState.cdfProjects![0],
-          onChanged: (value) {
-            appState.cdfProject = value;
-            appState.initialiseCDF();
-          },
-        ),
+    return ListTile(
+      title: const Text('CDF Project'),
+      trailing: DropdownButton<String>(
+        items: _dropDownMenuItems,
+        underline: Container(),
+        value: appState.cdfProjects![0],
+        onChanged: (value) {
+          appState.cdfProject = value;
+          appState.initialiseCDF();
+        },
       ),
     );
   }
@@ -114,22 +124,17 @@ class ClusterPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var appState = Provider.of<AppStateModel>(context);
-    return Container(
-      width: 400,
-      padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
-      decoration: BoxDecoration(
-          color: Theme.of(context).primaryColorLight,
-          borderRadius: BorderRadius.circular(10)),
-      child: ListTile(
-        title: const Text('CDF Cluster'),
-        trailing: DropdownButton<String>(
-          items: _dropDownMenuItems,
-          underline: Container(),
-          value: appState.cdfCluster.isEmpty ? 'api' : appState.cdfCluster,
-          onChanged: (value) {
-            appState.cdfCluster = value;
-          },
-        ),
+    return ListTile(
+      title: const Text('CDF Cluster'),
+      trailing: DropdownButton<String>(
+        items: _dropDownMenuItems,
+        underline: Container(),
+        value: appState.cdfCluster.isEmpty ? 'api' : appState.cdfCluster,
+        onChanged: (value) {
+          // When we change cluster, we need to reauthenticate
+          appState.logOut();
+          appState.cdfCluster = value;
+        },
       ),
     );
   }

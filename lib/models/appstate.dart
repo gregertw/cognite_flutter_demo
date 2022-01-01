@@ -205,6 +205,8 @@ class AppStateModel with ChangeNotifier {
   void logOut() {
     _authClient?.closeSessions();
     _authenticated = false;
+    _cdfProject = null;
+    _cdfCluster = null;
     prefs!.remove('session');
     prefs!.remove('cdfCluster');
     prefs!.remove('cdfProject');

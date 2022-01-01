@@ -114,7 +114,8 @@ class AuthClient {
   static const Map<String, String> _redirectUrls = {
     'mock': 'localhost',
     'aad': 'io.greger.cogniteflutterdemo://oauth',
-    'aad_web': 'http://localhost:8686/',
+    'aad_web': 'https://gregertw.github.io/cognite_flutter_demo',
+    //'aad_web': 'http://localhost:8686/',
   };
   static const Map<String, List<String>> _scopes = {
     'aad': <String>['User.Read', 'openid', 'profile', 'offline_access'],

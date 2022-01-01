@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:overlay_support/overlay_support.dart';
 import 'package:cognite_flutter_demo/models/appstate.dart';
 import 'package:cognite_flutter_demo/ui/pages/home/index.dart';
 import 'package:cognite_flutter_demo/ui/pages/config/index.dart';
@@ -33,26 +33,29 @@ class ProviderApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false, // set to true to see the debug banner
-      // Providing a restorationScopeId allows the Navigator built by the
-      // MaterialApp to restore the navigation stack when a user leaves and
-      // returns to the app after it has been killed while running in the
-      // background.
-      restorationScopeId: 'cognitedemo',
-      navigatorObservers: [
-        FirebaseAnalyticsObserver(analytics: analytics),
-      ],
-      onGenerateTitle: (context) => AppLocalizations.of(context)!.appTitle,
-      localizationsDelegates: AppLocalizations.localizationsDelegates,
-      supportedLocales: AppLocalizations.supportedLocales,
-      locale: context.watch<AppStateModel>().locale,
-      home: const HomePage(),
-      theme: appTheme,
-      routes: <String, WidgetBuilder>{
-        "/HomePage": (BuildContext context) => const HomePage(),
-        "/ConfigPage": (BuildContext context) => ConfigPage(),
-      },
+    return OverlaySupport.global(
+      child: MaterialApp(
+        debugShowCheckedModeBanner:
+            false, // set to true to see the debug banner
+        // Providing a restorationScopeId allows the Navigator built by the
+        // MaterialApp to restore the navigation stack when a user leaves and
+        // returns to the app after it has been killed while running in the
+        // background.
+        restorationScopeId: 'cognitedemo',
+        navigatorObservers: [
+          FirebaseAnalyticsObserver(analytics: analytics),
+        ],
+        onGenerateTitle: (context) => AppLocalizations.of(context)!.appTitle,
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        locale: context.watch<AppStateModel>().locale,
+        home: const HomePage(),
+        theme: appTheme,
+        routes: <String, WidgetBuilder>{
+          "/HomePage": (BuildContext context) => const HomePage(),
+          "/ConfigPage": (BuildContext context) => ConfigPage(),
+        },
+      ),
     );
   }
 }

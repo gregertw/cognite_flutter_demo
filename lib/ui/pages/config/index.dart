@@ -45,68 +45,6 @@ class ConfigPage extends StatelessWidget {
                     ),
                     const Padding(padding: EdgeInsets.only(top: 10.0)),
                     ListTile(
-                      leading: const Icon(Icons.pages_rounded),
-                      title: TextFormField(
-                        cursorColor: Theme.of(context).colorScheme.secondary,
-                        initialValue: appState.cdfProject,
-                        decoration: InputDecoration(
-                          labelText:
-                              AppLocalizations.of(context)!.configProject,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(25.0),
-                            borderSide: BorderSide(
-                                color: Theme.of(context).colorScheme.secondary),
-                          ),
-                        ),
-                        onSaved: (String? val) {
-                          appState.cdfProject = val;
-                        },
-                        validator: (val) {
-                          if (val!.isEmpty) {
-                            return AppLocalizations.of(context)!
-                                .configProjectEmpty;
-                          } else {
-                            return null;
-                          }
-                        },
-                        keyboardType: TextInputType.text,
-                        style: const TextStyle(
-                          fontFamily: "Poppins",
-                        ),
-                      ),
-                    ),
-                    ListTile(
-                      leading: const Icon(Icons.web_rounded),
-                      title: TextFormField(
-                        cursorColor: Theme.of(context).colorScheme.secondary,
-                        initialValue: appState.cdfURL,
-                        decoration: InputDecoration(
-                          labelText:
-                              AppLocalizations.of(context)!.configBaseURL,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(25.0),
-                            borderSide: BorderSide(
-                                color: Theme.of(context).colorScheme.secondary),
-                          ),
-                        ),
-                        onSaved: (String? val) {
-                          appState.cdfCluster = val;
-                        },
-                        validator: (val) {
-                          if (val!.isEmpty) {
-                            return AppLocalizations.of(context)!
-                                .configBaseURLEmpty;
-                          } else {
-                            return null;
-                          }
-                        },
-                        keyboardType: TextInputType.url,
-                        style: const TextStyle(
-                          fontFamily: "Poppins",
-                        ),
-                      ),
-                    ),
-                    ListTile(
                       leading: const Icon(Icons.timer),
                       title: TextFormField(
                         cursorColor: Theme.of(context).colorScheme.secondary,
@@ -173,7 +111,6 @@ class ConfigPage extends StatelessWidget {
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
                             _formKey.currentState!.save();
-                            //appState.verifyCDF();
                             Navigator.of(context).popAndPushNamed('/HomePage');
                           } else {
                             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
