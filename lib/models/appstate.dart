@@ -14,7 +14,7 @@ import 'package:cognite_flutter_demo/mock/mockmap.dart';
 
 class AppStateModel with ChangeNotifier {
   bool _authenticated = false;
-  AuthUserInfo _userInfo = AuthUserInfo();
+  final AuthUserInfo _userInfo = AuthUserInfo();
   String? _locale;
   late Locale _currentLocale;
   bool mock;
@@ -27,8 +27,8 @@ class AppStateModel with ChangeNotifier {
   // to be mocked as part of testing.
   final MockMap _mocks = MockMap();
 
+  String? _cdfCluster;
   String? _cdfProject;
-  String? _cdfURL;
   String _cdfTimeSeriesId = '';
   int? _cdfProjectId;
   int _cdfNrOfDays = 10;
@@ -50,16 +50,29 @@ class AppStateModel with ChangeNotifier {
   String? get localeAbbrev => _locale;
   Locale get locale => _currentLocale;
   AuthClient? get auth => _authClient;
-
+  String get cdfCluster => _cdfCluster ?? '';
   String get cdfProject => _cdfProject ?? '';
-  String get cdfURL => _cdfURL ?? '';
+  List<String>? get cdfProjects => _cdfStatus.projects ?? [cdfProject];
+  String get cdfURL => 'https://' + cdfCluster + '.cognitedata.com';
   int get cdfProjectId => _cdfProjectId ?? 0;
   int get resolutionFactor => _resolutionFactor;
+
+  List<String> get scopes =>
+      <String>['User.Read', 'openid', 'profile', 'offline_access'];
+  List<String> get scopesApi =>
+      <String>[cdfURL + '/user_impersonation', cdfURL + '/IDENTITY'];
+
+  set cdfCluster(s) {
+    _cdfCluster = s;
+    prefs!.setString('cdfCluster', s);
+    notifyListeners();
+  }
+
   set resolutionFactor(i) => _resolutionFactor = i;
-  set cdfURL(s) => _cdfURL = s;
   set cdfProject(s) {
     _cdfProject = s;
     prefs!.setString('cdfProject', s);
+    notifyListeners();
   }
 
   String get cdfTimeSeriesId => _cdfTimeSeriesId;
@@ -83,23 +96,12 @@ class AppStateModel with ChangeNotifier {
     if (mock) {
       _authClient = AuthClient(
           provider: 'mock', clientId: '', clientSecret: '', web: web);
-      _apiClient = CDFMockApiClient();
     } else {
       _authClient = AuthClient(
           clientId: Environment.clientIdAAD,
           clientSecret: Environment.secretAAD,
           provider: 'aad',
           web: web);
-      if (_mocks.getCDF() == null) {
-        _apiClient = CDFApiClient(
-            project: _cdfProject,
-            token: auth!.accessToken,
-            baseUrl: cdfURL,
-            logLevel: Level.error,
-            httpAdapter: GenericHttpClientAdapter());
-      } else {
-        _apiClient = _mocks.getCDF() as CDFApiClient;
-      }
     }
     refreshSession();
     // this will load locale from prefs
@@ -109,17 +111,11 @@ class AppStateModel with ChangeNotifier {
     // as the widget tree will not automatically refresh until build time
     // See lib/ui/pages/home/index.dart for an example.
     setLocale(null);
-    _cdfProject = prefs!.getString('cdfProject') ?? 'publicdata';
-    _cdfURL = prefs!.getString('cdfURL') ?? 'https://api.cognitedata.com';
-    _cdfTimeSeriesId = prefs!.getString('cdfTimeSeriesId') ?? '';
-    // TODO Remove this
-    _cdfProject = prefs!.getString('cdfProject') ?? 'gregerwedel';
-    _cdfURL =
-        prefs!.getString('cdfURL') ?? 'https://greenfield.cognitedata.com';
+    //_cdfTimeSeriesId = prefs!.getString('cdfTimeSeriesId') ?? '';
     _cdfTimeSeriesId = prefs!.getString('cdfTimeSeriesId') ??
         'fitbit_c2009283ac84526e9f0e01ef4cc9fa2a';
     if (authenticated) {
-      _verifyCDF();
+      initialiseCDF();
     }
   }
 
@@ -177,6 +173,8 @@ class AppStateModel with ChangeNotifier {
     }
     _userInfo.email = prefs!.getString('email');
     _userInfo.name = prefs!.getString('name');
+    _cdfCluster = prefs!.getString('cdfCluster');
+    _cdfProject = prefs!.getString('cdfProject');
     _authClient!.fromString(prefs!.getString('session') ?? '');
     if (_authClient!.isValid && !_authClient!.isExpired) {
       _authenticated = true;
@@ -187,21 +185,15 @@ class AppStateModel with ChangeNotifier {
     return false;
   }
 
-  /// Trigger retrieving more user info from the identity provider.
-  void setUserInfo() async {
-    _userInfo = await _authClient!.getUserInfo();
-    prefs!.setString('email', email);
-    prefs!.setString('name', name);
-    notifyListeners();
-  }
-
   /// Triggers  a popup for login to the Identity Provider
   Future<bool> authorize([String? provider]) async {
-    var res = await _authClient?.authorizeOrRefresh(provider);
-    if (res ?? false) {
+    _authClient!.scopes = scopes;
+    _authClient!.scopesApi = scopesApi;
+    var res = await _authClient!.authorizeOrRefresh(provider);
+    if (res) {
       prefs!.setString('session', _authClient.toString());
       _authenticated = true;
-      _verifyCDF();
+      initialiseCDF();
       notifyListeners();
       return true;
     }
@@ -214,10 +206,33 @@ class AppStateModel with ChangeNotifier {
     _authClient?.closeSessions();
     _authenticated = false;
     prefs!.remove('session');
+    prefs!.remove('cdfCluster');
+    prefs!.remove('cdfProject');
     notifyListeners();
   }
 
-  Future<bool> _verifyCDF() async {
+  /// Will be called multiple times, to retrieve info about logged in user and then projects
+  Future<bool> initialiseCDF() async {
+    if (_mocks.getCDF() != null) {
+      _apiClient = _mocks.getCDF() as CDFApiClient;
+    } else {
+      if (mock) {
+        _apiClient = CDFMockApiClient();
+      } else {
+        if (cdfCluster.isNotEmpty &&
+            auth!.accessToken.isNotEmpty &&
+            cdfURL.isNotEmpty) {
+          _apiClient = CDFApiClient(
+              project: _cdfProject ?? '',
+              token: auth!.accessToken,
+              baseUrl: cdfURL,
+              logLevel: Level.error,
+              httpAdapter: GenericHttpClientAdapter());
+        } else {
+          return false;
+        }
+      }
+    }
     try {
       _cdfStatus = await _apiClient.getStatus();
       log.d(_cdfStatus);
@@ -228,9 +243,8 @@ class AppStateModel with ChangeNotifier {
       logOut();
       return false;
     }
-    _cdfProjectId = _cdfStatus.projectId;
-    sendAnalyticsEvent(
-        'login', {'project': _cdfProject, 'timeseries': _cdfTimeSeriesId});
+    sendAnalyticsEvent('login', {'user': _cdfStatus.user});
+    notifyListeners();
     return true;
   }
 }

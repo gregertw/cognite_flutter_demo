@@ -13,7 +13,9 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var appState = Provider.of<AppStateModel>(context);
-    if (!appState.authenticated) {
+    if (!appState.authenticated ||
+        !appState.cdfLoggedIn ||
+        appState.cdfProject.isEmpty) {
       return const Scaffold(
         body: LoginPage(),
       );

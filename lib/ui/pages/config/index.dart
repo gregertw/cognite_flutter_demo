@@ -90,7 +90,7 @@ class ConfigPage extends StatelessWidget {
                           ),
                         ),
                         onSaved: (String? val) {
-                          appState.cdfURL = val;
+                          appState.cdfCluster = val;
                         },
                         validator: (val) {
                           if (val!.isEmpty) {

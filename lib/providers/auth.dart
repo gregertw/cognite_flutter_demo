@@ -5,6 +5,7 @@ import 'package:oauth2_client/oauth2_client.dart';
 import 'package:oauth2_client/github_oauth2_client.dart';
 import 'package:oauth2_client/access_token_response.dart';
 import 'package:http/http.dart' as http;
+import 'package:cognite_flutter_demo/providers/aad.dart';
 
 /// Use this as authProvider in [AuthClient] for mocked auth.
 class MockOAuth2Client extends GitHubOAuth2Client {
@@ -43,6 +44,7 @@ class AuthUserInfo {
   String? firstname;
   String? lastname;
   String? avatarUrl;
+  String? id;
 
   AuthUserInfo();
 
@@ -50,10 +52,11 @@ class AuthUserInfo {
   AuthUserInfo.from(provider, Map<String, dynamic> info) {
     switch (provider) {
       case 'aad':
-        email = info['email'] ?? info['login'];
-        name ??= info['name'];
-        username ??= info['login'];
-        avatarUrl ??= info['avatar_url'];
+      case 'aad_web':
+        email = info['mail'];
+        name ??= info['displayName'];
+        username ??= info['userPrincipalName'];
+        id ??= info['id'];
         break;
       default:
         throw 'Does not know how to parse AuthUserInfo from ' + provider;
@@ -86,6 +89,9 @@ class AuthClient {
   /// The scopes that should be requested from the auth provider. Will override preconfigured providers in the class.
   List<String>? scopes;
 
+  /// The scopes that should be requested from the auth provider for the API access. Will override preconfigured providers in the class.
+  List<String>? scopesApi;
+
   /// should be set to true if this app is running in a browser.
   final bool web;
 
@@ -108,19 +114,25 @@ class AuthClient {
   static const Map<String, String> _redirectUrls = {
     'mock': 'localhost',
     'aad': 'io.greger.cogniteflutterdemo://oauth',
-    'aad_web': 'http://localhost:59119/',
+    'aad_web': 'http://localhost:8686/',
   };
   static const Map<String, List<String>> _scopes = {
+    'aad': <String>['User.Read', 'openid', 'profile', 'offline_access'],
+    'aad_web': <String>['User.Read', 'openid', 'profile', 'offline_access']
+  };
+  static const Map<String, List<String>> _scopesApi = {
     'aad': <String>[
-      'user.read',
-      'openid',
-      'https://greenfield.cognitedata.com/.default'
+      'https://greenfield.cognitedata.com/user_impersonation',
+      'https://greenfield.cognitedata.com/IDENTITY'
     ],
-    'aad_web': <String>['https://greenfield.cognitedata.com/.default'],
+    'aad_web': <String>[
+      'https://greenfield.cognitedata.com/user_impersonation',
+      'https://greenfield.cognitedata.com/IDENTITY'
+    ]
   };
   static const Map<String, Map<String, String>> _userInfoUrls = {
-    'aad': {'host': 'graph.microsoft.com', 'path': '/v1.0/me/profile'},
-    'aad_web': {'host': 'graph.microsoft.com', 'path': '/v1.0/me/profile'},
+    'aad': {'host': 'graph.microsoft.com', 'path': '/v1.0/me'},
+    'aad_web': {'host': 'graph.microsoft.com', 'path': '/v1.0/me'},
   };
 
   // End default configs
@@ -166,6 +178,7 @@ class AuthClient {
       this.provider,
       this.redirectUrl,
       this.scopes,
+      this.scopesApi,
       this.customUriScheme
       // For future OIDC support
       //this.discoveryUrl,
@@ -190,6 +203,7 @@ class AuthClient {
     this.provider = provider;
     redirectUrl = _redirectUrls[provider] ?? '';
     scopes = _scopes[provider] ?? <String>[];
+    scopesApi = _scopesApi[provider] ?? <String>[];
     switch (provider) {
       case 'mock':
         authProvider = MockOAuth2Client(redirectUri: '', customUriScheme: '');
@@ -292,7 +306,7 @@ class AuthClient {
       return _parseAuthResult(
           await (authProvider as MockOAuth2Client).getMockedResponse());
     }
-    if (provider != this.provider && provider != null) {
+    if (provider != null && !(this.provider! + '_web').contains(provider)) {
       setPresetIdentityProvider(provider);
     }
     if (_accessToken != null) {
@@ -305,8 +319,21 @@ class AuthClient {
     }
     closeSessions();
     try {
-      return _parseAuthResult(await authProvider!.getTokenWithAuthCodeFlow(
-          clientId: clientId!, scopes: scopes, clientSecret: clientSecret));
+      var res = _parseAuthResult(await authProvider!.getTokenWithAuthCodeFlow(
+          clientId: clientId!,
+          scopes: scopes! + scopesApi!,
+          clientSecret: clientSecret));
+      if (res) {
+        // Note: the first token is an OIDC token so you can retrieve user info
+        //var info = await getUserInfo();
+        if (_refreshToken != null) {
+          return _parseAuthResult(await refreshAADToken(_refreshToken!,
+              clientId: clientId!,
+              refreshURL: authProvider!.tokenUrl,
+              scopes: scopesApi!));
+        }
+      }
+      return false;
     } catch (e) {
       return false;
     }
