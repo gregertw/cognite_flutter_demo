@@ -5,6 +5,6 @@ window.onload = function () {
         // Edit the port number here for local debugging, also change the redirectUrl in the auth.dart file
         // Also remember that the client in Google console needs to have the localhost URL registered!
         //window.opener.postMessage(window.location.href, 'http://localhost:8686/');
-        window.opener.postMessage(window.location.href, 'https://gregertw.github.io/cognite_flutter_demo');
+        window.opener.postMessage(window.location.href, 'https://gregertw.github.io/cognite-flutter-demo-web/');
     }
 }
