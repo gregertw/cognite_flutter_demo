@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## Jan 2, 2022
+
+* Migratated to new Flutter 2.8.1 compatible template (first_app)
+* Got new OAuth2 support with the first_app template
+* Extended to support Azure ActiveDirectory
+* Fix bug where granularity was included in request for raw datapoints
+* Bump to version 0.5.0+5
+
 ## Jul 11, 2021
 
 * Another full update of dependencies
