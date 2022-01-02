@@ -41,7 +41,7 @@ void main() async {
   loginState = AppStateModel(prefs: prefs, mock: true);
   logoutState = AppStateModel(prefs: prefs, mock: true);
 
-  test('logged in state', () async {
+  setUpAll(() async {
     // Need CDF apiclient mock data for status
     (loginState.apiClient as CDFMockApiClient).setMock(body: """{
         "subject": "user@cognite.com",
@@ -53,6 +53,9 @@ void main() async {
         ]
       }""");
     await loginState.authorize();
+  });
+
+  test('logged in state', () async {
     expect(loginState.authenticated, true);
   });
 
@@ -63,42 +66,22 @@ void main() async {
   });
 
   testWidgets('logged-in homepage widget', (WidgetTester tester) async {
-    // Need CDF apiclient mock data for status
-    (loginState.apiClient as CDFMockApiClient).setMock(body: """{
-        "subject": "user@cognite.com",
-        "projects": [
-          {
-            "projectUrlName": "publicdata",
-            "groups": [62353240994493, 7356024348897575]
-          }
-        ]
-      }""");
-    await loginState.authorize();
+    await initWidget(tester, loginState);
     await tester.pump(const Duration(seconds: 1));
     expect(loginState.authenticated, true);
+    expect(loginState.cdfLoggedIn, true);
+    loginState.cdfProject = 'publicdata';
+
     // Need timeseries mock data
     var mock = File(Directory.current.path + '/test/response-1.json')
         .readAsStringSync();
     (loginState.apiClient as CDFMockApiClient).setMock(body: mock);
-    await initWidget(tester, loginState);
     await tester.pumpAndSettle(const Duration(seconds: 1));
     expect(find.byKey(const Key("HomePage_Scaffold")), findsOneWidget);
     expect(find.byType(AppBar), findsOneWidget);
   });
 
   testWidgets('open drawer', (WidgetTester tester) async {
-    (loginState.apiClient as CDFMockApiClient).setMock(body: """{
-        "subject": "user@cognite.com",
-        "projects": [
-          {
-            "projectUrlName": "publicdata",
-            "groups": [62353240994493, 7356024348897575]
-          }
-        ]
-      }""");
-    await loginState.authorize();
-    await tester.pump(const Duration(seconds: 1));
-    expect(loginState.authenticated, true);
     var mock = File(Directory.current.path + '/test/response-1.json')
         .readAsStringSync();
     (loginState.apiClient as CDFMockApiClient).setMock(body: mock);

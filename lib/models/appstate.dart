@@ -10,7 +10,6 @@ import 'package:cognite_flutter_demo/providers/auth.dart';
 import 'package:cognite_cdf_sdk/cognite_cdf_sdk.dart';
 import 'package:cognite_flutter_demo/globals.dart';
 import 'package:cognite_flutter_demo/environment.dart';
-import 'package:cognite_flutter_demo/mock/mockmap.dart';
 
 class AppStateModel with ChangeNotifier {
   bool _authenticated = false;
@@ -22,10 +21,6 @@ class AppStateModel with ChangeNotifier {
   SharedPreferences? prefs;
   FirebaseAnalytics? analytics;
   AuthClient? _authClient;
-  // We use a mockmap to enable and disable mock functions/classes.
-  // The mock should be injected as a dependency where external dependencies need
-  // to be mocked as part of testing.
-  final MockMap _mocks = MockMap();
 
   String? _cdfCluster;
   String? _cdfProject;
@@ -46,7 +41,6 @@ class AppStateModel with ChangeNotifier {
   DateTime? get expires => _authClient!.expires;
   String get email => _userInfo.email ?? '';
   String get name => _userInfo.name ?? '';
-  MockMap get mocks => _mocks;
   String? get localeAbbrev => _locale;
   Locale get locale => _currentLocale;
   AuthClient? get auth => _authClient;
@@ -116,6 +110,9 @@ class AppStateModel with ChangeNotifier {
         'fitbit_c2009283ac84526e9f0e01ef4cc9fa2a';
     if (authenticated) {
       initialiseCDF();
+    } else {
+      // Ensure _apiClient is initialised
+      _apiClient = CDFMockApiClient();
     }
   }
 
@@ -215,24 +212,18 @@ class AppStateModel with ChangeNotifier {
 
   /// Will be called multiple times, to retrieve info about logged in user and then projects
   Future<bool> initialiseCDF() async {
-    if (_mocks.getCDF() != null) {
-      _apiClient = _mocks.getCDF() as CDFApiClient;
-    } else {
-      if (mock) {
-        _apiClient = CDFMockApiClient();
+    if (!mock) {
+      if (cdfCluster.isNotEmpty &&
+          auth!.accessToken.isNotEmpty &&
+          cdfURL.isNotEmpty) {
+        _apiClient = CDFApiClient(
+            project: _cdfProject ?? '',
+            token: auth!.accessToken,
+            baseUrl: cdfURL,
+            logLevel: Level.error,
+            httpAdapter: GenericHttpClientAdapter());
       } else {
-        if (cdfCluster.isNotEmpty &&
-            auth!.accessToken.isNotEmpty &&
-            cdfURL.isNotEmpty) {
-          _apiClient = CDFApiClient(
-              project: _cdfProject ?? '',
-              token: auth!.accessToken,
-              baseUrl: cdfURL,
-              logLevel: Level.error,
-              httpAdapter: GenericHttpClientAdapter());
-        } else {
-          return false;
-        }
+        return false;
       }
     }
     try {

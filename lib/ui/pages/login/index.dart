@@ -96,6 +96,7 @@ class ProjectPage extends StatelessWidget {
     return ListTile(
       title: const Text('CDF Project'),
       trailing: DropdownButton<String>(
+        key: const Key('ProjectDropDownMenu'),
         items: _dropDownMenuItems,
         underline: Container(),
         value: appState.cdfProjects![0],
@@ -127,6 +128,7 @@ class ClusterPage extends StatelessWidget {
     return ListTile(
       title: const Text('CDF Cluster'),
       trailing: DropdownButton<String>(
+        key: const Key('ClusterDropDownButton'),
         items: _dropDownMenuItems,
         underline: Container(),
         value: appState.cdfCluster.isEmpty ? 'api' : appState.cdfCluster,
