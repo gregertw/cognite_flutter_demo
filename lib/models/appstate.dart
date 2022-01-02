@@ -105,9 +105,9 @@ class AppStateModel with ChangeNotifier {
     // as the widget tree will not automatically refresh until build time
     // See lib/ui/pages/home/index.dart for an example.
     setLocale(null);
-    //_cdfTimeSeriesId = prefs!.getString('cdfTimeSeriesId') ?? '';
-    _cdfTimeSeriesId = prefs!.getString('cdfTimeSeriesId') ??
-        'fitbit_c2009283ac84526e9f0e01ef4cc9fa2a';
+    _cdfTimeSeriesId = prefs!.getString('cdfTimeSeriesId') ?? '';
+    //_cdfTimeSeriesId = prefs!.getString('cdfTimeSeriesId') ??
+    //    'fitbit_c2009283ac84526e9f0e01ef4cc9fa2a';
     if (authenticated) {
       initialiseCDF();
     } else {

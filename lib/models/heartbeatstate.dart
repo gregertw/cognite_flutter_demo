@@ -179,6 +179,8 @@ class HeartBeatModel with ChangeNotifier {
       if (raw) {
         // Limit number of raw datapoints to 10 per second
         _filter.limit = ((_filter.end - _filter.start) / 100).round();
+        _filter.aggregates = [];
+        _filter.granularity = null;
         log.d(_filter.toString());
         var rawDPs =
             await TimeSeriesAPI(apiClient).getDatapoints(_filter, raw: true);
