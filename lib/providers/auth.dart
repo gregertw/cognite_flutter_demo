@@ -110,7 +110,7 @@ class AuthClient {
   String? provider;
   // For Android and iOS, this must match the URI in the [_redirectUrls].
   // Must be the same as the Android applicationId and iOS bundle scheme.
-  static const String _customUriScheme = 'io.greger.cogniteflutterdemo"';
+  static const String _customUriScheme = 'io.greger.cogniteflutterdemo';
   static const Map<String, String> _redirectUrls = {
     'mock': 'localhost',
     'aad': 'io.greger.cogniteflutterdemo://oauth',
