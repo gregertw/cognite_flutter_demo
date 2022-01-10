@@ -1,3 +1,4 @@
+import 'package:cognite_flutter_demo/ui/pages/config/index.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -13,6 +14,8 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var appState = Provider.of<AppStateModel>(context);
+    var hbm = HeartBeatModel(appState.apiClient, appState.cdfTimeSeriesId,
+        appState.cdfNrOfDays, appState.resolutionFactor);
     if (!appState.authenticated ||
         !appState.cdfLoggedIn ||
         appState.cdfProject.isEmpty) {
@@ -20,18 +23,18 @@ class HomePage extends StatelessWidget {
         body: LoginPage(),
       );
     }
+    Widget body;
+    if (appState.cdfTimeSeriesId.isEmpty || hbm.failed) {
+      body = ConfigPage();
+    } else {
+      body = const TimeSeriesChart();
+    }
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(
-            create: (_) => HeartBeatModel(
-                appState.apiClient,
-                appState.cdfTimeSeriesId,
-                appState.cdfNrOfDays,
-                appState.resolutionFactor)),
+        ChangeNotifierProvider.value(value: hbm),
         ChangeNotifierProvider(
             create: (_) => ChartFeatureModel(
-                Provider.of<AppStateModel>(context, listen: false)
-                    .resolutionFactor))
+                Provider.of<AppStateModel>(context).resolutionFactor))
       ],
       child: Scaffold(
         key: const Key("HomePage_Scaffold"),
@@ -39,7 +42,7 @@ class HomePage extends StatelessWidget {
           title: Text(AppLocalizations.of(context)!.appTitle),
         ),
         backgroundColor: Theme.of(context).backgroundColor,
-        body: const TimeSeriesChart(),
+        body: body,
         drawer: const HomePageDrawer(),
       ),
     );
