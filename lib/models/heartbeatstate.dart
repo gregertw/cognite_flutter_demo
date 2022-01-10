@@ -7,6 +7,7 @@ class HeartBeatModel with ChangeNotifier {
   CDFApiClient apiClient;
   String tsId;
   int startDays;
+  bool _failed = false;
   int resolutionFactor;
   final DatapointsModel _dataPoints = DatapointsModel();
   final DatapointsModel _rawDataPoints = DatapointsModel();
@@ -17,6 +18,7 @@ class HeartBeatModel with ChangeNotifier {
   int _rangeEnd = 0;
   bool? _loading;
 
+  get failed => _failed;
   get rangeStart => _rangeStart;
   get rangeEnd => _rangeEnd;
   get loading => _loading ?? false;
@@ -175,6 +177,8 @@ class HeartBeatModel with ChangeNotifier {
         log.d("New datapoints: ${aggregates.datapointsLength}");
         _dataPoints.addDatapoints(aggregates);
         _activeLayer += 1;
+      } else {
+        _failed = true;
       }
       if (raw) {
         // Limit number of raw datapoints to 10 per second
@@ -185,9 +189,12 @@ class HeartBeatModel with ChangeNotifier {
         var rawDPs =
             await TimeSeriesAPI(apiClient).getDatapoints(_filter, raw: true);
         if (rawDPs.datapointsLength != 0 && rawDPs.datapoints.isNotEmpty) {
+          _failed = false;
           log.d("New raw datapoints: ${rawDPs.datapointsLength}");
           _rawDataPoints.addDatapoints(rawDPs);
           _activeRawLayer += 1;
+        } else {
+          _failed = true;
         }
       }
       _loading = false;
