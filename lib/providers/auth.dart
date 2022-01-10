@@ -153,6 +153,9 @@ class AuthClient {
   /// Active acess token if authenticated.
   String get accessToken => _accessToken ?? '';
 
+  /// Needed if token is retrieved outside OAuth2 flow
+  set accessToken(s) => _accessToken = s;
+
   /// Refresh token if available.
   String get refreshToken => _refreshToken ?? '';
 
