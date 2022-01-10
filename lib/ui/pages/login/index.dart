@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:cognite_flutter_demo/models/appstate.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:cognite_flutter_demo/models/appstate.dart';
+import 'tokenlogin.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -37,10 +38,17 @@ class LoginPage extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
       );
     } else if (!appState.authenticated) {
-      body = Column(
-        children: [logo, welcome, const AuthPage()],
-        mainAxisAlignment: MainAxisAlignment.center,
-      );
+      if (appState.manualToken) {
+        body = Column(
+          children: [logo, welcome, TokenLoginPage()],
+          mainAxisAlignment: MainAxisAlignment.center,
+        );
+      } else {
+        body = Column(
+          children: [logo, welcome, const AuthPage()],
+          mainAxisAlignment: MainAxisAlignment.center,
+        );
+      }
     } else if (appState.cdfProject.isEmpty) {
       body = Column(
         children: [
@@ -95,11 +103,14 @@ class ProjectPage extends StatelessWidget {
             .toList();
     return ListTile(
       title: const Text('CDF Project'),
+      leading: const Icon(Icons.timer),
       trailing: DropdownButton<String>(
         key: const Key('ProjectDropDownMenu'),
         items: _dropDownMenuItems,
         underline: Container(),
-        value: appState.cdfProjects![0],
+        value: (appState.cdfProject != '')
+            ? appState.cdfProject
+            : appState.cdfProjects?[0],
         onChanged: (value) {
           appState.cdfProject = value;
           appState.initialiseCDF();
@@ -147,25 +158,53 @@ class AuthPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var appState = Provider.of<AppStateModel>(context, listen: false);
     return Container(
-      height: 80.0,
-      width: 120.0,
-      constraints: const BoxConstraints(maxHeight: 200.0, maxWidth: 150.0),
+      alignment: Alignment.center,
+      height: 1400.0,
+      width: 500.0,
+      constraints: const BoxConstraints(maxHeight: 180.0, maxWidth: 100.0),
       child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 16.0),
-          child: ElevatedButton(
-            key: const Key('LoginPage_LoginButton'),
-            style: ElevatedButton.styleFrom(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(14),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ElevatedButton(
+                key: const Key('LoginPage_LoginButton'),
+                style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(14),
+                  ),
+                  padding: const EdgeInsets.all(15),
+                ),
+                onPressed: () {
+                  appState.authorize('aad');
+                },
+                child: Text(AppLocalizations.of(context)!.loginButton),
               ),
-              padding: const EdgeInsets.all(15),
-            ),
-            onPressed: () {
-              Provider.of<AppStateModel>(context, listen: false)
-                  .authorize('aad');
-            },
-            child: Text(AppLocalizations.of(context)!.loginButton),
+              const Padding(padding: EdgeInsets.symmetric(vertical: 5.0)),
+              ElevatedButton(
+                key: const Key('LoginPage_LoginTokenButton'),
+                style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(14),
+                  ),
+                  padding: const EdgeInsets.all(15),
+                ),
+                onPressed: () {
+                  // Flag the use of a manual token
+                  appState.manualToken = true;
+                },
+                child: Text(
+                  AppLocalizations.of(context)!.loginButtonToken,
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              const Padding(padding: EdgeInsets.symmetric(vertical: 5.0)),
+              BackButton(
+                onPressed: () => appState.cdfCluster = '',
+              ),
+            ],
           )),
     );
   }

@@ -1,3 +1,4 @@
+import 'package:cognite_flutter_demo/ui/pages/login/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:cognite_flutter_demo/models/appstate.dart';
@@ -44,6 +45,7 @@ class ConfigPage extends StatelessWidget {
                       style: Theme.of(context).textTheme.headline6,
                     ),
                     const Padding(padding: EdgeInsets.only(top: 10.0)),
+                    const ProjectPage(),
                     ListTile(
                       leading: const Icon(Icons.timer),
                       title: TextFormField(

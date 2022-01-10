@@ -21,7 +21,7 @@ void main() async {
   test('log in - log out', () async {
     await state.authorize();
     expect(state.authenticated, true);
-    expect(state.userToken, 'an_access_token');
+    expect(state.accessToken, 'an_access_token');
     state.logOut();
     expect(state.authenticated, false);
   });

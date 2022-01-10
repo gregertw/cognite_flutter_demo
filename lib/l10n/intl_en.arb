@@ -3,6 +3,7 @@
   "loginWelcomeText": "Welcome to ActingWeb",
   "loginLoadEvents": "Loading events...",
   "loginButton": "Log in",
+  "loginButtonToken": "Log in with token/key",
   "logoutButton": "Log out",
   "startListening": "Start listening",
   "stopListening": "Stop listening",

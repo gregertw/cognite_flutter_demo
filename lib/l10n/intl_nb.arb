@@ -3,6 +3,7 @@
   "loginWelcomeText": "Velkommen til ActingWeb",
   "loginLoadEvents": "Henter meldinger...",
   "loginButton": "Logg inn",
+  "loginButtonToken": "Logg inn med token/key",
   "logoutButton": "Logg ut",
   "startListening": "Start lytting",
   "stopListening": "Stopp lytting",
