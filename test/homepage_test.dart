@@ -40,10 +40,8 @@ void main() async {
   // We have one logged in state and one logged out, to be used with various tests
   loginState = AppStateModel(prefs: prefs, mock: true);
   logoutState = AppStateModel(prefs: prefs, mock: true);
-
-  setUpAll(() async {
-    // Need CDF apiclient mock data for status
-    (loginState.apiClient as CDFMockApiClient).setMock(body: """{
+  // Need CDF apiclient mock data for status
+  (loginState.apiClient as CDFMockApiClient).setMock(body: """{
         "subject": "user@cognite.com",
         "projects": [
           {
@@ -52,25 +50,28 @@ void main() async {
           }
         ]
       }""");
-    await loginState.authorize();
-  });
+  loginState.cdfCluster = 'greenfield';
+  loginState.cdfProject = 'publicdata';
 
   test('logged in state', () async {
-    expect(loginState.authenticated, true);
+    await loginState.authorize();
+    expect(loginState.authenticated, true,
+        reason: 'expect that we have logged in');
+    expect(loginState.cdfLoggedIn, true,
+        reason: 'and that the CDF project is initialised');
   });
 
   testWidgets('logged-out homepage widget', (WidgetTester tester) async {
+    // We need to mock a fake error to make sure that HomePage() loading happens
+    (logoutState.apiClient as CDFMockApiClient).setMock(statusCode: 400);
     await initWidget(tester, logoutState);
-    await tester.pump();
+    await tester.pump(const Duration(seconds: 1));
     expect(find.byType(LoginPage), findsOneWidget);
   });
 
   testWidgets('logged-in homepage widget', (WidgetTester tester) async {
     await initWidget(tester, loginState);
     await tester.pump(const Duration(seconds: 1));
-    expect(loginState.authenticated, true);
-    expect(loginState.cdfLoggedIn, true);
-    loginState.cdfProject = 'publicdata';
 
     // Need timeseries mock data
     var mock = File(Directory.current.path + '/test/response-1.json')

@@ -1,5 +1,6 @@
 import 'package:cognite_cdf_sdk/cognite_cdf_sdk.dart';
 import 'package:flutter/material.dart';
+import 'dart:io';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -38,19 +39,12 @@ void main() async {
 
   testWidgets('is drawer ready', (WidgetTester tester) async {
     await initWidget(tester, loginState);
-    await tester.pump();
-    (loginState.apiClient as CDFMockApiClient).setMock(body: """{
-        "subject": "user@cognite.com",
-        "projects": [
-          {
-            "projectUrlName": "publicdata",
-            "groups": [62353240994493, 7356024348897575]
-          }
-        ]
-      }""");
-    await loginState.authorize();
     await tester.pump(const Duration(seconds: 1));
-    expect(loginState.authenticated, true);
+    // Need timeseries mock data
+    var mock = File(Directory.current.path + '/test/response-1.json')
+        .readAsStringSync();
+    (loginState.apiClient as CDFMockApiClient).setMock(body: mock);
+    await tester.pump(const Duration(seconds: 1));
     // We should have opened the drawer
     expect(find.byType(HomePageDrawer), findsOneWidget);
     expect(find.byKey(const Key("DrawerMenu_Header")), findsOneWidget);

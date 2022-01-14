@@ -160,10 +160,10 @@ class AuthPage extends StatelessWidget {
   Widget build(BuildContext context) {
     var appState = Provider.of<AppStateModel>(context, listen: false);
     return Container(
-      alignment: Alignment.center,
-      height: 1400.0,
+      alignment: Alignment.topCenter,
+      height: 1000.0,
       width: 500.0,
-      constraints: const BoxConstraints(maxHeight: 180.0, maxWidth: 100.0),
+      constraints: const BoxConstraints(maxHeight: 260.0, maxWidth: 100.0),
       child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 16.0),
           child: Column(
@@ -172,6 +172,7 @@ class AuthPage extends StatelessWidget {
               ElevatedButton(
                 key: const Key('LoginPage_LoginButton'),
                 style: ElevatedButton.styleFrom(
+                  fixedSize: const Size.fromWidth(100.0),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(14),
                   ),

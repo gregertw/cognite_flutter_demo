@@ -98,20 +98,22 @@ class AppStateModel with ChangeNotifier {
     if (mock) {
       _authClient = AuthClient(
           provider: 'mock', clientId: '', clientSecret: '', web: web);
+      _apiClient = CDFMockApiClient();
     } else {
       _authClient = AuthClient(
           clientId: Environment.clientIdAAD,
           clientSecret: Environment.secretAAD,
           provider: 'aad',
           web: web);
+      // Ensure _apiClient is initialised, it will have to be reinitialised later when
+      // token/apikey and project are known.
+      _apiClient = CDFApiClient(
+          project: '',
+          apikey: null,
+          baseUrl: '',
+          logLevel: Level.error,
+          httpAdapter: GenericHttpClientAdapter());
     }
-    // Ensure _apiClient is initialised
-    _apiClient = CDFApiClient(
-        project: '',
-        apikey: null,
-        baseUrl: '',
-        logLevel: Level.error,
-        httpAdapter: GenericHttpClientAdapter());
     refreshSession();
     // this will load locale from prefs
     // Note that you need to use
@@ -191,6 +193,10 @@ class AppStateModel with ChangeNotifier {
       _authClient!.fromString(prefs!.getString('session') ?? '');
       if (_authClient!.isValid && !_authClient!.isExpired) {
         _authenticated = true;
+        if (!await initialiseCDF()) {
+          logOut();
+          return false;
+        }
         notifyListeners();
         return true;
       }
@@ -208,7 +214,10 @@ class AppStateModel with ChangeNotifier {
     if (res) {
       prefs!.setString('session', _authClient.toString());
       _authenticated = true;
-      initialiseCDF();
+      if (!await initialiseCDF()) {
+        logOut();
+        return false;
+      }
       notifyListeners();
       return true;
     }
@@ -243,18 +252,23 @@ class AppStateModel with ChangeNotifier {
     _cdfProject = null;
     _cdfCluster = null;
     _cdfTimeSeriesId = '';
+    _apiClient.apikey = null;
     prefs!.remove('session');
     prefs!.remove('cdfApiKey');
     prefs!.remove('cdfCluster');
     prefs!.remove('cdfProject');
     prefs!.remove('cdfTimeSeriesId');
     prefs!.remove('cdfNrOfDays');
-    _apiClient = CDFApiClient(
-        project: '',
-        apikey: null,
-        baseUrl: '',
-        logLevel: Level.error,
-        httpAdapter: GenericHttpClientAdapter());
+    if (mock) {
+      _apiClient = CDFMockApiClient();
+    } else {
+      _apiClient = CDFApiClient(
+          project: '',
+          apikey: null,
+          baseUrl: '',
+          logLevel: Level.error,
+          httpAdapter: GenericHttpClientAdapter());
+    }
     notifyListeners();
   }
 
@@ -284,32 +298,34 @@ class AppStateModel with ChangeNotifier {
     }
     try {
       _cdfStatus = await _apiClient.getStatus();
-      bool reinit = false;
-      switch (manualToken) {
-        case true:
-          if (_cdfStatus.projects == null && _cdfStatus.project!.isNotEmpty) {
-            cdfProject = _cdfStatus.project;
-            reinit = true;
-          }
-          break;
-        case false:
-          if ((_cdfStatus.projects != null &&
-                  _cdfStatus.projects!.length == 1) &&
-              _cdfStatus.project!.isNotEmpty) {
-            cdfProject = _cdfStatus.project;
-            reinit = true;
-          }
-          break;
-      }
-      if (reinit) {
-        _apiClient = CDFApiClient(
-            project: cdfProject,
-            token: token,
-            apikey: apikey,
-            baseUrl: cdfURL,
-            logLevel: Level.error,
-            httpAdapter: GenericHttpClientAdapter());
-        _cdfStatus = await _apiClient.getStatus();
+      if (!mock) {
+        bool reinit = false;
+        switch (manualToken) {
+          case true:
+            if (_cdfStatus.projects == null && _cdfStatus.project!.isNotEmpty) {
+              cdfProject = _cdfStatus.project;
+              reinit = true;
+            }
+            break;
+          case false:
+            if ((_cdfStatus.projects != null &&
+                    _cdfStatus.projects!.length == 1) &&
+                _cdfStatus.project!.isNotEmpty) {
+              cdfProject = _cdfStatus.project;
+              reinit = true;
+            }
+            break;
+        }
+        if (reinit) {
+          _apiClient = CDFApiClient(
+              project: cdfProject,
+              token: token,
+              apikey: apikey,
+              baseUrl: cdfURL,
+              logLevel: Level.error,
+              httpAdapter: GenericHttpClientAdapter());
+          _cdfStatus = await _apiClient.getStatus();
+        }
       }
       log.d(_cdfStatus);
     } catch (e) {

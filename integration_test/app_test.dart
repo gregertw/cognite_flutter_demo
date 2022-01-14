@@ -17,9 +17,9 @@ void main() async {
     // First, define the Finders and use them to locate widgets from the
     // test suite. Note: the Strings provided to the `byValueKey` method must
     // be the same as the Strings we used for the Keys.
+    final clusterButtonFinder = find.byKey(const Key('ClusterDropDownButton'));
     final loginButtonFinder = find.byKey(const Key('LoginPage_LoginButton'));
-    final startListeningButtonFinder =
-        find.byKey(const Key('LocationPage_StartListeningButton'));
+    final projectFinder = find.byKey(const Key('ProjectDropDownMenu'));
     final openDrawerMenuButton = find.byTooltip("Open navigation menu");
     final exitButtonFinder = find.byKey(const Key('DrawerMenuTile_LogOut'));
 
@@ -27,18 +27,18 @@ void main() async {
       var app = await getApp(mock: true);
       await tester.pumpWidget(app);
       await tester.pumpAndSettle();
-      await tester.tap(loginButtonFinder);
+      await tester.tap(clusterButtonFinder);
+      await tester.tap(
+          loginButtonFinder); // TODO: Integration tests fail here: disabled in codemagic
       await tester.pumpAndSettle();
-      await tester.tap(startListeningButtonFinder);
-      await tester.pumpAndSettle();
-      await tester.tap(startListeningButtonFinder);
+      await tester.tap(projectFinder);
       await tester.pumpAndSettle();
       await tester.tap(openDrawerMenuButton);
       await tester.pumpAndSettle();
       expect(exitButtonFinder, findsOneWidget);
       await tester.tap(exitButtonFinder);
       await tester.pumpAndSettle();
-      expect(loginButtonFinder, findsOneWidget);
+      expect(clusterButtonFinder, findsOneWidget);
     });
   });
 }
