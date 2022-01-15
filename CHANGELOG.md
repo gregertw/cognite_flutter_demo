@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## Jan 14, 2022
+
+* Add token login as option in login flow, improve error handling
+* Fix error in AndroidManifest package names
+* Upgrade syncfusion to 19.4.41
+* Introduce failed as flag for failed loads in heartbeatstate
+* Bump version to 0.5.1+6
+
 ## Jan 2, 2022
 
 * Migratated to new Flutter 2.8.1 compatible template (first_app)
