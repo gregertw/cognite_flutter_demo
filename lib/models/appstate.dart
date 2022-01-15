@@ -110,7 +110,7 @@ class AppStateModel with ChangeNotifier {
       _apiClient = CDFApiClient(
           project: '',
           apikey: null,
-          baseUrl: '',
+          baseUrl: cdfURL,
           logLevel: Level.error,
           httpAdapter: GenericHttpClientAdapter());
     }
@@ -253,6 +253,7 @@ class AppStateModel with ChangeNotifier {
     _cdfCluster = null;
     _cdfTimeSeriesId = '';
     _apiClient.apikey = null;
+    _manualToken = false;
     prefs!.remove('session');
     prefs!.remove('cdfApiKey');
     prefs!.remove('cdfCluster');

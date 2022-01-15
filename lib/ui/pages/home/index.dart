@@ -14,8 +14,6 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var appState = Provider.of<AppStateModel>(context);
-    var hbm = HeartBeatModel(appState.apiClient, appState.cdfTimeSeriesId,
-        appState.cdfNrOfDays, appState.resolutionFactor);
     if (!appState.authenticated ||
         !appState.cdfLoggedIn ||
         appState.cdfProject.isEmpty) {
@@ -23,6 +21,8 @@ class HomePage extends StatelessWidget {
         body: LoginPage(),
       );
     }
+    var hbm = HeartBeatModel(appState.apiClient, appState.cdfTimeSeriesId,
+        appState.cdfNrOfDays, appState.resolutionFactor);
     Widget body;
     if (appState.cdfTimeSeriesId.isEmpty || hbm.failed) {
       body = ConfigPage();
