@@ -67,7 +67,7 @@ class TokenLoginPage extends StatelessWidget {
                       );
                     }
                   },
-                  child: Text(AppLocalizations.of(context)!.loginButton),
+                  child: Text(AppLocalizations.of(context)!.loginButtonToken),
                 ),
               ),
             ],

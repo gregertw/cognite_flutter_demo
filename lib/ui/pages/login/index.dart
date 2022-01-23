@@ -11,12 +11,12 @@ class LoginPage extends StatelessWidget {
   Widget build(BuildContext context) {
     var appState = Provider.of<AppStateModel>(context);
     final logo = Padding(
-      padding: const EdgeInsets.all(40.0),
+      padding: const EdgeInsets.all(20.0),
       child: Image.asset('assets/actingweb-header-small.png'),
     );
     var welcomeText = AppLocalizations.of(context)!.loginWelcomeText;
     final welcome = Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(2.0),
       child: Text(
         welcomeText,
       ),
@@ -75,7 +75,7 @@ class LoginPage extends StatelessWidget {
       body: Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
-        padding: const EdgeInsets.all(28.0),
+        padding: const EdgeInsets.all(10.0),
         decoration: BoxDecoration(
           gradient: LinearGradient(
               colors: [Colors.grey, Theme.of(context).primaryColor]),
@@ -144,8 +144,6 @@ class ClusterPage extends StatelessWidget {
         underline: Container(),
         value: appState.cdfCluster.isEmpty ? 'api' : appState.cdfCluster,
         onChanged: (value) {
-          // When we change cluster, we need to reauthenticate
-          appState.logOut();
           appState.cdfCluster = value;
         },
       ),
@@ -160,38 +158,80 @@ class AuthPage extends StatelessWidget {
   Widget build(BuildContext context) {
     var appState = Provider.of<AppStateModel>(context, listen: false);
     return Container(
+      constraints: const BoxConstraints(maxHeight: 260.0, maxWidth: 200.0),
       alignment: Alignment.topCenter,
-      height: 1000.0,
-      width: 500.0,
-      constraints: const BoxConstraints(maxHeight: 260.0, maxWidth: 100.0),
       child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 16.0),
+          padding: const EdgeInsets.symmetric(vertical: 20.0),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              ElevatedButton(
+              TextButton(
                 key: const Key('LoginPage_LoginButton'),
-                style: ElevatedButton.styleFrom(
-                  fixedSize: const Size.fromWidth(100.0),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(14),
-                  ),
-                  padding: const EdgeInsets.all(15),
-                ),
+                style: TextButton.styleFrom(
+                    minimumSize: const Size(200.0, 40.0),
+                    maximumSize: const Size(250.0, 40.0),
+                    backgroundColor: Theme.of(context).focusColor,
+                    primary: Colors.white),
                 onPressed: () {
                   appState.authorize('aad');
                 },
                 child: Text(AppLocalizations.of(context)!.loginButton),
               ),
               const Padding(padding: EdgeInsets.symmetric(vertical: 5.0)),
-              ElevatedButton(
-                key: const Key('LoginPage_LoginTokenButton'),
-                style: ElevatedButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(14),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  SizedBox(
+                    width: 150.0,
+                    height: 20.0,
+                    child: TextFormField(
+                      autocorrect: false,
+                      textAlign: TextAlign.end,
+                      cursorColor: Theme.of(context).colorScheme.onPrimary,
+                      initialValue:
+                          appState.aadId.isNotEmpty ? appState.aadId : 'common',
+                      decoration: InputDecoration(
+                        labelText: 'AAD id',
+                        labelStyle: const TextStyle(
+                          fontSize: 12.0,
+                          color: Colors.black,
+                          fontFamily: "Poppins",
+                        ),
+                        isDense: false,
+                        contentPadding: EdgeInsets.zero,
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(4.0),
+                          borderSide: BorderSide(
+                              color: Theme.of(context).colorScheme.onPrimary),
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(4.0),
+                          borderSide: BorderSide(
+                              color: Theme.of(context).colorScheme.onPrimary),
+                        ),
+                      ),
+                      keyboardType: TextInputType.text,
+                      onChanged: (String? val) {
+                        appState.aadId = val ?? 'common';
+                      },
+                      style: const TextStyle(
+                        color: Colors.black,
+                        fontSize: 12.0,
+                        fontFamily: "Poppins",
+                      ),
+                    ),
                   ),
-                  padding: const EdgeInsets.all(15),
-                ),
+                ],
+              ),
+              const Padding(padding: EdgeInsets.symmetric(vertical: 5.0)),
+              TextButton(
+                key: const Key('LoginPage_LoginTokenButton'),
+                style: TextButton.styleFrom(
+                    minimumSize: const Size(200.0, 40.0),
+                    maximumSize: const Size(250.0, 40.0),
+                    backgroundColor: Theme.of(context).focusColor,
+                    primary: Colors.white),
                 onPressed: () {
                   // Flag the use of a manual token
                   appState.manualToken = true;
@@ -203,7 +243,7 @@ class AuthPage extends StatelessWidget {
               ),
               const Padding(padding: EdgeInsets.symmetric(vertical: 5.0)),
               BackButton(
-                onPressed: () => appState.cdfCluster = '',
+                onPressed: () => appState.logOut(),
               ),
             ],
           )),

@@ -22,12 +22,13 @@ class AppStateModel with ChangeNotifier {
   FirebaseAnalytics? analytics;
   AuthClient? _authClient;
 
+  String _aadId = '';
   String? _cdfCluster;
   bool _manualToken = false;
   String? _cdfProject;
   String _cdfTimeSeriesId = '';
   int? _cdfProjectId;
-  int _cdfNrOfDays = 10;
+  int _cdfNrOfDays = 0;
   // Used to calculate resolution, the bigger the more points in a range are loaded.
   // This is injected into ChartState and HeartbeatState.
   int _resolutionFactor = 420000;
@@ -42,6 +43,7 @@ class AppStateModel with ChangeNotifier {
 
   bool get authenticated => _authenticated;
   bool get isWeb => web;
+  String get aadId => _aadId;
   String? get accessToken => _authClient!.accessToken;
   String? get idToken => _authClient!.idToken;
   String? get refreshToken => _authClient!.refreshToken;
@@ -63,6 +65,11 @@ class AppStateModel with ChangeNotifier {
       <String>['User.Read', 'openid', 'profile', 'offline_access'];
   List<String> get scopesApi =>
       <String>[cdfURL + '/user_impersonation', cdfURL + '/IDENTITY'];
+
+  set aadId(String s) {
+    _aadId = s;
+    prefs!.setString('aadId', s);
+  }
 
   set cdfCluster(s) {
     _cdfCluster = s;
@@ -181,6 +188,7 @@ class AppStateModel with ChangeNotifier {
     }
     _userInfo.email = prefs!.getString('email');
     _userInfo.name = prefs!.getString('name');
+    _aadId = prefs!.getString('aadId') ?? '';
     _cdfCluster = prefs!.getString('cdfCluster');
     _cdfProject = prefs!.getString('cdfProject');
     _cdfTimeSeriesId = prefs!.getString('cdfTimeSeriesId') ?? '';
@@ -210,6 +218,9 @@ class AppStateModel with ChangeNotifier {
   Future<bool> authorize([String? provider]) async {
     _authClient!.scopes = scopes;
     _authClient!.scopesApi = scopesApi;
+    if (aadId.isNotEmpty) {
+      _authClient!.aadId = aadId;
+    }
     var res = await _authClient!.authorizeOrRefresh(provider);
     if (res) {
       prefs!.setString('session', _authClient.toString());
@@ -252,6 +263,7 @@ class AppStateModel with ChangeNotifier {
     _cdfProject = null;
     _cdfCluster = null;
     _cdfTimeSeriesId = '';
+    _cdfNrOfDays = 0;
     _apiClient.apikey = null;
     _manualToken = false;
     prefs!.remove('session');

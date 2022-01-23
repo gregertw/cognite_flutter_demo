@@ -24,21 +24,6 @@ class MockOAuth2Client extends GitHubOAuth2Client {
   }
 }
 
-class AADOauth2Client extends OAuth2Client {
-  AADOauth2Client(
-      {required String redirectUri, required String customUriScheme})
-      : super(
-            authorizeUrl:
-                //'https://login.microsoftonline.com/common/oauth2/v2.0/authorize',
-                'https://login.microsoftonline.com/61027128-daec-41ce-a3c8-c232d8d67eec/oauth2/v2.0/authorize',
-            tokenUrl:
-                //'https://login.microsoftonline.com/common/oauth2/v2.0/token',
-                'https://login.microsoftonline.com/61027128-daec-41ce-a3c8-c232d8d67eec/oauth2/v2.0/token',
-            redirectUri: redirectUri,
-            customUriScheme: customUriScheme,
-            credentialsLocation: CredentialsLocation.BODY);
-}
-
 class AuthUserInfo {
   String? email;
   String? username;
@@ -77,6 +62,9 @@ class AuthUserInfo {
 class AuthClient {
   // discoveryUrl, authzEndpoint, and tokenEndpoint are necessary for custom OpenID Connect services
   // String? discoveryUrl, authzEndpoint, tokenEndpoint;
+
+  /// ActiveDirectory ID
+  String aadId = '';
 
   /// Needs to match an allowed redirect URL set up in the auth provider's
   /// app config. Will override preconfigured providers in the class.
@@ -218,8 +206,9 @@ class AuthClient {
         break;
       case 'aad':
       case 'aad_web':
-        authProvider = AADOauth2Client(
+        authProvider = AADOauth2Client(aadId,
             redirectUri: redirectUrl!, customUriScheme: customUriScheme!);
+        (authProvider! as AADOauth2Client).scopesAPI = _scopesApi[provider]!;
         clientId = Environment.clientIdAAD;
         clientSecret = Environment.secretAAD;
         break;
@@ -312,7 +301,10 @@ class AuthClient {
       return _parseAuthResult(
           await (authProvider as MockOAuth2Client).getMockedResponse());
     }
-    if (provider != null && !(this.provider! + '_web').contains(provider)) {
+    // If we have changed provider from how we initialised or if aadId has been
+    // set, we need to re-initialise provider due to URLs.
+    if (provider != null &&
+        (aadId.isNotEmpty || !(this.provider! + '_web').contains(provider))) {
       setPresetIdentityProvider(provider);
     }
     if (_accessToken != null) {
@@ -333,10 +325,8 @@ class AuthClient {
         // Note: the first token is an OIDC token so you can retrieve user info
         //var info = await getUserInfo();
         if (_refreshToken != null) {
-          return _parseAuthResult(await refreshAADToken(_refreshToken!,
-              clientId: clientId!,
-              refreshURL: authProvider!.tokenUrl,
-              scopes: scopesApi!));
+          return _parseAuthResult(await authProvider!
+              .refreshToken(_refreshToken!, clientId: clientId!));
         }
       }
       return false;

@@ -12,7 +12,9 @@ class ConfigPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var appState = Provider.of<AppStateModel>(context, listen: false);
-    appState.cdfNrOfDays = (MediaQuery.of(context).size.width / 160).round();
+    if (appState.cdfNrOfDays == 0) {
+      appState.cdfNrOfDays = (MediaQuery.of(context).size.width / 160).round();
+    }
     log.i('Media width: ${MediaQuery.of(context).size.width}');
     final logo = Padding(
       padding: const EdgeInsets.all(20.0),

@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## Jan 23m 2022
+
+* Add support for ActiveDirectory ID so you can log in from guest AAD or common
+* Refactor aad auth to be just a sub-class to oauth2_client
+* Bump version to 0.5.2+7
+
 ## Jan 14, 2022
 
 * Add token login as option in login flow, improve error handling

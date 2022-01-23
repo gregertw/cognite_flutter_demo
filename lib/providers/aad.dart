@@ -1,22 +1,48 @@
 import 'package:http/http.dart' as http;
 import 'package:oauth2_client/access_token_response.dart';
+import 'package:oauth2_client/oauth2_client.dart';
 
-/// Refreshes an Access Token issuing a refresh_token grant to the OAuth2 server.
-Future<AccessTokenResponse> refreshAADToken(String refreshToken,
-    {httpClient,
-    required String clientId,
-    required String refreshURL,
-    required List<String> scopes}) async {
-  final Map params =
-      getRefreshUrlParams(refreshToken: refreshToken, scopes: scopes);
+class AADOauth2Client extends OAuth2Client {
+  AADOauth2Client(String aadId,
+      {required String redirectUri, required String customUriScheme})
+      : super(
+            authorizeUrl:
+                'https://login.microsoftonline.com/common/oauth2/v2.0/authorize',
+            //'https://login.microsoftonline.com/61027128-daec-41ce-a3c8-c232d8d67eec/oauth2/v2.0/authorize',
+            tokenUrl:
+                'https://login.microsoftonline.com/common/oauth2/v2.0/token',
+            //'https://login.microsoftonline.com/61027128-daec-41ce-a3c8-c232d8d67eec/oauth2/v2.0/token',
+            redirectUri: redirectUri,
+            customUriScheme: customUriScheme,
+            credentialsLocation: CredentialsLocation.BODY) {
+    if (aadId != 'common' && aadId.isNotEmpty) {
+      authorizeUrl = 'https://login.microsoftonline.com/' +
+          aadId +
+          '/oauth2/v2.0/authorize';
+      tokenUrl =
+          'https://login.microsoftonline.com/' + aadId + '/oauth2/v2.0/token';
+    }
+  }
 
-  var response = await _performAuthorizedRequest(
-      url: refreshURL,
-      clientId: clientId,
-      params: params,
-      httpClient: httpClient);
+  List<String> scopesAPI = [];
 
-  return AccessTokenResponse.fromHttpResponse(response);
+  /// Refreshes an Access Token issuing a refresh_token grant to the OAuth2 server.
+  @override
+  Future<AccessTokenResponse> refreshToken(String refreshToken,
+      {required String clientId,
+      String? clientSecret,
+      dynamic httpClient}) async {
+    final Map params =
+        getRefreshUrlParams(refreshToken: refreshToken, scopes: scopesAPI);
+
+    var response = await _performAuthorizedRequest(
+        url: tokenUrl,
+        clientId: clientId,
+        params: params,
+        httpClient: httpClient);
+
+    return AccessTokenResponse.fromHttpResponse(response);
+  }
 }
 
 /// Performs a post request to the specified [url],
