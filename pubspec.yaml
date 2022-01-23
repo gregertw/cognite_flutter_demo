@@ -1,43 +1,46 @@
 name: cognite_flutter_demo
 description: A demo application for Cognite CDF
 homepage: https://github.com/gregertw/cognite_flutter_demo
-version: 0.4.0
+version: 0.5.2+7
 publish_to: none
 
 environment:
-  sdk: '>=2.12.0 <3.0.0'
+  sdk: ">=2.12.0 <3.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
-  intl: ^0.17.0
-  flutter_appauth: ^1.1.0
+  intl: any
+  oauth2_client: ^2.3.1
   cupertino_icons: ^1.0.3
-  meta: ^1.4.0
-  provider: ^5.0.0
-  logger: ^1.0.0
-  shared_preferences: ^2.0.6
-  firebase_core: ^1.3.0
-  firebase_analytics: ^8.1.2
-  firebase_crashlytics: ^2.0.7
+  meta: ^1.7.0
+  logger: ^1.1.0
+  provider: ^6.0.1
+  shared_preferences: ^2.0.11
+  firebase_core: ^1.10.6
+  firebase_analytics: ^9.0.4
+  firebase_crashlytics: ^2.4.4
   overlay_support: ^1.2.1
-  url_launcher: ^6.0.9
+  url_launcher: ^6.0.17 
   cognite_cdf_sdk: ^0.2.0
-  syncfusion_flutter_charts: ^19.2.46+1 
-  syncfusion_flutter_core: ^19.2.46
-  syncfusion_flutter_sliders: ^19.2.46 
+  syncfusion_flutter_charts: ^19.4.41 
+  syncfusion_flutter_core: ^19.4.41
+  syncfusion_flutter_sliders: ^19.4.41
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  integration_test:
+    sdk: flutter
   flutter_driver:
     sdk: flutter
-  test: ^1.17.5
+  flutter_lints: ^1.0.4
+  test: ^1.17.12
   flutter_launcher_icons: ^0.9.0
   convert: ^3.0.1
-  mockito: ^5.0.10
-    
+  mockito: ^5.0.16
 
 flutter_icons:
   android: "launcher_icon"
@@ -45,6 +48,7 @@ flutter_icons:
   image_path: "assets/icon.png"
 
 flutter:
+
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
@@ -56,5 +60,6 @@ flutter:
     - family: Nunito
       fonts:
         - asset: assets/Nunito.ttf
-flutter_intl:
-  enabled: true
+
+  # Enable generation of localized Strings from arb file AppLocalizations.
+  generate: true

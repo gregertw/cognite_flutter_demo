@@ -1,8 +1,3 @@
-# License
-
-The Syncfusion packages are licensed according to 
-https://github.com/syncfusion/flutter-widgets/blob/master/packages/syncfusion_flutter_core/LICENSE
-
 Copyright 2020, Greger Teigre Wedel
 
 Licensed under the Apache License, Version 2.0 (the "License");

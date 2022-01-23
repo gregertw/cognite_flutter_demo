@@ -1,19 +1,23 @@
-class MockMap {
-  Map<String, Object> _mocks = Map();
+import 'package:cognite_cdf_sdk/cognite_cdf_sdk.dart';
 
-  Object? getMock(String mock) {
-    return _mocks[mock];
+class MockMap {
+  CDFApiClient? mockCDF;
+
+  CDFApiClient? getCDF() {
+    return mockCDF;
   }
 
-  void enableMock(String mock, Object obj) {
-    _mocks[mock] = obj;
+  void enableCDF(CDFApiClient obj) {
+    mockCDF = obj;
   }
 
   void disableMock(String mock) {
-    _mocks.remove(mock);
+    if (mock == 'CDF') {
+      mockCDF = null;
+    }
   }
 
   void clearMocks() {
-    _mocks.clear();
+    mockCDF = null;
   }
 }

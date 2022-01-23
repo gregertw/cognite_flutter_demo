@@ -7,7 +7,7 @@ void historyDialog(BuildContext context) {
   var hbm = Provider.of<HeartBeatModel>(context, listen: false);
   List<Widget> dialogs = [];
   int i = 1;
-  hbm.apiClient.history.forEach((element) {
+  for (var element in hbm.apiClient.history) {
     dialogs.add(SimpleDialogOption(
       child: Text(
           "$i: ${element.path} (${DateTime.fromMillisecondsSinceEpoch(element.timestampStart!).toLocal().toIso8601String()})"),
@@ -16,37 +16,37 @@ void historyDialog(BuildContext context) {
           context: context,
           builder: (BuildContext context) {
             return SimpleDialog(
-              contentPadding: EdgeInsets.fromLTRB(15, 15, 15, 15),
+              contentPadding: const EdgeInsets.fromLTRB(15, 15, 15, 15),
               shape: RoundedRectangleBorder(
-                side: BorderSide(
+                side: const BorderSide(
                   width: 4.0,
                 ),
                 borderRadius: BorderRadius.circular(10.0),
               ),
               title: Text("${element.method} - ${element.path}"),
               children: <Widget>[
-                Container(
+                SizedBox(
                   height: MediaQuery.of(context).size.height * (4 / 5),
                   width: MediaQuery.of(context).size.width * (4 / 5),
                   child: ListView(
                     padding: const EdgeInsets.all(8),
                     children: <Widget>[
                       (element.method == 'GET')
-                          ? ListTile(
+                          ? const ListTile(
                               title: Text('Request - GET'),
                             )
                           : ExpansionTile(
-                              title: Text('Request'),
+                              title: const Text('Request'),
                               children: [
                                 Text(
-                                    "${JsonEncoder.withIndent('  ').convert(element.request)} ")
+                                    "${const JsonEncoder.withIndent('  ').convert(element.request)} ")
                               ],
                             ),
                       ExpansionTile(
-                        title: Text('Response'),
+                        title: const Text('Response'),
                         children: [
                           Text(
-                              "${JsonEncoder.withIndent('  ').convert(element.response)} ")
+                              "${const JsonEncoder.withIndent('  ').convert(element.response)} ")
                         ],
                       ),
                     ],
@@ -59,14 +59,14 @@ void historyDialog(BuildContext context) {
       },
     ));
     i++;
-  });
+  }
   showDialog(
     context: context,
     builder: (BuildContext context) {
       return SimpleDialog(
-        title: Text('Request History'),
+        title: const Text('Request History'),
         shape: RoundedRectangleBorder(
-          side: BorderSide(
+          side: const BorderSide(
             width: 4.0,
           ),
           borderRadius: BorderRadius.circular(10.0),
