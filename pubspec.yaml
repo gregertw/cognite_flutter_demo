@@ -1,7 +1,7 @@
 name: cognite_flutter_demo
 description: A demo application for Cognite CDF
 homepage: https://github.com/gregertw/cognite_flutter_demo
-version: 0.5.2+7
+version: 0.5.3+8
 publish_to: none
 
 environment:
@@ -18,16 +18,16 @@ dependencies:
   meta: ^1.7.0
   logger: ^1.1.0
   provider: ^6.0.1
-  shared_preferences: ^2.0.11
-  firebase_core: ^1.10.6
-  firebase_analytics: ^9.0.4
-  firebase_crashlytics: ^2.4.4
+  shared_preferences: ^2.0.12
+  firebase_core: ^1.12.0
+  firebase_analytics: ^9.1.0
+  firebase_crashlytics: ^2.5.0
   overlay_support: ^1.2.1
-  url_launcher: ^6.0.17 
+  url_launcher: ^6.0.18
   cognite_cdf_sdk: ^0.2.0
-  syncfusion_flutter_charts: ^19.4.41 
-  syncfusion_flutter_core: ^19.4.41
-  syncfusion_flutter_sliders: ^19.4.41
+  syncfusion_flutter_charts: ^19.4.47
+  syncfusion_flutter_core: ^19.4.47
+  syncfusion_flutter_sliders: ^19.4.47
 
 dev_dependencies:
   flutter_test:

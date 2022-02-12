@@ -1,6 +1,11 @@
 # CHANGELOG
 
-## Jan 23m 2022
+## Feb 12, 2022
+
+* Add MacOS support
+* Bump to version 0.5.3+8
+
+## Jan 23 2022
 
 * Add support for ActiveDirectory ID so you can log in from guest AAD or common
 * Refactor aad auth to be just a sub-class to oauth2_client

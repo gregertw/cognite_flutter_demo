@@ -26,10 +26,7 @@ class DefaultFirebaseOptions {
       case TargetPlatform.iOS:
         return ios;
       case TargetPlatform.macOS:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for macos - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return macos;
     }
 
     throw UnsupportedError(
@@ -58,6 +55,17 @@ class DefaultFirebaseOptions {
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
+    apiKey: 'AIzaSyDcSUu0AVkanFE_luNCoNdOFZlP-x79FiI',
+    appId: '1:1058078351513:ios:ac219fd2cf70a267035808',
+    messagingSenderId: '1058078351513',
+    projectId: 'cognite-cdf-demo',
+    databaseURL: 'https://cognite-cdf-demo.firebaseio.com',
+    storageBucket: 'cognite-cdf-demo.appspot.com',
+    iosClientId: '1058078351513-2vna1u6q5v6ei3efmsv5s4r2ka8efqsa.apps.googleusercontent.com',
+    iosBundleId: 'io.greger.cogniteflutterdemo',
+  );
+
+  static const FirebaseOptions macos = FirebaseOptions(
     apiKey: 'AIzaSyDcSUu0AVkanFE_luNCoNdOFZlP-x79FiI',
     appId: '1:1058078351513:ios:ac219fd2cf70a267035808',
     messagingSenderId: '1058078351513',
