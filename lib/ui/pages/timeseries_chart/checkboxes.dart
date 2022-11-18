@@ -136,7 +136,10 @@ class CheckBoxButtons extends StatelessWidget {
             icon: Icon(Icons.info,
                 color: Theme.of(context).colorScheme.secondary),
             onPressed: () {
-              launch('https://docs.cognite.com/dev/concepts/aggregation/');
+              launchUrl(Uri(
+                  scheme: 'https',
+                  host: 'docs.cognite.com',
+                  path: '/dev/concepts/aggregation/'));
             },
           ),
         ),

@@ -208,7 +208,7 @@ class AppStateModel with ChangeNotifier {
         notifyListeners();
         return true;
       }
-      logOut();
+      logOut(); //TODO We have just expired the token, so don't log out, just clear the session (or refresh)
     }
 
     return false;

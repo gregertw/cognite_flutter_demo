@@ -14,7 +14,7 @@ class AADOauth2Client extends OAuth2Client {
             //'https://login.microsoftonline.com/61027128-daec-41ce-a3c8-c232d8d67eec/oauth2/v2.0/token',
             redirectUri: redirectUri,
             customUriScheme: customUriScheme,
-            credentialsLocation: CredentialsLocation.BODY) {
+            credentialsLocation: CredentialsLocation.body) {
     if (aadId != 'common' && aadId.isNotEmpty) {
       authorizeUrl = 'https://login.microsoftonline.com/' +
           aadId +
@@ -31,7 +31,8 @@ class AADOauth2Client extends OAuth2Client {
   Future<AccessTokenResponse> refreshToken(String refreshToken,
       {required String clientId,
       String? clientSecret,
-      dynamic httpClient}) async {
+      dynamic httpClient,
+      List<String>? scopes}) async {
     final Map params =
         getRefreshUrlParams(refreshToken: refreshToken, scopes: scopesAPI);
 

@@ -109,7 +109,7 @@ class ConfigPage extends StatelessWidget {
                         key: const Key('LocationPage_OkButton'),
                         style: ElevatedButton.styleFrom(
                           elevation: 20.0,
-                          onPrimary: Theme.of(context).primaryColorLight,
+                          foregroundColor: Theme.of(context).primaryColorLight,
                           padding: const EdgeInsets.all(8.0),
                         ),
                         onPressed: () {

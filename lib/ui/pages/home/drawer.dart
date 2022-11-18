@@ -56,8 +56,10 @@ class HomePageDrawer extends StatelessWidget {
                   autofocus: true,
                   onPressed: () {
                     OverlaySupportEntry.of(context)!.dismiss();
-                    launch(
-                        "https://github.com/gregertw/cognite-flutter-demo/issues");
+                    launchUrl(Uri(
+                        scheme: "https",
+                        host: "github.com",
+                        path: "/gregertw/cognite-flutter-demo/issues"));
                   },
                   child: Column(
                     children: const [

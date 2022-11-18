@@ -172,7 +172,7 @@ class AuthPage extends StatelessWidget {
                     minimumSize: const Size(200.0, 40.0),
                     maximumSize: const Size(250.0, 40.0),
                     backgroundColor: Theme.of(context).focusColor,
-                    primary: Colors.white),
+                    foregroundColor: Colors.white),
                 onPressed: () {
                   appState.authorize('aad');
                 },
@@ -231,7 +231,7 @@ class AuthPage extends StatelessWidget {
                     minimumSize: const Size(200.0, 40.0),
                     maximumSize: const Size(250.0, 40.0),
                     backgroundColor: Theme.of(context).focusColor,
-                    primary: Colors.white),
+                    foregroundColor: Colors.white),
                 onPressed: () {
                   // Flag the use of a manual token
                   appState.manualToken = true;
