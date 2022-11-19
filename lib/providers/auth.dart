@@ -117,8 +117,8 @@ class AuthClient {
       'https://greenfield.cognitedata.com/IDENTITY'
     ],
     'aad_web': <String>[
-      'https://greenfield.cognitedata.com/user_impersonation',
-      'https://greenfield.cognitedata.com/IDENTITY'
+      'https://bluefield.cognitedata.com/user_impersonation',
+      'https://bluefield.cognitedata.com/IDENTITY'
     ]
   };
   static const Map<String, Map<String, String>> _userInfoUrls = {

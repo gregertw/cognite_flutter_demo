@@ -138,7 +138,6 @@ doc/api/
 .fvm/
 .pub-cache/
 .pub/
-lib/generated_plugin_registrant.dart
 
 # Android related
 **/android/**/gradle-wrapper.jar
