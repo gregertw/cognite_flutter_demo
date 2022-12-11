@@ -70,7 +70,7 @@ class AppStateModel with ChangeNotifier {
   set aadId(String s) {
     _aadId = s;
     // When we change the aadId, we need to update with a new AuthClient pointing to a new authprovider
-    if (_authClient != null) {
+    if (_authClient != null && !mock) {
       _authClient!.authProvider = AADOauth2Client(_aadId,
           redirectUri:
               web ? Environment.redirectUrlAADWeb : Environment.redirectUrlAAD,

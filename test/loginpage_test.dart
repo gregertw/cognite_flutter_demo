@@ -43,11 +43,10 @@ void main() async {
     await tester.pump();
     final buttonFinder = find.descendant(
         of: find.byType(ClusterPage),
-        matching: find.byKey(const Key('ClusterDropDownButton')));
+        matching: find.byKey(const Key('ClusterTextButton')));
     await tester.tap(buttonFinder);
-    await tester.pumpAndSettle();
-    final dropdownItem = find.text('greenfield').last;
-    await tester.tap(dropdownItem);
+    await tester.enterText(buttonFinder, 'bluefield');
+    await tester.testTextInput.receiveAction(TextInputAction.done);
     await tester.pumpAndSettle();
     expect(find.byType(AuthPage), findsOneWidget);
     final loginButton = find.descendant(

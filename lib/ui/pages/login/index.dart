@@ -136,6 +136,7 @@ class ClusterPage extends StatelessWidget {
             key: const Key('ClusterTextButton'),
             autocorrect: false,
             autofocus: true,
+            textInputAction: TextInputAction.done,
             textAlign: TextAlign.end,
             cursorColor: Theme.of(context).colorScheme.onPrimary,
             initialValue:
