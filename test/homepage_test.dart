@@ -74,7 +74,7 @@ void main() async {
     await tester.pump(const Duration(seconds: 1));
 
     // Need timeseries mock data
-    var mock = File(Directory.current.path + '/test/response-1.json')
+    var mock = File('${Directory.current.path}/test/response-1.json')
         .readAsStringSync();
     (loginState.apiClient as CDFMockApiClient).setMock(body: mock);
     await tester.pumpAndSettle(const Duration(seconds: 1));
@@ -83,7 +83,7 @@ void main() async {
   });
 
   testWidgets('open drawer', (WidgetTester tester) async {
-    var mock = File(Directory.current.path + '/test/response-1.json')
+    var mock = File('${Directory.current.path}/test/response-1.json')
         .readAsStringSync();
     (loginState.apiClient as CDFMockApiClient).setMock(body: mock);
     await initWidget(tester, loginState);

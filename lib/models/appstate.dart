@@ -1,3 +1,4 @@
+import 'package:cognite_flutter_demo/providers/aad.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
@@ -57,17 +58,24 @@ class AppStateModel with ChangeNotifier {
   String get cdfProject => _cdfProject ?? '';
   List<String>? get cdfProjects =>
       _cdfStatus.projects ?? [_cdfStatus.project ?? ''];
-  String get cdfURL => 'https://' + cdfCluster + '.cognitedata.com';
+  String get cdfURL => 'https://$cdfCluster.cognitedata.com';
   int get cdfProjectId => _cdfProjectId ?? 0;
   int get resolutionFactor => _resolutionFactor;
 
   List<String> get scopes =>
       <String>['User.Read', 'openid', 'profile', 'offline_access'];
   List<String> get scopesApi =>
-      <String>[cdfURL + '/user_impersonation', cdfURL + '/IDENTITY'];
+      <String>['$cdfURL/user_impersonation', '$cdfURL/IDENTITY'];
 
   set aadId(String s) {
     _aadId = s;
+    // When we change the aadId, we need to update with a new AuthClient pointing to a new authprovider
+    if (_authClient != null) {
+      _authClient!.authProvider = AADOauth2Client(_aadId,
+          redirectUri:
+              web ? Environment.redirectUrlAADWeb : Environment.redirectUrlAAD,
+          customUriScheme: Environment.customURIScheme);
+    }
     prefs!.setString('aadId', s);
   }
 
@@ -102,15 +110,21 @@ class AppStateModel with ChangeNotifier {
 
   AppStateModel(
       {this.prefs, this.analytics, this.mock = false, this.web = false}) {
+    refreshSession();
     if (mock) {
-      _authClient = AuthClient(
-          provider: 'mock', clientId: '', clientSecret: '', web: web);
+      _authClient = AuthClient(mock: true, web: web);
       _apiClient = CDFMockApiClient();
     } else {
       _authClient = AuthClient(
           clientId: Environment.clientIdAAD,
           clientSecret: Environment.secretAAD,
-          provider: 'aad',
+          authProvider: AADOauth2Client(aadId,
+              redirectUri: web
+                  ? Environment.redirectUrlAADWeb
+                  : Environment.redirectUrlAAD,
+              customUriScheme: Environment.customURIScheme),
+          scopes: scopes,
+          scopesApi: scopesApi,
           web: web);
       // Ensure _apiClient is initialised, it will have to be reinitialised later when
       // token/apikey and project are known.
@@ -121,7 +135,6 @@ class AppStateModel with ChangeNotifier {
           logLevel: Level.error,
           httpAdapter: GenericHttpClientAdapter());
     }
-    refreshSession();
     // this will load locale from prefs
     // Note that you need to use
     // Intl.defaultLocale = appState.localeAbbrev;
@@ -151,20 +164,20 @@ class AppStateModel with ChangeNotifier {
 
   /// Rotates through the supported locales.
   void switchLocale() {
-    const _locales = AppLocalizations.supportedLocales;
-    if (_locales.length == 1) {
+    const locales = AppLocalizations.supportedLocales;
+    if (locales.length == 1) {
       return;
     }
     int ind = 0;
-    _locales.asMap().forEach((key, value) {
+    locales.asMap().forEach((key, value) {
       if (value.languageCode == _locale) {
         ind = key + 1;
       }
     });
-    if (ind >= _locales.length) {
+    if (ind >= locales.length) {
       ind = 0;
     }
-    setLocale(_locales[ind].languageCode);
+    setLocale(locales[ind].languageCode);
   }
 
   /// Sends off a Firebase Analytics event.
@@ -183,12 +196,13 @@ class AppStateModel with ChangeNotifier {
 
   /// Refreshes a session from sharedpreferences.
   Future<bool> refreshSession() async {
-    if (prefs == null || _authClient == null) {
+    if (prefs == null) {
       return false;
     }
     _userInfo.email = prefs!.getString('email');
     _userInfo.name = prefs!.getString('name');
-    _aadId = prefs!.getString('aadId') ?? '';
+    // Need to refresh auth provider as well
+    aadId = prefs!.getString('aadId') ?? '';
     _cdfCluster = prefs!.getString('cdfCluster');
     _cdfProject = prefs!.getString('cdfProject');
     _cdfTimeSeriesId = prefs!.getString('cdfTimeSeriesId') ?? '';
@@ -198,30 +212,32 @@ class AppStateModel with ChangeNotifier {
     if (apikey != null) {
       logIn(apikey);
     } else {
-      _authClient!.fromString(prefs!.getString('session') ?? '');
-      if (_authClient!.isValid && !_authClient!.isExpired) {
-        _authenticated = true;
-        if (!await initialiseCDF()) {
-          logOut();
-          return false;
+      if (_authClient != null) {
+        _authClient!.fromString(prefs!.getString('session') ?? '');
+        if (_authClient!.isValid && !_authClient!.isExpired) {
+          _authenticated = true;
+          if (!await initialiseCDF()) {
+            logOut();
+            return false;
+          }
+          notifyListeners();
+          return true;
         }
-        notifyListeners();
-        return true;
+        logOut(); //TODO We have just expired the token, so don't log out, just clear the session (or refresh)
       }
-      logOut(); //TODO We have just expired the token, so don't log out, just clear the session (or refresh)
     }
 
     return false;
   }
 
   /// Triggers  a popup for login to the Identity Provider
-  Future<bool> authorize([String? provider]) async {
+  Future<bool> authorize() async {
     _authClient!.scopes = scopes;
     _authClient!.scopesApi = scopesApi;
     if (aadId.isNotEmpty) {
       _authClient!.aadId = aadId;
     }
-    var res = await _authClient!.authorizeOrRefresh(provider);
+    var res = await _authClient!.authorizeOrRefresh();
     if (res) {
       prefs!.setString('session', _authClient.toString());
       _authenticated = true;

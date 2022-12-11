@@ -1,11 +1,10 @@
 import 'dart:async';
 import 'dart:convert';
-import 'package:cognite_flutter_demo/environment.dart';
+import 'package:cognite_flutter_demo/providers/aad.dart';
 import 'package:oauth2_client/oauth2_client.dart';
 import 'package:oauth2_client/github_oauth2_client.dart';
 import 'package:oauth2_client/access_token_response.dart';
 import 'package:http/http.dart' as http;
-import 'package:cognite_flutter_demo/providers/aad.dart';
 
 /// Use this as authProvider in [AuthClient] for mocked auth.
 class MockOAuth2Client extends GitHubOAuth2Client {
@@ -36,18 +35,11 @@ class AuthUserInfo {
   AuthUserInfo();
 
   /// Instantiate from a json based on provider id
-  AuthUserInfo.from(provider, Map<String, dynamic> info) {
-    switch (provider) {
-      case 'aad':
-      case 'aad_web':
-        email = info['mail'];
-        name ??= info['displayName'];
-        username ??= info['userPrincipalName'];
-        id ??= info['id'];
-        break;
-      default:
-        throw 'Does not know how to parse AuthUserInfo from ' + provider;
-    }
+  AuthUserInfo.from(Map<String, dynamic> info) {
+    email = info['mail'];
+    name ??= info['displayName'];
+    username ??= info['userPrincipalName'];
+    id ??= info['id'];
   }
 }
 
@@ -58,17 +50,9 @@ class AuthUserInfo {
 /// [clientId], [redirectUrl], and/or [scopes] supplied,
 /// or by supplying an [OAuth2Client] instance as [authProvider] (this
 /// is used when mocking).
-/// TODO: Implement OIDC support when oauth_client package gets support.
 class AuthClient {
-  // discoveryUrl, authzEndpoint, and tokenEndpoint are necessary for custom OpenID Connect services
-  // String? discoveryUrl, authzEndpoint, tokenEndpoint;
-
   /// ActiveDirectory ID
   String aadId = '';
-
-  /// Needs to match an allowed redirect URL set up in the auth provider's
-  /// app config. Will override preconfigured providers in the class.
-  String? redirectUrl;
 
   /// The client id supplied by the auth provider. Will override preconfigured providers in the class.
   String? clientId;
@@ -85,48 +69,17 @@ class AuthClient {
   /// should be set to true if this app is running in a browser.
   final bool web;
 
-  /// For Android and iOS, this must match the URI in the [_redirectUrls].
-  /// Must be the same as the Android applicationId and iOS bundle scheme.
-  /// If not supplied, [AuthClient]'s configured [_customUriScheme] will be used.
-  String? customUriScheme;
+  /// set to true if we mock
+  final bool mock;
 
   /// A fully configured [OAuth2Client] that will override both preconfigured providers and
   /// [redirectUrl], [clientId], and [scopes].
   OAuth2Client? authProvider;
 
-  /// The provider to choose among the preconfigured. Overridden by [authProvider] if set.
-  /// The clientId, redirctUrl, and scopes can either be configured below or supplied
-  /// when instansiating the class.
-  String? provider;
-  // For Android and iOS, this must match the URI in the [_redirectUrls].
-  // Must be the same as the Android applicationId and iOS bundle scheme.
-  static const String _customUriScheme = 'io.greger.cogniteflutterdemo';
-  static const Map<String, String> _redirectUrls = {
-    'mock': 'localhost',
-    'aad': 'io.greger.cogniteflutterdemo://oauth',
-    'aad_web': 'https://gregertw.github.io/cognite-flutter-demo-web/',
-    //'aad_web': 'http://localhost:8686/',
+  static const Map<String, String> _userInfoUrls = {
+    'host': 'graph.microsoft.com',
+    'path': '/v1.0/me'
   };
-  static const Map<String, List<String>> _scopes = {
-    'aad': <String>['User.Read', 'openid', 'profile', 'offline_access'],
-    'aad_web': <String>['User.Read', 'openid', 'profile', 'offline_access']
-  };
-  static const Map<String, List<String>> _scopesApi = {
-    'aad': <String>[
-      'https://greenfield.cognitedata.com/user_impersonation',
-      'https://greenfield.cognitedata.com/IDENTITY'
-    ],
-    'aad_web': <String>[
-      'https://bluefield.cognitedata.com/user_impersonation',
-      'https://bluefield.cognitedata.com/IDENTITY'
-    ]
-  };
-  static const Map<String, Map<String, String>> _userInfoUrls = {
-    'aad': {'host': 'graph.microsoft.com', 'path': '/v1.0/me'},
-    'aad_web': {'host': 'graph.microsoft.com', 'path': '/v1.0/me'},
-  };
-
-  // End default configs
 
   // convenience to hold refresh token
   String? _refreshToken;
@@ -164,56 +117,23 @@ class AuthClient {
   /// Should a refresh be done?
   bool get shouldRefresh => _refreshToken != null && !isValid;
 
-  AuthClient(
-      {required this.clientId,
-      this.clientSecret,
-      this.web = false,
-      this.authProvider,
-      this.provider,
-      this.redirectUrl,
-      this.scopes,
-      this.scopesApi,
-      this.customUriScheme
-      // For future OIDC support
-      //this.discoveryUrl,
-      //this.authzEndpoint,
-      //this.tokenEndpoint
-      }) {
-    // customUriScheme is only relevant for Android and iOS.
-    customUriScheme ??= _customUriScheme;
-    if (authProvider == null && provider != null) {
-      setPresetIdentityProvider(provider!);
-    }
-  }
-
-  /// Configure/override the identity provider settings.
-  void setPresetIdentityProvider(String provider) {
-    if (web && !provider.contains('_web')) {
-      provider = provider + '_web';
-    }
-    if (!_redirectUrls.containsKey(provider)) {
-      throw 'No provider set and authProvider not supplied.';
-    }
-    this.provider = provider;
-    redirectUrl = _redirectUrls[provider] ?? '';
-    scopes = _scopes[provider] ?? <String>[];
-    scopesApi = _scopesApi[provider] ?? <String>[];
-    switch (provider) {
-      case 'mock':
-        authProvider = MockOAuth2Client(redirectUri: '', customUriScheme: '');
-        clientId = '';
-        clientSecret = '';
-        break;
-      case 'aad':
-      case 'aad_web':
-        authProvider = AADOauth2Client(aadId,
-            redirectUri: redirectUrl!, customUriScheme: customUriScheme!);
-        (authProvider! as AADOauth2Client).scopesAPI = _scopesApi[provider]!;
-        clientId = Environment.clientIdAAD;
-        clientSecret = Environment.secretAAD;
-        break;
-      default:
-        throw 'No provider set and authProvider not supplied.';
+  AuthClient({
+    this.clientId = '',
+    this.clientSecret = '',
+    this.web = false,
+    this.mock = false,
+    this.authProvider,
+    this.scopes,
+    this.scopesApi,
+    // For future OIDC support
+    //this.discoveryUrl,
+    //this.authzEndpoint,
+    //this.tokenEndpoint
+  }) {
+    if (mock) {
+      authProvider = MockOAuth2Client(redirectUri: '', customUriScheme: '');
+      clientId = '';
+      clientSecret = '';
     }
   }
 
@@ -223,12 +143,12 @@ class AuthClient {
         final http.Response httpResponse = await http.get(
             Uri(
                 scheme: 'https',
-                host: _userInfoUrls[provider]!['host'],
-                path: _userInfoUrls[provider]!['path']),
+                host: _userInfoUrls['host'],
+                path: _userInfoUrls['path']),
             headers: authHeader);
         var res = httpResponse.statusCode == 200 ? httpResponse.body : '';
         if (res.isNotEmpty) {
-          return AuthUserInfo.from(provider, jsonDecode(res));
+          return AuthUserInfo.from(jsonDecode(res));
         }
       } catch (e) {
         return AuthUserInfo();
@@ -267,7 +187,6 @@ class AuthClient {
     _refreshToken = json['refreshToken'] == '' ? null : json['refreshToken'];
     _idToken = json['idToken'] == '' ? null : json['idToken'];
     _expiresToken = DateTime.parse(json['expires']);
-    provider = json['provider'];
   }
 
   /// Creates a json map of the session.
@@ -275,8 +194,7 @@ class AuthClient {
         'accessToken': _accessToken ?? '',
         'refreshToken': _refreshToken ?? '',
         'idToken': _idToken ?? '',
-        'expires': _expiresToken.toIso8601String(),
-        'provider': provider
+        'expires': _expiresToken.toIso8601String()
       };
 
   /// Creates a string of the session for storing to SharedPreferences et al.
@@ -296,16 +214,10 @@ class AuthClient {
   }
 
   /// May present a UI dialog to the user.
-  Future<bool> authorizeOrRefresh([String? provider]) async {
+  Future<bool> authorizeOrRefresh() async {
     if (authProvider is MockOAuth2Client) {
       return _parseAuthResult(
           await (authProvider as MockOAuth2Client).getMockedResponse());
-    }
-    // If we have changed provider from how we initialised or if aadId has been
-    // set, we need to re-initialise provider due to URLs.
-    if (provider != null &&
-        (aadId.isNotEmpty || !(this.provider! + '_web').contains(provider))) {
-      setPresetIdentityProvider(provider);
     }
     if (_accessToken != null) {
       if (isExpired) {
@@ -319,12 +231,13 @@ class AuthClient {
     try {
       var res = _parseAuthResult(await authProvider!.getTokenWithAuthCodeFlow(
           clientId: clientId!,
-          scopes: scopes! + scopesApi!,
+          scopes: scopes!, // + scopesApi!,
           clientSecret: clientSecret));
       if (res) {
         // Note: the first token is an OIDC token so you can retrieve user info
         //var info = await getUserInfo();
         if (_refreshToken != null) {
+          (authProvider! as AADOauth2Client).scopesAPI = scopesApi!;
           return _parseAuthResult(await authProvider!
               .refreshToken(_refreshToken!, clientId: clientId!));
         }

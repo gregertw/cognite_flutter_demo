@@ -8,19 +8,15 @@ class AADOauth2Client extends OAuth2Client {
       : super(
             authorizeUrl:
                 'https://login.microsoftonline.com/common/oauth2/v2.0/authorize',
-            //'https://login.microsoftonline.com/61027128-daec-41ce-a3c8-c232d8d67eec/oauth2/v2.0/authorize',
             tokenUrl:
                 'https://login.microsoftonline.com/common/oauth2/v2.0/token',
-            //'https://login.microsoftonline.com/61027128-daec-41ce-a3c8-c232d8d67eec/oauth2/v2.0/token',
             redirectUri: redirectUri,
             customUriScheme: customUriScheme,
             credentialsLocation: CredentialsLocation.body) {
     if (aadId != 'common' && aadId.isNotEmpty) {
-      authorizeUrl = 'https://login.microsoftonline.com/' +
-          aadId +
-          '/oauth2/v2.0/authorize';
-      tokenUrl =
-          'https://login.microsoftonline.com/' + aadId + '/oauth2/v2.0/token';
+      authorizeUrl =
+          'https://login.microsoftonline.com/$aadId/oauth2/v2.0/authorize';
+      tokenUrl = 'https://login.microsoftonline.com/$aadId/oauth2/v2.0/token';
     }
   }
 

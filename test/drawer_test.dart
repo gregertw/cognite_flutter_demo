@@ -41,7 +41,7 @@ void main() async {
     await initWidget(tester, loginState);
     await tester.pump(const Duration(seconds: 1));
     // Need timeseries mock data
-    var mock = File(Directory.current.path + '/test/response-1.json')
+    var mock = File('${Directory.current.path}/test/response-1.json')
         .readAsStringSync();
     (loginState.apiClient as CDFMockApiClient).setMock(body: mock);
     await tester.pump(const Duration(seconds: 1));

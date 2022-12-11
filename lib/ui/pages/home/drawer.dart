@@ -142,8 +142,8 @@ Widget buildDrawerHeader(BuildContext context) {
       },
     ),
     currentAccountPicture: CircleAvatar(
-      child: Image.asset('assets/actingweb-header-small.png'),
       backgroundColor: Colors.white,
+      child: Image.asset('assets/actingweb-header-small.png'),
     ),
   );
 }

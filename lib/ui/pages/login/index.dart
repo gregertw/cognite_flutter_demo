@@ -24,33 +24,32 @@ class LoginPage extends StatelessWidget {
     Column body;
     if (appState.cdfCluster.isEmpty) {
       body = Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           logo,
           Container(
-            width: 400,
-            padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
-            decoration: BoxDecoration(
-                color: Theme.of(context).primaryColorLight,
-                borderRadius: BorderRadius.circular(10)),
-            child: ClusterPage(),
+            width: 400.0,
+            alignment: Alignment.center,
+            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+            child: const ClusterPage(),
           ),
         ],
-        mainAxisAlignment: MainAxisAlignment.center,
       );
     } else if (!appState.authenticated) {
       if (appState.manualToken) {
         body = Column(
-          children: [logo, welcome, TokenLoginPage()],
           mainAxisAlignment: MainAxisAlignment.center,
+          children: [logo, welcome, TokenLoginPage()],
         );
       } else {
         body = Column(
-          children: [logo, welcome, const AuthPage()],
           mainAxisAlignment: MainAxisAlignment.center,
+          children: [logo, welcome, const AuthPage()],
         );
       }
     } else if (appState.cdfProject.isEmpty) {
       body = Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           logo,
           Container(
@@ -62,12 +61,11 @@ class LoginPage extends StatelessWidget {
             child: const ProjectPage(),
           ),
         ],
-        mainAxisAlignment: MainAxisAlignment.center,
       );
     } else {
       body = Column(
-        children: [logo, welcome],
         mainAxisAlignment: MainAxisAlignment.center,
+        children: [logo, welcome],
       );
     }
 
@@ -92,7 +90,7 @@ class ProjectPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var appState = Provider.of<AppStateModel>(context);
-    final List<DropdownMenuItem<String>> _dropDownMenuItems =
+    final List<DropdownMenuItem<String>> dropDownMenuItems =
         appState.cdfProjects!
             .map(
               (e) => DropdownMenuItem<String>(
@@ -106,7 +104,7 @@ class ProjectPage extends StatelessWidget {
       leading: const Icon(Icons.timer),
       trailing: DropdownButton<String>(
         key: const Key('ProjectDropDownMenu'),
-        items: _dropDownMenuItems,
+        items: dropDownMenuItems,
         underline: Container(),
         value: (appState.cdfProject != '')
             ? appState.cdfProject
@@ -121,33 +119,55 @@ class ProjectPage extends StatelessWidget {
 }
 
 class ClusterPage extends StatelessWidget {
-  ClusterPage({Key? key}) : super(key: key);
-
-  static const menuItems = <String>['greenfield', 'bluefield', 'api'];
-  final List<DropdownMenuItem<String>> _dropDownMenuItems = menuItems
-      .map(
-        (e) => DropdownMenuItem<String>(
-          value: e,
-          child: Text(e),
-        ),
-      )
-      .toList();
+  const ClusterPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var appState = Provider.of<AppStateModel>(context);
-    return ListTile(
-      title: const Text('CDF Cluster'),
-      trailing: DropdownButton<String>(
-        key: const Key('ClusterDropDownButton'),
-        items: _dropDownMenuItems,
-        underline: Container(),
-        value: appState.cdfCluster.isEmpty ? 'api' : appState.cdfCluster,
-        onChanged: (value) {
-          appState.cdfCluster = value;
-        },
-      ),
-    );
+    return Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+      SizedBox(
+        width: 350.0,
+        height: 25.0,
+        child: Theme(
+          data: Theme.of(context).copyWith(
+              textSelectionTheme: const TextSelectionThemeData(
+                  selectionColor: Colors.blueAccent)),
+          child: TextFormField(
+            key: const Key('ClusterTextButton'),
+            autocorrect: false,
+            autofocus: true,
+            textAlign: TextAlign.end,
+            cursorColor: Theme.of(context).colorScheme.onPrimary,
+            initialValue:
+                appState.cdfCluster.isEmpty ? 'api' : appState.cdfCluster,
+            decoration: InputDecoration(
+              labelText: 'CDF Cluster',
+              labelStyle: const TextStyle(
+                fontSize: 16.0,
+                color: Colors.black,
+                fontFamily: "Poppins",
+              ),
+              isDense: false,
+              contentPadding: EdgeInsets.zero,
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(4.0),
+                borderSide:
+                    BorderSide(color: Theme.of(context).colorScheme.onPrimary),
+              ),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(4.0),
+                borderSide:
+                    BorderSide(color: Theme.of(context).colorScheme.onPrimary),
+              ),
+            ),
+            keyboardType: TextInputType.text,
+            onFieldSubmitted: (String? value) {
+              appState.cdfCluster = value;
+            },
+          ),
+        ),
+      )
+    ]);
   }
 }
 
@@ -157,96 +177,103 @@ class AuthPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var appState = Provider.of<AppStateModel>(context, listen: false);
+    final formKey = GlobalKey<FormState>();
     return Container(
       constraints: const BoxConstraints(maxHeight: 260.0, maxWidth: 200.0),
       alignment: Alignment.topCenter,
-      child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 20.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              TextButton(
-                key: const Key('LoginPage_LoginButton'),
-                style: TextButton.styleFrom(
-                    minimumSize: const Size(200.0, 40.0),
-                    maximumSize: const Size(250.0, 40.0),
-                    backgroundColor: Theme.of(context).focusColor,
-                    foregroundColor: Colors.white),
-                onPressed: () {
-                  appState.authorize('aad');
-                },
-                child: Text(AppLocalizations.of(context)!.loginButton),
-              ),
-              const Padding(padding: EdgeInsets.symmetric(vertical: 5.0)),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  SizedBox(
-                    width: 150.0,
-                    height: 20.0,
-                    child: TextFormField(
-                      autocorrect: false,
-                      textAlign: TextAlign.end,
-                      cursorColor: Theme.of(context).colorScheme.onPrimary,
-                      initialValue:
-                          appState.aadId.isNotEmpty ? appState.aadId : 'common',
-                      decoration: InputDecoration(
-                        labelText: 'AAD id',
-                        labelStyle: const TextStyle(
-                          fontSize: 12.0,
+      child: Form(
+        key: formKey,
+        child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 20.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                TextButton(
+                  key: const Key('LoginPage_LoginButton'),
+                  style: TextButton.styleFrom(
+                      minimumSize: const Size(200.0, 40.0),
+                      maximumSize: const Size(250.0, 40.0),
+                      backgroundColor: Theme.of(context).focusColor,
+                      foregroundColor: Colors.white),
+                  onPressed: () {
+                    formKey.currentState!.validate();
+                    appState.authorize();
+                  },
+                  child: Text(AppLocalizations.of(context)!.loginButton),
+                ),
+                const Padding(padding: EdgeInsets.symmetric(vertical: 5.0)),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    SizedBox(
+                      width: 150.0,
+                      height: 20.0,
+                      child: TextFormField(
+                        autocorrect: false,
+                        textAlign: TextAlign.end,
+                        cursorColor: Theme.of(context).colorScheme.onPrimary,
+                        initialValue: appState.aadId.isNotEmpty
+                            ? appState.aadId
+                            : 'common',
+                        decoration: InputDecoration(
+                          labelText: 'AAD id',
+                          labelStyle: const TextStyle(
+                            fontSize: 12.0,
+                            color: Colors.black,
+                            fontFamily: "Poppins",
+                          ),
+                          isDense: false,
+                          contentPadding: EdgeInsets.zero,
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(4.0),
+                            borderSide: BorderSide(
+                                color: Theme.of(context).colorScheme.onPrimary),
+                          ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(4.0),
+                            borderSide: BorderSide(
+                                color: Theme.of(context).colorScheme.onPrimary),
+                          ),
+                        ),
+                        keyboardType: TextInputType.text,
+                        validator: (val) {
+                          appState.aadId = val ?? 'common';
+                          return null;
+                        },
+                        style: const TextStyle(
                           color: Colors.black,
+                          fontSize: 12.0,
                           fontFamily: "Poppins",
                         ),
-                        isDense: false,
-                        contentPadding: EdgeInsets.zero,
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(4.0),
-                          borderSide: BorderSide(
-                              color: Theme.of(context).colorScheme.onPrimary),
-                        ),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(4.0),
-                          borderSide: BorderSide(
-                              color: Theme.of(context).colorScheme.onPrimary),
-                        ),
-                      ),
-                      keyboardType: TextInputType.text,
-                      onChanged: (String? val) {
-                        appState.aadId = val ?? 'common';
-                      },
-                      style: const TextStyle(
-                        color: Colors.black,
-                        fontSize: 12.0,
-                        fontFamily: "Poppins",
                       ),
                     ),
-                  ),
-                ],
-              ),
-              const Padding(padding: EdgeInsets.symmetric(vertical: 5.0)),
-              TextButton(
-                key: const Key('LoginPage_LoginTokenButton'),
-                style: TextButton.styleFrom(
-                    minimumSize: const Size(200.0, 40.0),
-                    maximumSize: const Size(250.0, 40.0),
-                    backgroundColor: Theme.of(context).focusColor,
-                    foregroundColor: Colors.white),
-                onPressed: () {
-                  // Flag the use of a manual token
-                  appState.manualToken = true;
-                },
-                child: Text(
-                  AppLocalizations.of(context)!.loginButtonToken,
-                  textAlign: TextAlign.center,
+                  ],
                 ),
-              ),
-              const Padding(padding: EdgeInsets.symmetric(vertical: 5.0)),
-              BackButton(
-                onPressed: () => appState.logOut(),
-              ),
-            ],
-          )),
+                const Padding(padding: EdgeInsets.symmetric(vertical: 5.0)),
+                TextButton(
+                  key: const Key('LoginPage_LoginTokenButton'),
+                  style: TextButton.styleFrom(
+                      minimumSize: const Size(200.0, 40.0),
+                      maximumSize: const Size(250.0, 40.0),
+                      backgroundColor: Theme.of(context).focusColor,
+                      foregroundColor: Colors.white),
+                  onPressed: () {
+                    // Flag the use of a manual token
+                    appState.manualToken = true;
+                  },
+                  child: Text(
+                    AppLocalizations.of(context)!.loginButtonToken,
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                const Padding(padding: EdgeInsets.symmetric(vertical: 5.0)),
+                BackButton(
+                  onPressed: () => appState.logOut(),
+                ),
+              ],
+            )),
+      ),
     );
   }
 }

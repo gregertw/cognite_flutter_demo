@@ -1,5 +1,14 @@
 # CHANGELOG
 
+## Dec 11, 2022
+
+* Bump to version 0.5.4+9
+* Upgrade to Flutter 3.3.8
+* Fix api scope request issue
+* Change to new ActiveDirectory provider and app registration
+* Allow any CDF cluster (not predefined list)
+* Refactor auth to use AAD more directly
+
 ## Feb 12, 2022
 
 * Add MacOS support

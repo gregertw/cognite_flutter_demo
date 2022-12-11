@@ -5,7 +5,7 @@ void main() async {
   late AuthClient c;
 
   setUp(() async {
-    c = AuthClient(clientId: '', clientSecret: '', provider: 'mock');
+    c = AuthClient(clientId: '', clientSecret: '', mock: true);
   });
 
   test('initially not logged in', () async {
@@ -67,7 +67,7 @@ void main() async {
       'expires': exp
     };
     c.fromJson(m);
-    var c2 = AuthClient(clientId: '', clientSecret: '', provider: 'mock');
+    var c2 = AuthClient(clientId: '', clientSecret: '', mock: true);
     c2.fromString(c.toString());
     expect(c2.accessToken, 'an_access_token');
     expect(c2.refreshToken, 'a_refresh_token');
