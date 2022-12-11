@@ -11,11 +11,11 @@ This app can run on any Flutter supported platform. The [web version is hosted o
 ## iOS and Android versions
 
 Due to the work related to releasing official apps, the iOS and Adroid versions of this demo app are available as tests
-previews. You can download the Android version from <https://www.dropbox.com/s/7km191vo48vlnig/cognite_flutter_demo.apk?dl=1> and the iOS app is available from Testflight at <https://testflight.apple.com/join/pQvpBwxx>.
+previews. You can download the Android version from <https://www.dropbox.com/s/k6j5a7dfdgps4jj/cognite_flutter_demo.apk?dl=1> and the iOS app is available from Testflight at <https://testflight.apple.com/join/pQvpBwxx>.
 
 ## MacOS version
 
-A MacOS installer can be [downloaded](https://www.dropbox.com/sh/yw7b5x51x1lkosz/AABm9t96G3sCSSwOia76mqBRa?dl=1)
+A MacOS installer can be [downloaded](https://www.dropbox.com/sh/na3vxaj6gnq2wvg/AABGHLzU-eW1Q8y1uCERBPBza?dl=1)
 and copied directly to your Application folder.
 
 ## About this repository
